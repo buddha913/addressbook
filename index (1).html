@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Friends Address Book</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background:#f7f8fa; margin:0; }
+    header { padding:20px; background:#fff; border-bottom:1px solid #ddd; position:sticky; top:0; }
+    h1 { margin:0; font-size:22px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; padding:20px; }
+    .card { background:#fff; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden; text-decoration:none; color:#111; transition:.2s; }
+    .card:hover { box-shadow:0 4px 12px rgba(0,0,0,0.1); transform:translateY(-2px); }
+    .thumb { width:100%; aspect-ratio:1/1; object-fit:cover; }
+    h3 { margin:0; font-size:16px; }
+    p { margin:4px 0 0 0; font-size:14px; color:#555; }
+  </style>
+</head>
+<body>
+  <header><h1>Friends Address Book</h1></header>
+  <div class="grid">
+
+    <!-- 오소리 -->
+    <a class="card" href="https://x.com/OsorryKor" target="_blank">
+      <img class="thumb" src="https://pbs.twimg.com/profile_images/1943619125395550208/zZ00tUsw_400x400.jpg" alt="오소리">
+      <div style="padding:12px;">
+        <h3>오소리</h3>
+        <p>@OsorryKor</p>
+      </div>
+    </a>
+
+    <!-- 유니12 -->
+    <a class="card" href="https://x.com/jonBeoGazua" target="_blank">
+      <img class="thumb" src="https://pbs.twimg.com/profile_images/1949511809012211712/VBzflg-7_400x400.jpg" alt="유니12">
+      <div style="padding:12px;">
+        <h3>유니12</h3>
+        <p>@jonBeoGazua</p>
+      </div>
+    </a>
+
+    <!-- 노드박 -->
+    <a class="card" href="https://x.com/Node_Park" target="_blank">
+      <img class="thumb" src="https://pbs.twimg.com/profile_images/1974889301939978240/wnfobLBN_400x400.jpg" alt="노드박">
+      <div style="padding:12px;">
+        <h3>노드박</h3>
+        <p>@Node_Park</p>
+      </div>
+    </a>
+
+  </div>
+</body>
+</html>
