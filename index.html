@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <title>X 크리에이터 마인드쉐어 분석기 5.0</title>
+  <title>X 크리에이터 마인드쉐어 분석기 MUDDHA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- CSV 파서 -->
@@ -10,9 +10,6 @@
   <!-- 프로젝트별 원형 그래프용 -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@3.3.0/dist/chartjs-chart-financial.umd.min.js"></script>
-
-  <!-- Supabase client -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
   <!-- ✅ STEP 2 -->
   <style>
@@ -129,6 +126,73 @@ body{
 }
 .side-login-btn:hover{
   background:#e5edff;
+}
+
+.side-auth-pill{
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#eff6ff,#e0f2fe);
+  border:1px solid rgba(148,163,184,0.6);
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+html.dark-theme .side-auth-pill{
+  background:linear-gradient(135deg,#020617,#030712);
+  border-color:rgba(30,64,175,0.85);
+}
+.side-auth-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:11px;
+}
+.side-auth-label{
+  font-weight:600;
+  color:#0f172a;
+}
+html.dark-theme .side-auth-label{
+  color:#e5e7eb;
+}
+.side-auth-status{
+  font-size:11px;
+  color:#6b7280;
+}
+html.dark-theme .side-auth-status{
+  color:#9ca3af;
+}
+.side-auth-main-btn{
+  margin-top:4px;
+  width:100%;
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:11px;
+  font-weight:600;
+  border:none;
+  cursor:pointer;
+  background:#111827;
+  color:#f9fafb;
+}
+.side-auth-main-btn--secondary{
+  background:transparent;
+  border:1px solid rgba(148,163,184,0.75);
+  color:#111827;
+}
+html.dark-theme .side-auth-main-btn--secondary{
+  color:#e5e7eb;
+}
+.side-auth-main-btn:hover{
+  filter:brightness(1.05);
+}
+.side-auth-caption{
+  margin:0;
+  margin-top:2px;
+  font-size:10px;
+  color:#6b7280;
+}
+html.dark-theme .side-auth-caption{
+  color:#9ca3af;
 }
 .side-avatar{
   width:44px;height:44px;
@@ -1624,11 +1688,265 @@ html.dark-theme .section-sub{
 .yap-gauge-note .note-list li{
   margin-bottom:2px;
 }
+
+/* Supabase Auth Bar */
+.auth-bar{
+  position:fixed;
+  top:8px;
+  right:8px;
+  padding:6px 10px;
+  background:rgba(15,23,42,0.92);
+  color:#e5e7eb;
+  font-size:12px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  z-index:40;
+  box-shadow:0 10px 25px rgba(15,23,42,0.45);
+}
+.auth-bar button{
+  border:1px solid rgba(148,163,184,0.7);
+  border-radius:999px;
+  padding:3px 9px;
+  background:#020617;
+  color:#e5e7eb;
+  font-size:11px;
+  cursor:pointer;
+}
+.auth-bar button:hover{
+  background:#0f172a;
+}
+
+
+/* Supabase Auth Panel (centered, Kakao/Toss style) */
+.auth-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,0.68);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:50;
+  backdrop-filter:blur(8px);
+}
+.auth-overlay.visible{
+  display:flex;
+}
+.auth-panel{
+  width:380px;
+  max-width:calc(100% - 32px);
+  background:linear-gradient(180deg,#ffffff,#f9fbff);
+  color:#020617;
+  box-shadow:0 18px 45px rgba(15,23,42,0.38);
+  padding:24px 24px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  border-radius:26px;
+  border:1px solid rgba(226,232,240,0.9);
+}
+@media (max-width:480px){
+  .auth-panel{
+    width:100%;
+    max-width:100%;
+    border-radius:22px;
+    margin:0 16px;
+    padding:20px 18px 18px;
+  }
+}
+html.dark-theme .auth-panel{
+  background:linear-gradient(180deg,#020617,#020617);
+  color:#e5e7eb;
+  box-shadow:0 18px 45px rgba(15,23,42,0.9);
+  border-color:#111827;
+}
+.auth-panel-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:6px;
+}
+.auth-panel-title{
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:-0.02em;
+}
+.auth-panel-sub{
+  margin-top:4px;
+  font-size:12px;
+  line-height:1.7;
+  color:var(--text-muted,#6b7280);
+}
+html.dark-theme .auth-panel-sub{
+  color:var(--text-muted,#9ca3af);
+}
+.auth-close-btn{
+  border:none;
+  background:rgba(248,250,252,0.9);
+  width:28px;
+  height:28px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#6b7280;
+  font-size:18px;
+  cursor:pointer;
+  box-shadow:0 4px 10px rgba(15,23,42,0.12);
+}
+html.dark-theme .auth-close-btn{
+  background:rgba(15,23,42,0.96);
+  color:#9ca3af;
+}
+.auth-close-btn:hover{
+  filter:brightness(1.03);
+}
+
+.auth-tabs{
+  display:flex;
+  gap:6px;
+  margin-top:8px;
+}
+.auth-tab{
+  flex:1;
+  border-radius:999px;
+  border:1px solid rgba(148,163,184,0.7);
+  background:transparent;
+  padding:6px 8px;
+  font-size:11px;
+  cursor:pointer;
+  color:#6b7280;
+}
+.auth-tab.active{
+  background:#111827;
+  color:#f9fafb;
+  border-color:#111827;
+}
+html.dark-theme .auth-tab{
+  border-color:rgba(148,163,184,0.7);
+  color:#9ca3af;
+}
+html.dark-theme .auth-tab.active{
+  background:#f9fafb;
+  color:#020617;
+  border-color:#f9fafb;
+}
+.auth-extra{
+  margin-top:6px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.auth-link-btn{
+  border:none;
+  background:transparent;
+  padding:0;
+  font-size:11px;
+  text-decoration:underline;
+  cursor:pointer;
+  color:#4f46e5;
+  align-self:flex-start;
+}
+html.dark-theme .auth-link-btn{
+  color:#a5b4fc;
+}
+.auth-extra-hint{
+  margin:0;
+  font-size:10px;
+  color:var(--text-muted,#9ca3af);
+}
+.auth-form{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-top:6px;
+}
+.auth-label{
+  font-size:11px;
+  color:#6b7280;
+}
+html.dark-theme .auth-label{
+  color:#9ca3af;
+}
+.auth-input{
+  width:100%;
+  border-radius:12px;
+  border:1px solid rgba(148,163,184,0.7);
+  background:#f9fafb;
+  color:#111827;
+  padding:8px 11px;
+  font-size:13px;
+}
+html.dark-theme .auth-input{
+  background:#020617;
+  color:#e5e7eb;
+}
+.auth-input::placeholder{
+  color:#9ca3af;
+}
+.auth-input:focus{
+  outline:none;
+  border-color:var(--accent,#4f46e5);
+  box-shadow:0 0 0 1px rgba(79,70,229,0.25);
+}
+.auth-submit-btn{
+  margin-top:8px;
+  border:none;
+  border-radius:999px;
+  padding:10px 14px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  background:linear-gradient(135deg,#4f46e5,#06b6d4);
+  color:#f9fafb;
+  box-shadow:0 10px 22px rgba(79,70,229,0.45);
+}
+.auth-submit-btn:hover{
+  filter:brightness(1.03);
+}
+.auth-hint{
+  font-size:11px;
+  color:var(--text-muted,#9ca3af);
+  margin-top:2px;
+}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
 <div class="layout">
+
+  <!-- AUTH BAR -->
+  <!-- AUTH PANEL (slide-in) -->
+  <div id="auth-overlay" class="auth-overlay">
+    <div class="auth-panel">
+      <div class="auth-panel-header">
+        <div>
+          <div class="auth-panel-title" id="auth-mode-label">로그인 / 회원가입</div>
+          <div class="auth-panel-sub">이메일 하나로 간단하게 로그인하거나, 처음이면 바로 계정을 만들 수 있어요.</div>
+        </div>
+        <button type="button" class="auth-close-btn" id="auth-close-btn">×</button>
+      </div>
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" id="auth-tab-login">이메일 로그인</button>
+        <button type="button" class="auth-tab" id="auth-tab-signup">새 계정 만들기</button>
+      </div>
+      <form class="auth-form" id="auth-form">
+        <label for="auth-email" class="auth-label">이메일</label>
+        <input type="email" id="auth-email" class="auth-input" placeholder="example@mindshare.app" required>
+        <label for="auth-password" class="auth-label">비밀번호</label>
+        <input type="password" id="auth-password" class="auth-input" placeholder="8자 이상 입력해 주세요" required>
+        <button type="submit" class="auth-submit-btn" id="auth-submit-btn">이메일로 로그인</button>
+        <div class="auth-hint">※ 같은 이메일·비밀번호 조합이면 같은 계정으로 인식돼요.</div>
+        <div class="auth-extra">
+          <button type="button" class="auth-link-btn" id="auth-forgot-password">비밀번호를 잊으셨나요?</button>
+          <p class="auth-extra-hint">현재는 테스트용 로그인이라 이메일을 잊어버리면 새 이메일로 새 계정을 만들어서 사용해야 해요.</p>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
@@ -1642,9 +1960,19 @@ html.dark-theme .section-sub{
         <div>
           <div class="side-name" id="side-username">게스트</div>
           <a id="side-handle-link" href="https://twitter.com" target="_blank" class="side-handle">@익명</a>
-          <button type="button" class="side-login-btn" id="nickname-btn">닉네임 설정</button>
-        </div>
+          </div>
       </div>
+
+      <div class="side-auth-pill">
+        <div class="side-auth-header">
+          <span class="side-auth-label">마인드쉐어 계정</span>
+          <span class="side-auth-status" id="auth-status">로그인 안 됨</span>
+        </div>
+        <button type="button" id="auth-login-btn" class="side-auth-main-btn">이메일로 시작하기</button>
+        <button type="button" id="auth-logout-btn" class="side-auth-main-btn side-auth-main-btn--secondary" style="display:none;">로그아웃</button>
+        <p class="side-auth-caption">CSV 저장·커뮤니티 글쓰기·YAP 게이지 연동</p>
+      </div>
+
 
       <div class="side-nav">
         <div class="side-nav-item active" data-view="dashboard">
@@ -4848,6 +5176,9 @@ document.getElementById("csvInput").addEventListener("change", e=>{
         updateView();
         saveHistoryEntry();
         saveLastSnapshot();
+        if (typeof saveCsvToSupabase === "function") {
+          try { saveCsvToSupabase(file); } catch(err) { console.error("Supabase 저장 오류", err); }
+        }
       }
     }
   });
@@ -6140,26 +6471,6 @@ document.addEventListener("DOMContentLoaded", () => {
 })();
 </script>
 
-
-<script>
-const SUPABASE_URL = "https://ftdpkgfwqmorldeptavl.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0ZHBrZ2Z3cW1vcmxkZXB0YXZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQwMTA2MzAsImV4cCI6MjA3OTU4NjYzMH0.DBYUU7YvZMwg7fn10dPQBZBUhPce7VxUm9YOon7xZlk";
-let supabaseClient = null;
-function initSupabase(){
-  try {
-    if (window.supabase && !supabaseClient) {
-      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      console.log("Supabase 초기화 완료:", SUPABASE_URL);
-    }
-  } catch(e) {
-    console.error("Supabase 초기화 실패:", e);
-  }
-}
-document.addEventListener("DOMContentLoaded", () => {
-  initSupabase();
-});
-</script>
-
 <script>
 document.addEventListener("DOMContentLoaded", function(){
   const csvInput = document.getElementById("csvInput");
@@ -6230,5 +6541,286 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 </script>
 
+
+<script>
+
+// Supabase Auth UI helpers
+function updateAuthUI(user){
+  const statusEl   = document.getElementById("auth-status");
+  const loginBtn   = document.getElementById("auth-login-btn");
+  const logoutBtn  = document.getElementById("auth-logout-btn");
+  const sideName   = document.getElementById("side-username");
+  const sideHandle = document.getElementById("side-handle-link");
+  const avatarImg  = document.getElementById("side-avatar-img");
+
+  if (!statusEl || !loginBtn || !logoutBtn) return;
+
+  if (user){
+    const email = user.email || "";
+    const shortId = email ? email.split("@")[0] : "회원";
+
+    // 사이드 카드 상태 텍스트
+    statusEl.textContent = "로그인됨";
+
+    // 버튼 토글
+    loginBtn.style.display = "none";
+    logoutBtn.style.display = "inline-flex";
+
+    // 사이드바 프로필에 로그인 정보 반영
+    if (sideName){
+      sideName.textContent = shortId;
+    }
+    if (sideHandle){
+      sideHandle.textContent = email ? email : "로그인 계정";
+      sideHandle.href = "javascript:void(0)";
+    }
+    if (avatarImg){
+      // 로그인 계정용 심플 아바타 (이메일 앞부분 기준)
+      const seed = encodeURIComponent(shortId || "mindshare-user");
+      avatarImg.src = "https://unavatar.io/github/" + seed;
+    }
+  } else {
+    // 로그아웃/비로그인 상태
+    statusEl.textContent = "로그인 안 됨";
+    loginBtn.style.display = "inline-flex";
+    logoutBtn.style.display = "none";
+
+    if (sideName){
+      sideName.textContent = "게스트";
+    }
+    if (sideHandle){
+      sideHandle.textContent = "@익명";
+      sideHandle.href = "https://twitter.com";
+    }
+    if (avatarImg){
+      avatarImg.src = "https://unavatar.io/twitter/bud_dha__";
+    }
+  }
+}
+
+async function initSupabaseAuth(){
+  if (!supabaseClient) return;
+
+  // 현재 로그인 상태 반영
+  try{
+    const { data: { user }, error } = await supabaseClient.auth.getUser();
+    if (error) {
+      console.warn("초기 사용자 조회 오류:", error.message);
+    }
+    updateAuthUI(user || null);
+  } catch (err){
+    console.error("initSupabaseAuth 오류:", err);
+  }
+
+  const loginBtn   = document.getElementById("auth-login-btn");
+  const logoutBtn  = document.getElementById("auth-logout-btn");
+  const overlay    = document.getElementById("auth-overlay");
+  const form       = document.getElementById("auth-form");
+  const emailInput = document.getElementById("auth-email");
+  const pwInput    = document.getElementById("auth-password");
+  const closeBtn   = document.getElementById("auth-close-btn");
+
+  function showAuthPanel(){
+    if (!overlay) return;
+    overlay.classList.add("visible");
+    if (emailInput){
+      setTimeout(()=>emailInput.focus(), 50);
+    }
+  }
+  function hideAuthPanel(){
+    if (!overlay) return;
+    overlay.classList.remove("visible");
+    if (form){
+      form.reset();
+    }
+  }
+
+  if (loginBtn){
+    loginBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      showAuthPanel();
+    });
+  }
+
+  if (closeBtn){
+    closeBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      hideAuthPanel();
+    });
+  }
+
+  if (overlay){
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay){
+        hideAuthPanel();
+      }
+    });
+  }
+
+  // 이메일 로그인 / 회원가입 모드 전환
+  let currentAuthMode = "login";
+  const loginTab  = document.getElementById("auth-tab-login");
+  const signupTab = document.getElementById("auth-tab-signup");
+  const modeLabel = document.getElementById("auth-mode-label");
+  const submitBtn = document.getElementById("auth-submit-btn");
+  const forgotBtn = document.getElementById("auth-forgot-password");
+
+  function setAuthMode(mode){
+    currentAuthMode = mode;
+    if (modeLabel){
+      modeLabel.textContent = (mode === "login") ? "이메일 로그인" : "새 계정 만들기";
+    }
+    if (submitBtn){
+      submitBtn.textContent = (mode === "login") ? "이메일로 로그인" : "이 정보로 회원가입";
+    }
+    if (loginTab && signupTab){
+      if (mode === "login"){
+        loginTab.classList.add("active");
+        signupTab.classList.remove("active");
+      } else {
+        signupTab.classList.add("active");
+        loginTab.classList.remove("active");
+      }
+    }
+  }
+
+  if (loginTab){
+    loginTab.addEventListener("click", () => setAuthMode("login"));
+  }
+  if (signupTab){
+    signupTab.addEventListener("click", () => setAuthMode("signup"));
+  }
+  // 초기 모드
+  setAuthMode("login");
+
+  if (forgotBtn){
+    forgotBtn.addEventListener("click", () => {
+      alert("현재는 테스트용 로그인이라 비밀번호 찾기 기능이 따로 없어요.\n이메일을 잊어버렸다면 새 이메일로 새 계정을 만들어서 사용해 주세요.");
+    });
+  }
+
+  if (form){
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!supabaseClient) return;
+      const email = (emailInput && emailInput.value.trim()) || "";
+      const password = (pwInput && pwInput.value.trim()) || "";
+      if (!email || !password){
+        alert("이메일과 비밀번호를 모두 입력해줘.");
+        return;
+      }
+
+      try {
+        if (currentAuthMode === "login"){
+          // 로그인 모드
+          const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+          if (error){
+            console.warn("로그인 오류:", error.message);
+            const msg = (error.message || "").toLowerCase();
+            if (msg.includes("email") && msg.includes("confirm")){
+              alert("이메일 인증이 완료되지 않은 계정이에요.\nSupabase Auth 설정에서 이메일 인증을 끄거나, 인증 메일의 링크를 눌러주세요.\n\n상세 오류: " + error.message);
+            } else if (msg.includes("invalid login") || msg.includes("invalid credentials")){
+              alert("이메일 또는 비밀번호가 올바르지 않습니다. 다시 확인해줘.");
+            } else {
+              alert("로그인 중 오류가 발생했어요: " + error.message);
+            }
+            return;
+          }
+          // 방금 사용한 이메일 기준으로 바로 UI 업데이트
+          updateAuthUI({ email });
+          hideAuthPanel();
+          alert("로그인 완료!");
+        } else {
+          // 회원가입 모드
+          const { data, error } = await supabaseClient.auth.signUp({ email, password });
+          if (error){
+            console.warn("회원가입 오류:", error.message);
+            const msg = (error.message || "").toLowerCase();
+            if (msg.includes("already registered") || msg.includes("already exists")){
+              alert("이미 가입된 이메일이에요. 로그인으로 이동해서 시도해줘.");
+            } else if (msg.includes("password") && msg.includes("length")){
+              alert("비밀번호 조건을 만족하지 않습니다. 더 길게/복잡하게 입력해줘.");
+            } else {
+              alert("회원가입 중 오류가 발생했어요: " + error.message);
+            }
+            return;
+          }
+          // 회원가입 성공 시 자동 로그인된다고 가정하고 UI 업데이트
+          updateAuthUI({ email });
+          hideAuthPanel();
+          alert("회원가입이 완료되었습니다. 자동으로 로그인되었어요!");
+        }
+      } catch (err){
+        console.error("인증 처리 오류:", err);
+        alert("로그인/회원가입 처리 중 오류가 발생했습니다.");
+      }
+    });
+  }
+
+  if (logoutBtn){
+    logoutBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!supabaseClient) return;
+      try{
+        await supabaseClient.auth.signOut();
+        updateAuthUI(null);
+        alert("로그아웃 되었습니다.");
+      } catch (err){
+        console.error("로그아웃 오류:", err);
+      }
+    });
+  }
+}
+
+
+const SUPABASE_URL = "https://ftdpkgfwqmorldeptavl.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0ZHBrZ2Z3cW1vcmxkZXB0YXZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQwMTA2MzAsImV4cCI6MjA3OTU4NjYzMH0.DBYUU7YvZMwg7fn10dPQBZBUhPce7VxUm9YOon7xZlk";
+
+let supabaseClient = null;
+
+// Supabase 초기화
+document.addEventListener("DOMContentLoaded", async () => {
+  if (!window.supabase || supabaseClient) return;
+  try {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log("Supabase 초기화 완료");
+    // Auth UI 초기화
+    initSupabaseAuth();
+  } catch (err) {
+    console.error("Supabase 초기화 오류:", err);
+  }
+});
+
+// CSV를 Supabase에 저장
+async function saveCsvToSupabase(file){
+  try {
+    if (!supabaseClient) return;
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+    if (userError) {
+      console.warn("Supabase 사용자 조회 오류:", userError.message);
+      return;
+    }
+    if (!user) {
+      console.log("로그인한 사용자가 없어 Supabase 저장을 건너뜁니다.");
+      return;
+    }
+    const content = await file.text();
+    const { error } = await supabaseClient
+      .from("csv_uploads")
+      .insert({
+        user_id: user.id,
+        filename: file.name || "unknown.csv",
+        file_content: content
+      });
+    if (error) {
+      console.error("Supabase csv_uploads 저장 오류:", error.message);
+    } else {
+      console.log("Supabase csv_uploads 저장 완료");
+    }
+  } catch (err) {
+    console.error("saveCsvToSupabase 수행 중 오류:", err);
+  }
+}
+</script>
 </body>
 </html>
