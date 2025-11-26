@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <title>X 크리에이터 마인드쉐어 분석기 MUDDHA</title>
+  <title>X 크리에이터 마인드쉐어 분석기 5.0</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- CSV 파서 -->
@@ -1719,64 +1719,48 @@ html.dark-theme .section-sub{
 }
 
 
-/* Supabase Auth Panel (centered, Kakao/Toss style) */
+/* Supabase Auth Panel (slide-in) */
 .auth-overlay{
   position:fixed;
   inset:0;
-  background:rgba(15,23,42,0.68);
+  background:rgba(15,23,42,0.55);
   display:none;
-  align-items:center;
-  justify-content:center;
+  align-items:stretch;
+  justify-content:flex-end;
   z-index:50;
-  backdrop-filter:blur(8px);
 }
 .auth-overlay.visible{
   display:flex;
 }
 .auth-panel{
-  width:380px;
-  max-width:calc(100% - 32px);
+  width:360px;
+  max-width:100%;
   background:linear-gradient(180deg,#ffffff,#f9fbff);
-  color:#020617;
-  box-shadow:0 18px 45px rgba(15,23,42,0.38);
-  padding:24px 24px 20px;
+  color:#111827;
+  box-shadow:-24px 0 50px rgba(15,23,42,0.9);
+  padding:20px 22px 22px;
   display:flex;
   flex-direction:column;
-  gap:16px;
-  border-radius:26px;
-  border:1px solid rgba(226,232,240,0.9);
-}
-@media (max-width:480px){
-  .auth-panel{
-    width:100%;
-    max-width:100%;
-    border-radius:22px;
-    margin:0 16px;
-    padding:20px 18px 18px;
-  }
+  gap:12px;
+  border-radius:20px 0 0 20px;
 }
 html.dark-theme .auth-panel{
   background:linear-gradient(180deg,#020617,#020617);
   color:#e5e7eb;
-  box-shadow:0 18px 45px rgba(15,23,42,0.9);
-  border-color:#111827;
 }
 .auth-panel-header{
   display:flex;
-  align-items:flex-start;
+  align-items:center;
   justify-content:space-between;
-  gap:10px;
-  margin-bottom:6px;
+  gap:8px;
+  margin-bottom:4px;
 }
 .auth-panel-title{
-  font-size:18px;
+  font-size:16px;
   font-weight:700;
-  letter-spacing:-0.02em;
 }
 .auth-panel-sub{
-  margin-top:4px;
   font-size:12px;
-  line-height:1.7;
   color:var(--text-muted,#6b7280);
 }
 html.dark-theme .auth-panel-sub{
@@ -1784,24 +1768,10 @@ html.dark-theme .auth-panel-sub{
 }
 .auth-close-btn{
   border:none;
-  background:rgba(248,250,252,0.9);
-  width:28px;
-  height:28px;
-  border-radius:999px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#6b7280;
+  background:transparent;
+  color:var(--text-muted,#9ca3af);
   font-size:18px;
   cursor:pointer;
-  box-shadow:0 4px 10px rgba(15,23,42,0.12);
-}
-html.dark-theme .auth-close-btn{
-  background:rgba(15,23,42,0.96);
-  color:#9ca3af;
-}
-.auth-close-btn:hover{
-  filter:brightness(1.03);
 }
 
 .auth-tabs{
@@ -1913,6 +1883,205 @@ html.dark-theme .auth-input{
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    /* MUDDHA 새 사이드바 스타일 (점 + 그룹 타이틀) */
+    .sidebar{
+      background:rgba(255,255,255,0.96);
+      border-radius:24px;
+      box-shadow:0 22px 60px rgba(148,163,184,0.5);
+      border:1px solid rgba(226,232,240,0.9);
+    }
+    .side-nav{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      margin-top:14px;
+    }
+    .side-section-title{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.16em;
+      color:#9ca3af;
+      margin:10px 8px 2px;
+    }
+    .side-nav-item{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:13px;
+      color:#4b5563;
+      text-decoration:none;
+      cursor:pointer;
+      transition:background 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease;
+    }
+    .side-nav-item:hover{
+      background:rgba(226,232,240,0.9);
+      transform:translateX(2px);
+    }
+    .side-nav-item.active{
+      background:linear-gradient(90deg,#4f46e5,#06b6d4);
+      color:#f9fafb;
+      box-shadow:0 12px 30px rgba(79,70,229,0.55);
+    }
+    .side-nav-item .side-label{
+      white-space:nowrap;
+    }
+    .nav-dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:#cbd5f5;
+      flex-shrink:0;
+    }
+    .side-nav-item.active .nav-dot{
+      background:#ffffff;
+    }
+    /* collapse 모드에서도 점 유지 */
+    .layout.collapsed .nav-dot{
+      margin:0 auto;
+    }
+  </style>
+
+<style>
+
+  /* ===== MUDDHA Pastel Preview 스타일 오버라이드 ===== */
+  body{
+    background:
+      radial-gradient(circle at 0% 0%, rgba(125,211,252,0.45) 0, transparent 45%),
+      radial-gradient(circle at 100% 100%, rgba(244,114,182,0.45) 0, transparent 45%),
+      linear-gradient(145deg,#f9fafb,#eef2ff);
+  }
+
+  .main{
+    padding:16px 18px 24px;
+    max-width:1280px;
+    margin:0 auto;
+  }
+
+  /* 상단 탑바를 미리보기 top-bar 느낌으로 */
+  .top-nav{
+    background:rgba(255,255,255,0.9);
+    border-radius:22px;
+    padding:10px 16px;
+    box-shadow:0 18px 40px rgba(148,163,184,0.25);
+    border:1px solid rgba(221,231,255,0.9);
+    backdrop-filter:blur(16px);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:14px;
+    position:sticky;
+    top:12px;
+    z-index:5;
+  }
+  .top-title{
+    font-size:18px;
+    font-weight:700;
+    letter-spacing:-0.03em;
+    color:#0f172a;
+  }
+  .top-sub{
+    font-size:12px;
+    color:#6b7280;
+    margin-top:2px;
+  }
+  .top-cta{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  /* 카드/대시보드 셀을 파스텔 박스로 */
+  .card,
+  .dash-cell,
+  .csv-card,
+  .leaderboard-card,
+  .community-card{
+    background:rgba(255,255,255,0.9) !important;
+    border-radius:22px !important;
+    box-shadow:0 18px 40px rgba(148,163,184,0.25) !important;
+    border:1px solid rgba(221,231,255,0.9) !important;
+    backdrop-filter:blur(16px);
+  }
+
+  .dash-cell-title,
+  .section-title{
+    font-weight:600;
+  }
+
+  /* 섹션 간격 약간 줄이기 */
+  #view-dashboard,
+  #view-csv,
+  #view-leaderboard,
+  #view-infofi,
+  #view-yap-gauge,
+  #view-cookie,
+  #view-community,
+  #view-history,
+  #view-projects,
+  #view-yapping,
+  #view-guide{
+    padding-top:6px;
+  }
+
+</style>
+
+<style>
+.tag-pill{
+  font-size:11px;
+  padding:4px 9px;
+  border-radius:999px;
+  background:rgba(219,234,254,0.9);
+  color:#1d4ed8;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.tag-pill-dot{
+  width:6px;
+  height:6px;
+  border-radius:999px;
+  background:#60a5fa;
+}
+.user-pill{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:4px 8px;
+  border-radius:999px;
+  background:rgba(248,250,252,0.9);
+  border:1px solid rgba(226,232,240,0.9);
+}
+.user-avatar{
+  width:26px;
+  height:26px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#38bdf8,#a855f7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  color:#ffffff;
+  font-weight:600;
+}
+.user-info{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.user-name{
+  font-size:12px;
+  font-weight:600;
+}
+.user-handle{
+  font-size:10px;
+  color:#9ca3af;
+}
+</style>
 </head>
 
 <body>
@@ -1974,39 +2143,49 @@ html.dark-theme .auth-input{
       </div>
 
 
-      <div class="side-nav">
+            <div class="side-nav">
+        <div class="side-section-title">메인</div>
         <div class="side-nav-item active" data-view="dashboard">
-          <span class="icon">📊</span><span class="side-label" id="nav-dashboard-label">Dashboard</span>
-        </div>
-<div class="side-nav-item" data-view="guide">
-          <span class="icon">❔</span><span class="side-label" id="nav-guide-label">사용방법</span>
+          <span class="nav-dot"></span><span class="side-label" id="nav-dashboard-label">대시보드</span>
         </div>
         <div class="side-nav-item" data-view="csv">
-          <span class="icon">🧮</span><span class="side-label" id="nav-csv-label">CSV로 분석</span>
-        </div>
-        <div class="side-nav-item" data-view="yap-gauge">
-          <span class="icon">🔋</span><span class="side-label" id="nav-yapgauge-label">YAP 게이지</span>
+          <span class="nav-dot"></span><span class="side-label" id="nav-csv-label">CSV 분석</span>
         </div>
         <div class="side-nav-item" data-view="leaderboard">
-          <span class="icon">🏆</span><span class="side-label" id="nav-leaderboard-label">리더보드</span>
+          <span class="nav-dot"></span><span class="side-label" id="nav-leaderboard-label">리더보드</span>
         </div>
+
+        <div class="side-section-title">KAITO</div>
         <div class="side-nav-item" data-view="infofi">
-          <span class="icon">📡</span><span class="side-label" id="nav-infofi-label">Kaito 리더보드</span>
+          <span class="nav-dot"></span><span class="side-label" id="nav-infofi-label">Kaito 리더보드</span>
+        </div>
+        <div class="side-nav-item" data-view="yap-gauge">
+          <span class="nav-dot"></span><span class="side-label" id="nav-yapgauge-label">YAP 게이지</span>
+        </div>
+
+        <div class="side-section-title">COOKIE</div>
+        <div class="side-nav-item" data-view="cookie">
+          <span class="nav-dot"></span><span class="side-label" id="nav-cookie-label">Cookie 리더보드</span>
+        </div>
+
+        <div class="side-section-title">기타</div>
+        <div class="side-nav-item" data-view="guide">
+          <span class="nav-dot"></span><span class="side-label" id="nav-guide-label">사용방법 · 설정</span>
         </div>
         <div class="side-nav-item" data-view="history">
-          <span class="icon">🗂</span><span class="side-label" id="nav-history-label">내 히스토리</span>
+          <span class="nav-dot"></span><span class="side-label" id="nav-history-label">내 히스토리</span>
         </div>
         <div class="side-nav-item" data-view="projects">
-          <span class="icon">📚</span><span class="side-label" id="nav-projects-label">프로젝트별 마인드쉐어</span>
+          <span class="nav-dot"></span><span class="side-label" id="nav-projects-label">프로젝트별 마인드쉐어</span>
         </div>
         <div class="side-nav-item" data-view="yapping">
-          <span class="icon">📝</span><span class="side-label" id="nav-yapping-label">야핑 플래너</span>
+          <span class="nav-dot"></span><span class="side-label" id="nav-yapping-label">야핑 플래너</span>
         </div>
         <div class="side-nav-item" data-view="community">
-          <span class="icon">💬</span><span class="side-label" id="nav-community-label">커뮤니티</span>
+          <span class="nav-dot"></span><span class="side-label" id="nav-community-label">커뮤니티</span>
         </div>
         <a class="side-nav-item" href="https://buddha913.github.io/crypto-fullcourse/" target="_blank">
-          <span class="icon">📘</span><span class="side-label" id="nav-course-label">크립토 풀코스</span>
+          <span class="nav-dot"></span><span class="side-label" id="nav-course-label">크립토 풀코스</span>
         </a>
       </div>
     </div>
@@ -2032,16 +2211,22 @@ html.dark-theme .auth-input{
     
     <div id="view-dashboard">
       <div class="top-nav">
-        <div>
-          <div class="top-title">X 크리에이터 마인드쉐어 분석기</div>
-          <div class="top-sub">BTC · ETH · 환율 · 오늘의 이슈 · 우리 사이트 리더보드를 한 번에 보는 홈 대시보드</div>
+        <div class="top-left">
+          <div class="top-title">MUDDHA · Mindshare Analyzer</div>
+          <div class="top-sub">X CSV 기반 InfoFi / YAP / Cookie / Kaito를 한 번에 보는 마인드쉐어 대시보드</div>
         </div>
         <div class="top-cta">
-          <div class="lang-toggle">
-            <button class="lang-btn active" data-lang="ko">한국어</button>
-            <button class="lang-btn" data-lang="en">EN</button>
+          <div class="tag-pill">
+            <span class="tag-pill-dot"></span>
+            Nav v3 · 리더보드 = 기존 MUDDHA 점수
           </div>
-          <a class="analytics-link" href="https://analytics.twitter.com" target="_blank">X 애널리틱스 열기 ↗</a>
+          <div class="user-pill">
+            <div class="user-avatar">MD</div>
+            <div class="user-info">
+              <div class="user-name">로그인 자리</div>
+              <div class="user-handle">@supabase Auth 연동 예정</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -2710,6 +2895,72 @@ html.dark-theme .auth-input{
     </div>
     <!-- ▲▲ 커뮤니티 화면 끝 ▲▲ -->
 
+
+<!-- ▼▼ Cookie 리더보드 화면 ▼▼ -->
+<div id="view-cookie" style="display:none;">
+  <div class="top-nav">
+    <div>
+      <div class="top-title">🍪 Cookie 프로젝트 리더보드</div>
+      <div class="top-sub">
+        Cookie에서 공개하는 JSON을 실시간으로 불러와서
+        <b>프로젝트별 / 핸들별 InfoFi 랭킹</b>을 보는 탭이야.
+      </div>
+    </div>
+  </div>
+
+  <section class="card card-soft infofi-hero">
+    <div class="infofi-hero-title">🔍 핸들로 내 Cookie 순위 찾기</div>
+    <div class="infofi-hero-sub">
+      예: <code>@bud_dha__</code> 처럼 입력하면됨
+    </div>
+
+    <div class="infofi-search-row">
+      <input id="cookie-handle-input" class="infofi-search-input" placeholder="@핸들 입력 (예: @bud_dha__)" />
+      <button type="button" class="infofi-search-btn" onclick="handleCookieSearch()">검색</button>
+    </div>
+
+    <div class="infofi-handle-label" id="cookie-handle-label"></div>
+    <div class="infofi-hint">
+      ※ Cookie에서 공개하는 JSON 엔드포인트를 <code>COOKIE_API_URL</code>에 설정해두면 실시간으로 불러올 수 있어.
+    </div>
+    <div class="infofi-source-note">
+      데이터 출처: <code>COOKIE_API_URL</code> (Cookie 공개 JSON)
+    </div>
+  </section>
+
+  <section class="infofi-results card">
+    <div class="section-header">
+      <div class="section-title">🍪 Cookie 프로젝트 리더보드</div>
+      <div class="section-sub">
+        전체 프로젝트 기준 순위 또는 특정 핸들이 참여한 프로젝트만 필터링해서 보여줄 수 있어.
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="infofi-table">
+        <thead>
+          <tr>
+            <th style="width:56px;">Rank</th>
+            <th>Project</th>
+            <th>Handle</th>
+            <th>Segment</th>
+            <th>Window</th>
+            <th style="width:100px;">MS%</th>
+          </tr>
+        </thead>
+        <tbody id="cookie-leaderboard-body">
+          <tr>
+            <td colspan="6" class="infofi-empty">
+              아직 Cookie JSON을 불러오지 않았어. 위에서 핸들을 검색하거나, 탭을 다시 열어봐.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+
 <div id="view-infofi" style="display:none;">
       <div class="top-nav">
         <div>
@@ -2773,6 +3024,7 @@ html.dark-theme .auth-input{
 <script>
 /* ========= 설정 ========= */
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw0yJIOdUoeRNwMn9fys-5ePI6UX6wkqBVhWNLrZ-gomO1sGNgTUJbhO0Kfj0n2QgdC/exec";
+const COOKIE_API_URL = "https://www.cookie.fun/api/trpc/cookieFun.leaderboard?input=%7B%22json%22%3A%7B%22projectsFilter%22%3A%7B%22searchFilter%22%3A%22%22%7D%2C%22orderColumn%22%3A%22TwitterMindshare%22%2C%22orderDataPoint%22%3A%22_24HoursAgo%22%2C%22orderByAscending%22%3Afalse%2C%22limit%22%3A10%2C%22dataPoint%22%3A%22_24HoursAgo%22%7D%7D"; // Cookie leaderboard API
 const MIN_POSTS_FOR_LEADERBOARD = 20;
 const TRIM_RATIO = 0.1;
 let CURRENT_LANG = "ko";
@@ -5520,6 +5772,7 @@ const viewNavItems = document.querySelectorAll(".side-nav-item[data-view]");
   const viewHistory = document.getElementById("view-history");
   const viewYapping = document.getElementById("view-yapping");
   const viewInfofi = document.getElementById("view-infofi");
+  const viewCookie = document.getElementById("view-cookie");
 
 
   function showView(target){
@@ -5534,6 +5787,7 @@ const viewNavItems = document.querySelectorAll(".side-nav-item[data-view]");
     if (viewHistory) viewHistory.style.display = "none";
     if (viewYapping) viewYapping.style.display = "none";
     if (viewInfofi) viewInfofi.style.display = "none";
+    if (viewCookie) viewCookie.style.display = "none";
     const viewCommunity = document.getElementById("view-community");
     if (viewCommunity) viewCommunity.style.display = "none";
     const viewYapGauge = document.getElementById("view-yap-gauge");
@@ -5567,6 +5821,15 @@ const viewNavItems = document.querySelectorAll(".side-nav-item[data-view]");
           viewYapGauge.style.display = "block";
         }
         break;
+      case "cookie":
+        if (viewCookie) {
+          viewCookie.style.display = "block";
+          if (typeof renderCookieLeaderboard === "function") {
+            renderCookieLeaderboard();
+          }
+        }
+        break;
+
       case "infofi":
         if (viewInfofi) {
           viewInfofi.style.display = "block";
@@ -5646,6 +5909,272 @@ const viewNavItems = document.querySelectorAll(".side-nav-item[data-view]");
   });
 });
 
+
+
+
+const COOKIE_INDEX = {};
+let COOKIE_ENTRY_COUNT = 0;
+let COOKIE_BUNDLE_LOADED = false;
+let COOKIE_BUNDLE_LOADING = false;
+
+function cookieNormalizeHandle(h){
+  return String(h || "").trim().replace(/^@/, "").toLowerCase();
+}
+
+function cookieNormalizePeriodToken(t){
+  const s = String(t || "").toLowerCase();
+  if (s.includes("7daysago")) return "7D";
+  if (s.includes("14daysago")) return "14D";
+  if (s.includes("30daysago")) return "30D";
+  if (s.includes("total")) return "Total";
+  return "-";
+}
+
+function cookieParseFilenameMeta(name){
+  const base = String(name || "").replace(/\.json$/i, "");
+  const parts = base.split("_");
+  const project = parts[0] || "?";
+  const lang = parts[1] || "";
+  let period = "-";
+  for (const p of parts.slice(2)){
+    const low = p.toLowerCase();
+    if (low.includes("daysago") || low.includes("total")){
+      period = cookieNormalizePeriodToken(p);
+      break;
+    }
+  }
+  return { project, lang, period };
+}
+
+function cookieSafeNumber(v){
+  if (v === null || v === undefined) return null;
+  const n = Number(v);
+  return isNaN(n) ? null : n;
+}
+
+function cookieFirstDefined(){
+  for (let i = 0; i < arguments.length; i++){
+    const v = arguments[i];
+    if (v !== undefined && v !== null) return v;
+  }
+  return null;
+}
+
+function cookiePickRank(u, type){
+  const base = type === "Capital" ? "cSnaps" : "snaps";
+  const direct = cookieSafeNumber(u[`${base}Rank`]);
+  if (direct !== null) return direct;
+  return cookieSafeNumber(u.rank);
+}
+
+function cookiePickPercent(u, type, period){
+  const pref = type === "Mindshare" ? "snaps" : "cSnaps";
+  if (period === "7D"){
+    return cookieFirstDefined(
+      u[`${pref}Percent7DaysAgo`],
+      u[`${pref}Percent`],
+      u[`${pref}PercentTotal`]
+    );
+  }
+  if (period === "14D"){
+    return cookieFirstDefined(
+      u[`${pref}Percent14DaysAgo`],
+      u[`${pref}Percent`],
+      u[`${pref}PercentTotal`]
+    );
+  }
+  if (period === "30D"){
+    return cookieFirstDefined(
+      u[`${pref}Percent30DaysAgo`],
+      u[`${pref}Percent`],
+      u[`${pref}PercentTotal`]
+    );
+  }
+  return cookieFirstDefined(
+    u[`${pref}PercentTotal`],
+    u[`${pref}Percent`]
+  );
+}
+
+function cookieAddUserToIndex(u, meta, type){
+  const handleNorm = cookieNormalizeHandle(
+    u.handle || u.twitter || u.x || u.user || u.name
+  );
+  if (!handleNorm) return 0;
+
+  const rank = cookiePickRank(u, type);
+  const percent = cookiePickPercent(u, type, meta.period);
+  const percentNum = cookieSafeNumber(percent);
+  if (percentNum === null) return 0;
+
+  const key = handleNorm;
+  if (!COOKIE_INDEX[key]) COOKIE_INDEX[key] = [];
+  COOKIE_INDEX[key].push({
+    project: meta.project,
+    lang: meta.lang,
+    period: meta.period,
+    type,
+    handle: "@" + handleNorm,
+    rank: cookieSafeNumber(rank),
+    percent: percentNum // raw 값 그대로 (예: 0.7116, 1.6640459)
+  });
+  COOKIE_ENTRY_COUNT += 1;
+  return 1;
+}
+
+function cookieIndexFromJson(json, meta){
+  let root = json;
+  if (Array.isArray(json)) root = json[0];
+  const data =
+    root?.result?.data?.json ||
+    root?.result?.data ||
+    root?.json ||
+    root;
+
+  const snaps = Array.isArray(data?.snaps) ? data.snaps : [];
+  const cSnaps = Array.isArray(data?.cSnaps) ? data.cSnaps : [];
+
+  let added = 0;
+  snaps.forEach(u => { added += cookieAddUserToIndex(u, meta, "Mindshare"); });
+  cSnaps.forEach(u => { added += cookieAddUserToIndex(u, meta, "Capital"); });
+  return added;
+}
+
+async function cookieLoadBundle(){
+  if (COOKIE_BUNDLE_LOADED || COOKIE_BUNDLE_LOADING) return;
+  COOKIE_BUNDLE_LOADING = true;
+
+  const tbody = document.getElementById("cookie-leaderboard-body");
+  if (tbody){
+    tbody.innerHTML = '<tr><td colspan="6" class="infofi-empty">cookie_all_bundle.json 불러오는 중...</td></tr>';
+  }
+
+  try{
+    const res = await fetch("cookie_all_bundle.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const bundle = await res.json(); // [{ filename, data }, ...]
+
+    let total = 0;
+    for (const file of bundle){
+      const meta = cookieParseFilenameMeta(file.filename || file.name || "");
+      const json = file.data || file.json || file;
+      total += cookieIndexFromJson(json, meta);
+    }
+    COOKIE_BUNDLE_LOADED = true;
+    COOKIE_ENTRY_COUNT = total;
+    if (tbody && !tbody.innerHTML.includes("Cookie JSON 불러오는 중...")){
+      // 나중에 renderCookieLeaderboard가 다시 채울 거라서 여기서는 별도 처리 X
+    }
+  } catch (err){
+    console.error("cookie_all_bundle.json load error:", err);
+    if (tbody){
+      tbody.innerHTML = '<tr><td colspan="6" class="infofi-empty">cookie_all_bundle.json 을 불러오지 못했어. 같은 폴더에 두었는지 확인해줘.</td></tr>';
+    }
+  } finally {
+    COOKIE_BUNDLE_LOADING = false;
+  }
+}
+
+async function renderCookieLeaderboard(handle){
+  const tbody = document.getElementById("cookie-leaderboard-body");
+  const labelEl = document.getElementById("cookie-handle-label");
+  if (!tbody) return;
+
+  let handleNorm = "";
+  if (handle){
+    handleNorm = cookieNormalizeHandle(handle);
+  }
+
+  if (!handleNorm){
+    tbody.innerHTML = '<tr><td colspan="6" class="infofi-empty">먼저 위에서 조회할 @핸들을 입력해줘.</td></tr>';
+    if (labelEl) labelEl.textContent = "";
+    return;
+  }
+
+  await cookieLoadBundle();
+  if (!COOKIE_BUNDLE_LOADED){
+    // 로딩 중 오류가 있었다면 cookieLoadBundle()에서 메시지를 넣어둠
+    return;
+  }
+
+  const key = handleNorm;
+  const listAll = COOKIE_INDEX[key] || [];
+  const list = listAll.filter(e =>
+    e &&
+    e.rank != null &&
+    e.rank <= 200 &&
+    cookieSafeNumber(e.percent) !== null &&
+    e.percent > 0
+  );
+
+  const labelText = "@" + handleNorm + " 기준 Cookie 랭킹 (#200 이내 · 0% 제외, raw %)";
+
+  if (!list.length){
+    tbody.innerHTML = '<tr><td colspan="6" class="infofi-empty">해당 핸들로 찾은 Cookie 데이터가 없어 (#200 이내, 0% 제외).</td></tr>';
+    if (labelEl) labelEl.textContent = labelText;
+    return;
+  }
+
+  list.sort((a, b) => {
+    if (a.period !== b.period){
+      const order = { "7D": 0, "14D": 1, "30D": 2, "Total": 3 };
+      const av = order[a.period] ?? 99;
+      const bv = order[b.period] ?? 99;
+      if (av !== bv) return av - bv;
+    }
+    if (a.type !== b.type){
+      // Mindshare 먼저
+      if (a.type === "Mindshare" && b.type !== "Mindshare") return -1;
+      if (b.type === "Mindshare" && a.type !== "Mindshare") return 1;
+    }
+    if (a.rank != null && b.rank != null && a.rank !== b.rank){
+      return a.rank - b.rank;
+    }
+    // rank 같으면 퍼센트 큰 순
+    return (b.percent || 0) - (a.percent || 0);
+  });
+
+  const rowsHtml = list.map(e => {
+    const rankText = e.rank != null ? e.rank : "-";
+    const segment = e.type || "-";
+    const windowLabel = e.period || "-";
+    const percentText = (e.percent ?? 0) + "%";
+    return `
+      <tr>
+        <td>${rankText}</td>
+        <td>${e.project}</td>
+        <td>${e.handle}</td>
+        <td>${segment}</td>
+        <td>${windowLabel}</td>
+        <td>${percentText}</td>
+      </tr>
+    `;
+  }).join("");
+
+  tbody.innerHTML = rowsHtml;
+  if (labelEl){
+    labelEl.textContent = labelText;
+  }
+}
+
+function handleCookieSearch(){
+  const input = document.getElementById("cookie-handle-input");
+  if (!input){
+    return;
+  }
+  let handle = (input.value || "").trim();
+  if (!handle){
+    const tbody = document.getElementById("cookie-leaderboard-body");
+    if (tbody){
+      tbody.innerHTML = '<tr><td colspan="6" class="infofi-empty">먼저 위에서 조회할 @핸들을 입력해줘.</td></tr>';
+    }
+    const labelEl = document.getElementById("cookie-handle-label");
+    if (labelEl) labelEl.textContent = "";
+    return;
+  }
+  if (handle[0] !== "@") handle = "@" + handle;
+  renderCookieLeaderboard(handle);
+}
 
 /* ===== 야핑 플래너 로컬 저장 / 렌더링 ===== */
 const YAP_STORAGE_KEY = "mindshare_yapping_planner_v1";
