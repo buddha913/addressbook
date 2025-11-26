@@ -1,18 +1,17 @@
-<!doctype html> 
+<!DOCTYPE html>
+
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <title>X 크리에이터 마인드쉐어 분석기 5.0</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- CSV 파서 -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <!-- 프로젝트별 원형 그래프용 -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@3.3.0/dist/chartjs-chart-financial.umd.min.js"></script>
-
-  <!-- ✅ STEP 2 -->
-  <style>
+<meta charset="utf-8"/>
+<title>X 크리에이터 마인드쉐어 분석기 5.0</title>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<!-- CSV 파서 -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<!-- 프로젝트별 원형 그래프용 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@3.3.0/dist/chartjs-chart-financial.umd.min.js"></script>
+<!-- ✅ STEP 2 -->
+<style>
   html {
   scroll-behavior: smooth;
 }
@@ -1883,8 +1882,7 @@ html.dark-theme .auth-input{
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
+<style>
     /* MUDDHA 새 사이드바 스타일 (점 + 그룹 타이틀) */
     .sidebar{
       background:rgba(255,255,255,0.96);
@@ -1944,7 +1942,6 @@ html.dark-theme .auth-input{
       margin:0 auto;
     }
   </style>
-
 <style>
 
   /* ===== MUDDHA Pastel Preview 스타일 오버라이드 ===== */
@@ -2029,7 +2026,6 @@ html.dark-theme .auth-input{
   }
 
 </style>
-
 <style>
 .tag-pill{
   font-size:11px;
@@ -2082,943 +2078,1309 @@ html.dark-theme .auth-input{
   color:#9ca3af;
 }
 </style>
-</head>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(125, 211, 252, 0.45) 0, transparent 45%),
+        radial-gradient(circle at 100% 100%, rgba(244, 114, 182, 0.45) 0, transparent 45%),
+        linear-gradient(145deg, #f9fafb, #eef2ff);
+      color: #0f172a;
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+      padding: 16px;
+      gap: 16px;
+    }
+    .app-shell {
+      display: flex;
+      flex: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      gap: 16px;
+    }
+    .sidebar {
+      width: 240px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 22px;
+      padding: 18px 14px;
+      box-shadow: 0 18px 50px rgba(148, 163, 184, 0.35);
+      border: 1px solid rgba(221, 231, 255, 0.9);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 4px;
+    }
+    .logo-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 14px;
+      background: conic-gradient(from 180deg, #38bdf8, #a855f7, #f472b6, #38bdf8);
+      padding: 2px;
+    }
+    .logo-circle-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.08em;
+      color: #4b5563;
+    }
+    .logo-text-main {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+    .logo-text-sub {
+      font-size: 11px;
+      color: #9ca3af;
+    }
 
+    .nav-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #9ca3af;
+      padding: 0 6px;
+      margin: 10px 0 4px;
+    }
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .nav-item,
+    .sub-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      font-size: 13px;
+      color: #4b5563;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+    .nav-item:hover,
+    .sub-nav-item:hover {
+      background: rgba(226, 232, 240, 0.9);
+      transform: translateX(2px);
+    }
+    .nav-item.active,
+    .sub-nav-item.active {
+      background: linear-gradient(90deg, rgba(56, 189, 248, 0.18), rgba(168, 85, 247, 0.18));
+      color: #111827;
+      font-weight: 600;
+      transform: translateX(2px);
+    }
+    .nav-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #c4d4ff;
+      flex-shrink: 0;
+    }
+    .nav-item.active .nav-dot,
+    .sub-nav-item.active .nav-dot {
+      background: #6366f1;
+    }
+
+    .nav-item.parent {
+      justify-content: space-between;
+    }
+    .nav-item-label-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-chevron {
+      font-size: 11px;
+      color: #9ca3af;
+      transition: transform 0.18s ease;
+    }
+    .nav-item.parent.open .nav-chevron {
+      transform: rotate(90deg);
+    }
+
+    .sub-nav {
+      margin-left: 20px;
+      margin-top: 2px;
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .sub-nav.open {
+      display: flex;
+    }
+    .sub-nav-item {
+      font-size: 12px;
+      padding: 7px 10px;
+    }
+
+    .pill-info {
+      margin-top: 10px;
+      font-size: 11px;
+      padding: 8px 10px;
+      border-radius: 16px;
+      background: rgba(239, 246, 255, 0.9);
+      color: #1d4ed8;
+      line-height: 1.35;
+    }
+    .pill-info b { color: #111827; }
+    .sidebar-footer {
+      margin-top: auto;
+      font-size: 10px;
+      color: #9ca3af;
+      padding: 0 6px;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .top-bar {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 22px;
+      padding: 10px 16px;
+      box-shadow: 0 18px 40px rgba(148, 163, 184, 0.25);
+      border: 1px solid rgba(221, 231, 255, 0.9);
+      backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .top-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .page-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+    .page-sub {
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tag-pill {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(219, 234, 254, 0.9);
+      color: #1d4ed8;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tag-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #60a5fa;
+    }
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(248, 250, 252, 0.9);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      cursor: default;
+    }
+    .user-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .user-name {
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .user-handle {
+      font-size: 10px;
+      color: #9ca3af;
+    }
+
+    .grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.2fr);
+      grid-auto-rows: minmax(0, auto);
+      gap: 12px;
+      margin-top: 4px;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 22px;
+      padding: 14px 14px 12px;
+      box-shadow: 0 18px 40px rgba(148, 163, 184, 0.25);
+      border: 1px solid rgba(221, 231, 255, 0.9);
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .card-sub {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    .badge-soft {
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(239, 246, 255, 0.9);
+      color: #1d4ed8;
+    }
+    .placeholder-box {
+      margin-top: 6px;
+      border-radius: 16px;
+      border: 1px dashed rgba(148, 163, 184, 0.7);
+      padding: 10px 12px;
+      font-size: 12px;
+      color: #4b5563;
+      background: rgba(248, 250, 252, 0.9);
+      line-height: 1.5;
+    }
+    .placeholder-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .placeholder-list {
+      margin-top: 4px;
+      padding-left: 16px;
+      font-size: 11px;
+      color: #6b7280;
+    }
+    .placeholder-list li { margin-bottom: 2px; }
+
+    .section {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+    }
+    .section.active {
+      display: flex;
+    }
+
+    .section-note {
+      font-size: 11px;
+      color: #6b7280;
+      margin: 4px 2px 0;
+    }
+
+    @media (max-width: 980px) {
+      body { padding: 10px; }
+      .app-shell {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 12px;
+      }
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .sidebar-footer {
+        display: none;
+      }
+    }
+  
+  .cookie-project-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .cookie-project-card {
+    background: rgba(255,255,255,0.8);
+    border-radius: 16px;
+    padding: 14px 16px;
+    box-shadow: 0 10px 30px rgba(32, 46, 120, 0.16);
+  }
+  .dark .cookie-project-card {
+    background: rgba(13,20,40,0.96);
+  }
+  .cookie-project-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .cookie-project-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background: linear-gradient(135deg,#ffb347,#ff5e62);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+    font-weight:700;
+    color:#fff;
+  }
+  .cookie-project-head-main {
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .cookie-project-name {
+    font-weight:600;
+    font-size:14px;
+  }
+  .cookie-project-meta {
+    font-size:11px;
+    opacity:0.7;
+  }
+  .cookie-project-card-body {
+    display:grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap:10px;
+    margin-top:6px;
+  }
+  @media (max-width: 900px){
+    .cookie-project-card-body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .cookie-project-segment {
+    background: rgba(255,255,255,0.7);
+    border-radius: 12px;
+    padding: 8px 10px;
+  }
+  .dark .cookie-project-segment {
+    background: rgba(10,16,35,0.96);
+  }
+  .cookie-seg-title {
+    font-size:11px;
+    font-weight:600;
+    opacity:0.7;
+    margin-bottom:4px;
+  }
+  .cookie-seg-table {
+    width:100%;
+    border-collapse:collapse;
+    font-size:11px;
+  }
+  .cookie-seg-table th,
+  .cookie-seg-table td {
+    padding:3px 4px;
+    text-align:left;
+  }
+  .cookie-seg-table thead {
+    opacity:0.7;
+  }
+
+  /* Cookie: hide raw list table under cards */
+  #view-cookie .infofi-results .table-wrap {
+    display: none;
+  }
+
+  /* Cookie: make project logo circle a bit bigger */
+  .cookie-project-logo {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+</style></head>
 <body>
-<div class="layout">
-
-  <!-- AUTH BAR -->
-  <!-- AUTH PANEL (slide-in) -->
-  <div id="auth-overlay" class="auth-overlay">
-    <div class="auth-panel">
-      <div class="auth-panel-header">
-        <div>
-          <div class="auth-panel-title" id="auth-mode-label">로그인 / 회원가입</div>
-          <div class="auth-panel-sub">이메일 하나로 간단하게 로그인하거나, 처음이면 바로 계정을 만들 수 있어요.</div>
-        </div>
-        <button type="button" class="auth-close-btn" id="auth-close-btn">×</button>
-      </div>
-      <div class="auth-tabs">
-        <button type="button" class="auth-tab active" id="auth-tab-login">이메일 로그인</button>
-        <button type="button" class="auth-tab" id="auth-tab-signup">새 계정 만들기</button>
-      </div>
-      <form class="auth-form" id="auth-form">
-        <label for="auth-email" class="auth-label">이메일</label>
-        <input type="email" id="auth-email" class="auth-input" placeholder="example@mindshare.app" required>
-        <label for="auth-password" class="auth-label">비밀번호</label>
-        <input type="password" id="auth-password" class="auth-input" placeholder="8자 이상 입력해 주세요" required>
-        <button type="submit" class="auth-submit-btn" id="auth-submit-btn">이메일로 로그인</button>
-        <div class="auth-hint">※ 같은 이메일·비밀번호 조합이면 같은 계정으로 인식돼요.</div>
-        <div class="auth-extra">
-          <button type="button" class="auth-link-btn" id="auth-forgot-password">비밀번호를 잊으셨나요?</button>
-          <p class="auth-extra-hint">현재는 테스트용 로그인이라 이메일을 잊어버리면 새 이메일로 새 계정을 만들어서 사용해야 해요.</p>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <button id="sidebar-toggle" class="sidebar-toggle">⟨</button>
-
-    <div>
-      <div class="side-profile">
-        <div class="side-avatar">
-          <img id="side-avatar-img" src="https://unavatar.io/twitter/bud_dha__" alt="avatar">
-        </div>
-        <div>
-          <div class="side-name" id="side-username">게스트</div>
-          <a id="side-handle-link" href="https://twitter.com" target="_blank" class="side-handle">@익명</a>
-          </div>
-      </div>
-
-      <div class="side-auth-pill">
-        <div class="side-auth-header">
-          <span class="side-auth-label">마인드쉐어 계정</span>
-          <span class="side-auth-status" id="auth-status">로그인 안 됨</span>
-        </div>
-        <button type="button" id="auth-login-btn" class="side-auth-main-btn">이메일로 시작하기</button>
-        <button type="button" id="auth-logout-btn" class="side-auth-main-btn side-auth-main-btn--secondary" style="display:none;">로그아웃</button>
-        <p class="side-auth-caption">CSV 저장·커뮤니티 글쓰기·YAP 게이지 연동</p>
-      </div>
-
-
-            <div class="side-nav">
-        <div class="side-section-title">메인</div>
-        <div class="side-nav-item active" data-view="dashboard">
-          <span class="nav-dot"></span><span class="side-label" id="nav-dashboard-label">대시보드</span>
-        </div>
-        <div class="side-nav-item" data-view="csv">
-          <span class="nav-dot"></span><span class="side-label" id="nav-csv-label">CSV 분석</span>
-        </div>
-        <div class="side-nav-item" data-view="leaderboard">
-          <span class="nav-dot"></span><span class="side-label" id="nav-leaderboard-label">리더보드</span>
-        </div>
-
-        <div class="side-section-title">KAITO</div>
-        <div class="side-nav-item" data-view="infofi">
-          <span class="nav-dot"></span><span class="side-label" id="nav-infofi-label">Kaito 리더보드</span>
-        </div>
-        <div class="side-nav-item" data-view="yap-gauge">
-          <span class="nav-dot"></span><span class="side-label" id="nav-yapgauge-label">YAP 게이지</span>
-        </div>
-
-        <div class="side-section-title">COOKIE</div>
-        <div class="side-nav-item" data-view="cookie">
-          <span class="nav-dot"></span><span class="side-label" id="nav-cookie-label">Cookie 리더보드</span>
-        </div>
-
-        <div class="side-section-title">기타</div>
-        <div class="side-nav-item" data-view="guide">
-          <span class="nav-dot"></span><span class="side-label" id="nav-guide-label">사용방법 · 설정</span>
-        </div>
-        <div class="side-nav-item" data-view="history">
-          <span class="nav-dot"></span><span class="side-label" id="nav-history-label">내 히스토리</span>
-        </div>
-        <div class="side-nav-item" data-view="projects">
-          <span class="nav-dot"></span><span class="side-label" id="nav-projects-label">프로젝트별 마인드쉐어</span>
-        </div>
-        <div class="side-nav-item" data-view="yapping">
-          <span class="nav-dot"></span><span class="side-label" id="nav-yapping-label">야핑 플래너</span>
-        </div>
-        <div class="side-nav-item" data-view="community">
-          <span class="nav-dot"></span><span class="side-label" id="nav-community-label">커뮤니티</span>
-        </div>
-        <a class="side-nav-item" href="https://buddha913.github.io/crypto-fullcourse/" target="_blank">
-          <span class="nav-dot"></span><span class="side-label" id="nav-course-label">크립토 풀코스</span>
-        </a>
-      </div>
-    </div>
-
-    <div class="side-footer">
+<div class="layout app-shell">
+<!-- AUTH BAR -->
+<!-- AUTH PANEL (slide-in) -->
+<div class="auth-overlay" id="auth-overlay">
+<div class="auth-panel">
+<div class="auth-panel-header">
+<div>
+<div class="auth-panel-title" id="auth-mode-label">로그인 / 회원가입</div>
+<div class="auth-panel-sub">이메일 하나로 간단하게 로그인하거나, 처음이면 바로 계정을 만들 수 있어요.</div>
+</div>
+<button class="auth-close-btn" id="auth-close-btn" type="button">×</button>
+</div>
+<div class="auth-tabs">
+<button class="auth-tab active" id="auth-tab-login" type="button">이메일 로그인</button>
+<button class="auth-tab" id="auth-tab-signup" type="button">새 계정 만들기</button>
+</div>
+<form class="auth-form" id="auth-form">
+<label class="auth-label" for="auth-email">이메일</label>
+<input class="auth-input" id="auth-email" placeholder="example@mindshare.app" required="" type="email"/>
+<label class="auth-label" for="auth-password">비밀번호</label>
+<input class="auth-input" id="auth-password" placeholder="8자 이상 입력해 주세요" required="" type="password"/>
+<button class="auth-submit-btn" id="auth-submit-btn" type="submit">이메일로 로그인</button>
+<div class="auth-hint">※ 같은 이메일·비밀번호 조합이면 같은 계정으로 인식돼요.</div>
+<div class="auth-extra">
+<button class="auth-link-btn" id="auth-forgot-password" type="button">비밀번호를 잊으셨나요?</button>
+<p class="auth-extra-hint">현재는 테스트용 로그인이라 이메일을 잊어버리면 새 이메일로 새 계정을 만들어서 사용해야 해요.</p>
+</div>
+</form>
+</div>
+</div>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+<button class="sidebar-toggle" id="sidebar-toggle">⟨</button>
+<div>
+<div class="side-profile">
+<div class="side-avatar">
+<img alt="avatar" id="side-avatar-img" src="https://unavatar.io/twitter/bud_dha__"/>
+</div>
+<div>
+<div class="side-name" id="side-username">게스트</div>
+<a class="side-handle" href="https://twitter.com" id="side-handle-link" target="_blank">@익명</a>
+</div>
+</div>
+<div class="side-auth-pill">
+<div class="side-auth-header">
+<span class="side-auth-label">마인드쉐어 계정</span>
+<span class="side-auth-status" id="auth-status">로그인 안 됨</span>
+</div>
+<button class="side-auth-main-btn" id="auth-login-btn" type="button">이메일로 시작하기</button>
+<button class="side-auth-main-btn side-auth-main-btn--secondary" id="auth-logout-btn" style="display:none;" type="button">로그아웃</button>
+<p class="side-auth-caption">CSV 저장·커뮤니티 글쓰기·YAP 게이지 연동</p>
+</div>
+<div class="side-nav">
+<div class="side-section-title">메인</div>
+<div class="side-nav-item active" data-view="dashboard">
+<span class="nav-dot"></span><span class="side-label" id="nav-dashboard-label">대시보드</span>
+</div>
+<div class="side-nav-item" data-view="csv">
+<span class="nav-dot"></span><span class="side-label" id="nav-csv-label">CSV 분석</span>
+</div>
+<div class="side-nav-item" data-view="leaderboard">
+<span class="nav-dot"></span><span class="side-label" id="nav-leaderboard-label">리더보드</span>
+</div>
+<div class="side-section-title">KAITO</div>
+<div class="side-nav-item" data-view="infofi">
+<span class="nav-dot"></span><span class="side-label" id="nav-infofi-label">Kaito 리더보드</span>
+</div>
+<div class="side-nav-item" data-view="yap-gauge">
+<span class="nav-dot"></span><span class="side-label" id="nav-yapgauge-label">YAP 게이지</span>
+</div>
+<div class="side-section-title">COOKIE</div>
+<div class="side-nav-item" data-view="cookie">
+<span class="nav-dot"></span><span class="side-label" id="nav-cookie-label">Cookie 리더보드</span>
+</div>
+<div class="side-section-title">기타</div>
+<div class="side-nav-item" data-view="guide">
+<span class="nav-dot"></span><span class="side-label" id="nav-guide-label">사용방법 · 설정</span>
+</div>
+<div class="side-nav-item" data-view="history">
+<span class="nav-dot"></span><span class="side-label" id="nav-history-label">내 히스토리</span>
+</div>
+<div class="side-nav-item" data-view="projects">
+<span class="nav-dot"></span><span class="side-label" id="nav-projects-label">프로젝트별 마인드쉐어</span>
+</div>
+<div class="side-nav-item" data-view="yapping">
+<span class="nav-dot"></span><span class="side-label" id="nav-yapping-label">야핑 플래너</span>
+</div>
+<div class="side-nav-item" data-view="community">
+<span class="nav-dot"></span><span class="side-label" id="nav-community-label">커뮤니티</span>
+</div>
+<a class="side-nav-item" href="https://buddha913.github.io/crypto-fullcourse/" target="_blank">
+<span class="nav-dot"></span><span class="side-label" id="nav-course-label">크립토 풀코스</span>
+</a>
+</div>
+</div>
+<div class="side-footer">
       InfoFi Creator Console (Beta)
       <div class="side-badge">
-        오늘도 한 번<br>마쉐 터트려볼까? 💥
+        오늘도 한 번<br/>마쉐 터트려볼까? 💥
       </div>
-      <div class="side-theme">
-        <label class="theme-toggle-label">
-          <input type="checkbox" id="theme-toggle">
-          <span class="theme-toggle-text">Dark</span>
-        </label>
-      </div>
-    </div>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- ▼▼ Dashboard 화면 ▼▼ -->
-    
-    <div id="view-dashboard">
-      <div class="top-nav">
-        <div class="top-left">
-          <div class="top-title">MUDDHA · Mindshare Analyzer</div>
-          <div class="top-sub">X CSV 기반 InfoFi / YAP / Cookie / Kaito를 한 번에 보는 마인드쉐어 대시보드</div>
-        </div>
-        <div class="top-cta">
-          <div class="tag-pill">
-            <span class="tag-pill-dot"></span>
+<div class="side-theme">
+<label class="theme-toggle-label">
+<input id="theme-toggle" type="checkbox"/>
+<span class="theme-toggle-text">Dark</span>
+</label>
+</div>
+</div>
+</aside>
+<!-- MAIN -->
+<main class="main">
+<!-- ▼▼ Dashboard 화면 ▼▼ -->
+<div id="view-dashboard">
+<div class="top-nav">
+<div class="top-left">
+<div class="top-title">MUDDHA · Mindshare Analyzer</div>
+<div class="top-sub">X CSV·Kaito·Cookie·InfoFi 데이터를 한 번에 엮어서 보는 MUDDHA 메인 대시보드입니다.</div>
+</div>
+<div class="top-cta">
+<div class="tag-pill">
+<span class="tag-pill-dot"></span>
             Nav v3 · 리더보드 = 기존 MUDDHA 점수
           </div>
-          <div class="user-pill">
-            <div class="user-avatar">MD</div>
-            <div class="user-info">
-              <div class="user-name">로그인 자리</div>
-              <div class="user-handle">@supabase Auth 연동 예정</div>
-            </div>
-          </div>
-        </div>
+<div class="user-pill">
+<div class="user-avatar">MD</div>
+<div class="user-info">
+<div class="user-name">로그인 자리</div>
+<div class="user-handle">@supabase Auth 연동 예정</div>
+</div>
+</div>
+</div>
+</div><div class="section-note">전체 계정의 마인드쉐어 흐름과 BTC/ETH/환율, MUDDHA 리더보드를 한 화면에서 보는 홈 탭입니다.</div>
+<!-- Dashboard 상단: 성장 그래프 + 요약 카드 -->
+<div class="grid-1 dashboard-summary-grid">
+<div class="column-main">
+<section class="card growth-card">
+<div class="growth-card-title" id="growth-title">📈 계정 성장 그래프</div>
+<div class="growth-card-sub" id="growth-sub">
+        최근 기간 동안 원글 개수 / 평균 스코어 추이를 그래프로 보여줍니다.
       </div>
-
-      <!-- 메인 그리드: BTC/ETH/이슈 · 환율 · 리더보드 -->
-      <div class="dash-grid">
-        <!-- 1행: BTC / ETH / 오늘의 이슈 -->
-        <section class="dash-cell dash-asset" id="dash-btc">
-          <div class="dash-cell-header">
-            <div class="dash-cell-title">BTC</div>
-            <div class="dash-cell-sub">실시간 가격 그래프 (USD)</div>
-          </div>
-          <div class="dash-chart-wrap">
-            <canvas id="btc-chart" height="90"></canvas>
-          </div>
-          <div class="dash-price" id="btc-price-text">로드 중...</div>
-        </section>
-
-        <section class="dash-cell dash-asset" id="dash-eth">
-          <div class="dash-cell-header">
-            <div class="dash-cell-title">ETH</div>
-            <div class="dash-cell-sub">실시간 가격 그래프 (USD)</div>
-          </div>
-          <div class="dash-chart-wrap">
-            <canvas id="eth-chart" height="90"></canvas>
-          </div>
-          <div class="dash-price" id="eth-price-text">로드 중...</div>
-        </section>
-
-        <!-- 2행: 원화 / 달러 / 프로젝트 -->
-
-        <section class="dash-cell dash-projects" id="dash-projects">
-          <div class="dash-cell-header">
-            <div class="dash-cell-title">🔥 서버 기반 프로젝트 Top5 (Beta)</div>
-            <div class="dash-cell-sub" id="csv-server-top5-sub">CSV를 업로드하면 서버 기준 상위 5개 프로젝트를 여기에 보여줄게.</div>
-          </div>
-          <div class="dash-projects-wrap" id="csv-server-top5-body">
-            <div class="empty">아직 서버 분석 결과가 없습니다.</div>
-          </div>
-        </section>
-
-        <!-- 3행: MUDDHA 리더보드 TOP 10 / 공백·추천 -->
-        <section class="dash-cell dash-leader" id="dash-leader" style="grid-column:span 3;">
-          <div class="dash-cell-header">
-            <div class="dash-cell-title">MUDDHA 리더보드 TOP 10</div>
-            <div class="dash-cell-sub">CSV 기반 마인드쉐어 리더보드 상위 10명</div>
-          </div>
-          <div class="table-wrap" id="dashboard-leaderboard-wrap">
-            <div class="empty">리더보드를 불러오는 중...</div>
-          </div>
-        </section>
-      </div>
-    </div>
-
-    <!-- ▲▲ Dashboard 끝 ▲▲ -->
-
-
-    <!-- ▼▼ 사용방법 화면 ▼▼ -->
-    <div id="view-guide" style="display:none;">
-      <div class="top-nav">
-        <div>
-          <div class="top-title">MUDDHA 사용방법</div>
-          <div class="top-sub">
+<div class="growth-chart-wrap">
+<!-- 나중에 JS에서 채울 캔버스 -->
+<canvas height="140" id="growth-chart"></canvas>
+</div>
+</section>
+</div>
+<div class="column-side">
+<section class="card">
+<div class="section-header">
+<div>
+<div class="section-title">요약 카드 (포스트 / 점수 / 트림드 / 최고 터진 글)</div>
+<div class="section-sub">CSV를 업로드하면 총 원글 수 · 평균 스코어 · 트림드 평균 · 최고 글을 한 번에 보여줄게.</div>
+</div>
+</div>
+<div class="summary-grid" id="summary" style="display:none"></div>
+</section>
+</div>
+</div>
+<!-- 메인 그리드: BTC/ETH/이슈 · 환율 · 리더보드 -->
+<div class="dash-grid">
+<!-- 1행: BTC / ETH / 오늘의 이슈 -->
+<section class="dash-cell dash-asset" id="dash-btc">
+<div class="dash-cell-header">
+<div class="dash-cell-title">BTC</div>
+<div class="dash-cell-sub">실시간 가격 그래프 (USD)</div>
+</div>
+<div class="dash-chart-wrap">
+<canvas height="90" id="btc-chart"></canvas>
+</div>
+<div class="dash-price" id="btc-price-text">로드 중...</div>
+</section>
+<section class="dash-cell dash-asset" id="dash-eth">
+<div class="dash-cell-header">
+<div class="dash-cell-title">ETH</div>
+<div class="dash-cell-sub">실시간 가격 그래프 (USD)</div>
+</div>
+<div class="dash-chart-wrap">
+<canvas height="90" id="eth-chart"></canvas>
+</div>
+<div class="dash-price" id="eth-price-text">로드 중...</div>
+</section>
+<!-- 2행: 원화 / 달러 / 프로젝트 -->
+<section class="dash-cell dash-projects" id="dash-projects">
+<div class="dash-cell-header">
+<div class="dash-cell-title">🔥 서버 기반 프로젝트 Top5 (Beta)</div>
+<div class="dash-cell-sub" id="csv-server-top5-sub">CSV를 업로드하면 서버 기준 상위 5개 프로젝트를 여기에 보여줄게.</div>
+</div>
+<div class="dash-projects-wrap" id="csv-server-top5-body">
+<div class="empty">아직 서버 분석 결과가 없습니다.</div>
+</div>
+</section>
+<!-- 3행: MUDDHA 리더보드 TOP 10 / 공백·추천 -->
+<section class="dash-cell dash-leader" id="dash-leader" style="grid-column:span 3;">
+<div class="dash-cell-header">
+<div class="dash-cell-title">MUDDHA 리더보드 TOP 10</div>
+<div class="dash-cell-sub">CSV 기반 마인드쉐어 리더보드 상위 10명</div>
+</div>
+<div class="table-wrap" id="dashboard-leaderboard-wrap">
+<div class="empty">리더보드를 불러오는 중...</div>
+</div>
+</section>
+</div>
+</div>
+<!-- ▲▲ Dashboard 끝 ▲▲ -->
+<!-- ▼▼ 사용방법 화면 ▼▼ -->
+<div id="view-guide" style="display:none;">
+<div class="top-nav">
+<div>
+<div class="top-title">MUDDHA 사용방법</div>
+<div class="top-sub">
             X 애널리틱스 CSV만 있으면 내 계정의 마인드쉐어를 한 번에 진단하는 가이드야.
           </div>
-        </div>
-      </div>
-
-      <section class="card card-soft" style="margin-top:8px; max-width:920px;">
-        <div class="section-header">
-          <div class="section-title">1. X 애널리틱스 CSV 가져오기</div>
-        </div>
-        <div style="font-size:12px; line-height:1.8; color:var(--text-main);">
-          <ol style="padding-left:18px; margin:0;">
-            <li>오른쪽 상단 프로필 메뉴에서 <b>Premium</b> 메뉴를 눌러 <b>X Premium</b> 화면으로 이동한다.</li>
-            <li>왼쪽 메뉴에서 <b>애널리틱스(Analytics)</b>를 클릭한다.</li>
-            <li>상단 탭에서 <b>요약</b> 대신 <b>콘텐츠</b> 탭으로 이동한다.</li>
-            <li>브라우저를 전체 화면(창모드가 아닌 전체모드)으로 켠 뒤, 표 오른쪽 위의
+</div>
+</div><div class="section-note">CSV 다운로드 방법과 MUDDHA 사용법을 단계별로 정리한 가이드입니다.</div>
+<section class="card card-soft" style="margin-top:8px; max-width:920px;">
+<div class="section-header">
+<div class="section-title">1. X 애널리틱스 CSV 가져오기</div>
+</div>
+<div style="font-size:12px; line-height:1.8; color:var(--text-main);">
+<ol style="padding-left:18px; margin:0;">
+<li>오른쪽 상단 프로필 메뉴에서 <b>Premium</b> 메뉴를 눌러 <b>X Premium</b> 화면으로 이동한다.</li>
+<li>왼쪽 메뉴에서 <b>애널리틱스(Analytics)</b>를 클릭한다.</li>
+<li>상단 탭에서 <b>요약</b> 대신 <b>콘텐츠</b> 탭으로 이동한다.</li>
+<li>브라우저를 전체 화면(창모드가 아닌 전체모드)으로 켠 뒤, 표 오른쪽 위의
               <b>⬇︎ 내려받기 아이콘</b>을 클릭해 CSV를 저장한다.</li>
-            <li>보통 파일 이름이
+<li>보통 파일 이름이
               <code style="font-size:11px; background:#f3f4f6; padding:2px 4px; border-radius:4px;">
                 account_analytics_content_YYYY-MM-DD_YYYY-MM-DD.csv
               </code>
               이런 형태로 저장된다.
             </li>
-          </ol>
-        </div>
-      </section>
-
-      <section class="card card-soft" style="margin-top:10px; max-width:920px;">
-        <div class="section-header">
-          <div class="section-title">2. MUDDHA 분석기에 CSV 올리기</div>
-        </div>
-        <div style="font-size:12px; line-height:1.8; color:var(--text-main);">
-          <ol style="padding-left:18px; margin:0;">
-            <li>왼쪽 사이드바에서 <b>CSV로 분석</b> 탭을 클릭한다.</li>
-            <li>화면 상단의 <b>CSV 파일 선택하기</b> 버튼을 눌러, 방금 저장한 CSV 파일을 선택한다.</li>
-            <li>파일을 올리면 자동으로 데이터가 로딩되고, <b>전체 / 7D / 30D</b> 같은 기간 탭을 눌러서
+</ol>
+</div>
+</section>
+<section class="card card-soft" style="margin-top:10px; max-width:920px;">
+<div class="section-header">
+<div class="section-title">2. MUDDHA 분석기에 CSV 올리기</div>
+</div>
+<div style="font-size:12px; line-height:1.8; color:var(--text-main);">
+<ol style="padding-left:18px; margin:0;">
+<li>왼쪽 사이드바에서 <b>CSV로 분석</b> 탭을 클릭한다.</li>
+<li>화면 상단의 <b>CSV 파일 선택하기</b> 버튼을 눌러, 방금 저장한 CSV 파일을 선택한다.</li>
+<li>파일을 올리면 자동으로 데이터가 로딩되고, <b>전체 / 7D / 30D</b> 같은 기간 탭을 눌러서
               보고 싶은 구간을 바꿀 수 있다.</li>
-            <li>답글(리플라이)은 자동으로 제외되고, <b>원글 기준</b>으로만 점수와 등급이 계산된다.</li>
-          </ol>
-        </div>
-      </section>
-
-      <section class="card card-soft" style="margin-top:10px; max-width:920px;">
-        <div class="section-header">
-          <div class="section-title">3. 이 분석기로 볼 수 있는 것들</div>
-        </div>
-        <div style="font-size:12px; line-height:1.8; color:var(--text-main);">
-          <ul style="padding-left:18px; margin:0;">
-            <li><b>요약 카드</b> – 원글 개수, 평균 스코어, 트림드 평균, 가장 터진 글을 한 줄로 확인.</li>
-            <li><b>계정 성장 그래프</b> – 날짜별 원글 수 / 평균 스코어 흐름을 한 번에 본다.</li>
-            <li><b>YAP 히트맵</b> – 날짜별 YAP 상승 신호 강도를 색으로 표시.</li>
-            <li><b>마인드쉐어 폭발 Top 10</b> – 스코어·노출·참여·북마크·신규 팔로우 기준 상위 글.</li>
-            <li><b>등급별 대표 글 (S~D)</b> – S, A, B, C, D 등급별로 대표 게시글을 모아본다.</li>
-            <li><b>코치 봇</b> – 최근 성과를 바탕으로 계정이 <b>질 중심인지 / 양 중심인지</b> 한 줄로 요약.</li>
-            <li><b>YAP 신호 카드</b> – 트림드 점수 · 평균 점수 · 원글 수를 이용한 YAP 상승 여부.</li>
-          </ul>
-        </div>
-      </section>
-
-      <section class="card card-soft" style="margin-top:10px; max-width:920px;">
-        <div class="section-header">
-          <div class="section-title">4. 리더보드 & 히스토리까지 활용하기</div>
-        </div>
-        <div style="font-size:12px; line-height:1.8; color:var(--text-main);">
-          <ul style="padding-left:18px; margin:0;">
-            <li><b>리더보드</b> – CSV 분석 후 내 핸들을 입력하고, <b>현재 분석 결과 저장</b>을 눌러 기록을 쌓는다.</li>
-            <li><b>내 히스토리</b> – 업로드했던 CSV별 요약이 시간순으로 정리된다.</li>
-            <li><b>프로젝트별 마인드쉐어</b> – 트윗 본문의 키워드 기반으로 프로젝트별 비중을 본다.</li>
-          </ul>
-          <p style="font-size:11px; color:var(--text-muted); margin-top:8px;">
+<li>답글(리플라이)은 자동으로 제외되고, <b>원글 기준</b>으로만 점수와 등급이 계산된다.</li>
+</ol>
+</div>
+</section>
+<section class="card card-soft" style="margin-top:10px; max-width:920px;">
+<div class="section-header">
+<div class="section-title">3. 이 분석기로 볼 수 있는 것들</div>
+</div>
+<div style="font-size:12px; line-height:1.8; color:var(--text-main);">
+<ul style="padding-left:18px; margin:0;">
+<li><b>요약 카드</b> – 원글 개수, 평균 스코어, 트림드 평균, 가장 터진 글을 한 줄로 확인.</li>
+<li><b>계정 성장 그래프</b> – 날짜별 원글 수 / 평균 스코어 흐름을 한 번에 본다.</li>
+<li><b>YAP 히트맵</b> – 날짜별 YAP 상승 신호 강도를 색으로 표시.</li>
+<li><b>마인드쉐어 폭발 Top 10</b> – 스코어·노출·참여·북마크·신규 팔로우 기준 상위 글.</li>
+<li><b>등급별 대표 글 (S~D)</b> – S, A, B, C, D 등급별로 대표 게시글을 모아본다.</li>
+<li><b>코치 봇</b> – 최근 성과를 바탕으로 계정이 <b>질 중심인지 / 양 중심인지</b> 한 줄로 요약.</li>
+<li><b>YAP 신호 카드</b> – 트림드 점수 · 평균 점수 · 원글 수를 이용한 YAP 상승 여부.</li>
+</ul>
+</div>
+</section>
+<section class="card card-soft" style="margin-top:10px; max-width:920px;">
+<div class="section-header">
+<div class="section-title">4. 리더보드 &amp; 히스토리까지 활용하기</div>
+</div>
+<div style="font-size:12px; line-height:1.8; color:var(--text-main);">
+<ul style="padding-left:18px; margin:0;">
+<li><b>리더보드</b> – CSV 분석 후 내 핸들을 입력하고, <b>현재 분석 결과 저장</b>을 눌러 기록을 쌓는다.</li>
+<li><b>내 히스토리</b> – 업로드했던 CSV별 요약이 시간순으로 정리된다.</li>
+<li><b>프로젝트별 마인드쉐어</b> – 트윗 본문의 키워드 기반으로 프로젝트별 비중을 본다.</li>
+</ul>
+<p style="font-size:11px; color:var(--text-muted); margin-top:8px;">
             ※ 모든 데이터는 <b>현재 브라우저의 localStorage</b>에만 저장되고, 서버로 전송되지 않는다.
           </p>
-        </div>
-      </section>
-    </div>
-    <!-- ▲▲ 사용방법 화면 끝 ▲▲ -->
-
-    <!-- ▼▼ CSV 분석 화면 ▼▼ -->
+</div>
+</section>
+</div>
+<!-- ▲▲ 사용방법 화면 끝 ▲▲ -->
+<!-- ▼▼ CSV 분석 화면 ▼▼ -->
 <div id="view-csv">
-      <div class="top-nav">
-        <div>
-          <div class="top-title">X 크리에이터 마인드쉐어 분석기</div>
-          <div class="top-sub">애널리틱스 CSV로 내 계정의 진짜 임팩트를 보는 대시보드</div>
-        </div>
-        <div class="top-cta">
-          <div class="lang-toggle">
-            <button class="lang-btn" data-lang="ko">한국어</button>
-            <button class="lang-btn" data-lang="en">EN</button>
-          </div>
-          <a class="top-link" href="https://analytics.twitter.com/user" target="_blank">
+<div class="top-nav">
+<div>
+<div class="top-title">X 크리에이터 마인드쉐어 분석기</div>
+<div class="top-sub">X 애널리틱스 CSV를 올리고, 글 하나하나의 점수와 트림드 평균·최고 글을 분석하는 화면입니다.</div>
+</div>
+<div class="top-cta">
+<div class="lang-toggle">
+<button class="lang-btn" data-lang="ko">한국어</button>
+<button class="lang-btn" data-lang="en">EN</button>
+</div>
+<a class="top-link" href="https://analytics.twitter.com/user" target="_blank">
             X 애널리틱스 열기 ↗
           </a>
-        </div>
-      </div>
-
-      <!-- HERO -->
-      <section class="hero-card">
-        <div class="hero-top-row">
-          <div>
-            <div class="hero-main-title">마인드쉐어 스코어 · S~D 등급 · 리더보드까지 한 번에</div>
-            <div class="hero-desc">
-              X 애널리틱스에서 CSV를 내려받고 이곳에 업로드하면,<br>
+</div>
+</div><div class="section-note">X 애널리틱스 CSV를 업로드해서 글별 점수·등급·트림드 평균을 계산하는 분석 탭입니다.</div>
+<!-- HERO -->
+<section class="hero-card">
+<div class="hero-top-row">
+<div>
+<div class="hero-main-title">마인드쉐어 스코어 · S~D 등급 · 리더보드까지 한 번에</div>
+<div class="hero-desc">
+              X 애널리틱스에서 CSV를 내려받고 이곳에 업로드하면,<br/>
               원글 기준으로 마인드쉐어 점수와 상위 글, 리더보드까지 한 번에 분석할 수 있어.
             </div>
-            <div class="hero-pill"><span class="hero-dot"></span> CSV 한 번 → 계정 분석 끝</div>
-          </div>
-        </div>
-
-        <div class="hero-upload-row">
-          <div class="file-input-wrap">
-            <div class="file-input-fake">📁 CSV 파일 선택하기</div>
-            <input type="file" id="csvInput" accept=".csv"/>
-          </div>
-          <span class="file-hint">account_analytics_content_YYYY-MM-DD_YYYY-MM-DD.csv 그대로 업로드</span>
-          <button type="button" id="btn-last-csv" class="range-tab">마지막 CSV로 조회하기</button>
-          <div id="last-snapshot-info" style="font-size:11px;color:#9ca3af;margin-top:4px;"></div>
-        </div>
-
-        <div class="badge"><span class="badge-dot"></span>한국어/영어 CSV 자동 인식 · 답글 제외 후 원글만 분석</div>
-
-        <div id="range-tabs" class="range-tabs" style="display:none">
-          <button class="range-tab active" data-range="ALL">전체 기간</button>
-          <button class="range-tab" data-range="7">최근 7일</button>
-          <button class="range-tab" data-range="30">최근 30일</button>
-        </div>
-
-        <div id="summary" class="summary-grid" style="display:none"></div>
-        <div id="error" class="error"></div>
-      </section>
-
-      <!-- 메인 그리드: 왼쪽(표), 오른쪽(봇/요약) -->
-      <div class="grid-1">
-        <div class="column-main">
+<div class="hero-pill"><span class="hero-dot"></span> CSV 한 번 → 계정 분석 끝</div>
+</div>
+</div>
+<div class="hero-upload-row">
+<div class="file-input-wrap">
+<div class="file-input-fake">📁 CSV 파일 선택하기</div>
+<input accept=".csv" id="csvInput" type="file">
+</input></div>
+<span class="file-hint">account_analytics_content_YYYY-MM-DD_YYYY-MM-DD.csv 그대로 업로드</span>
+<button class="range-tab" id="btn-last-csv" type="button">마지막 CSV로 조회하기</button>
+<div id="last-snapshot-info" style="font-size:11px;color:#9ca3af;margin-top:4px;"></div>
+</div>
+<div class="badge"><span class="badge-dot"></span>한국어/영어 CSV 자동 인식 · 답글 제외 후 원글만 분석</div>
+<div class="range-tabs" id="range-tabs" style="display:none">
+<button class="range-tab active" data-range="ALL">전체 기간</button>
+<button class="range-tab" data-range="7">최근 7일</button>
+<button class="range-tab" data-range="30">최근 30일</button>
+</div>
+<!-- summary moved to dashboard -->
+<div class="error" id="error"></div>
+</section>
+<!-- 메인 그리드: 왼쪽(표), 오른쪽(봇/요약) -->
+<div class="grid-1">
+<div class="column-main">
 <!-- 📈 계정 성장 그래프 카드 -->
-    <section class="card growth-card">
-      <div class="growth-card-title" id="growth-title">📈 계정 성장 그래프</div>
-      <div class="growth-card-sub" id="growth-sub">
-        최근 기간 동안 원글 개수 / 평균 스코어 추이를 그래프로 보여줍니다.
-      </div>
-      <div class="growth-chart-wrap">
-        <!-- 나중에 JS에서 채울 캔버스 -->
-        <canvas id="growth-chart" height="140"></canvas>
-      </div>
-    </section>
-    <section class="card yap-heatmap-card">
-      <div class="section-header">
-        <div class="section-title">📡 YAP 히트맵</div>
-        <div class="section-sub">날짜별 트림드/평균 스코어와 원글 수를 기반으로 추정한 YAP 상승 신호 강도입니다.</div>
-      </div>
-      <div class="yap-heatmap-legend">
-        <span>낮음</span>
-        <div class="yap-heatmap-legend-bar">
-          <span class="lvl-1"></span>
-          <span class="lvl-2"></span>
-          <span class="lvl-3"></span>
-          <span class="lvl-4"></span>
-          <span class="lvl-5"></span>
-        </div>
-        <span>높음</span>
-      </div>
-      <div id="yap-heatmap" class="yap-heatmap">
-        <div class="empty">CSV를 업로드하고 기간을 선택하면 날짜별 YAP 신호를 색으로 보여줄게.</div>
-      </div>
-    </section>
-          <section class="card">
-            <div class="section-header">
-              <div class="section-title" id="top10-title">
+<!-- growth-card moved to dashboard -->
+<section class="card yap-heatmap-card">
+<div class="section-header">
+<div class="section-title">📡 YAP 히트맵</div>
+<div class="section-sub">날짜별 트림드/평균 스코어와 원글 수를 기반으로 추정한 YAP 상승 신호 강도입니다.</div>
+</div>
+<div class="yap-heatmap-legend">
+<span>낮음</span>
+<div class="yap-heatmap-legend-bar">
+<span class="lvl-1"></span>
+<span class="lvl-2"></span>
+<span class="lvl-3"></span>
+<span class="lvl-4"></span>
+<span class="lvl-5"></span>
+</div>
+<span>높음</span>
+</div>
+<div class="yap-heatmap" id="yap-heatmap">
+<div class="empty">CSV를 업로드하고 기간을 선택하면 날짜별 YAP 신호를 색으로 보여줄게.</div>
+</div>
+</section>
+<section class="card">
+<div class="section-header">
+<div class="section-title" id="top10-title">
                 💥 마인드쉐어 폭발 Top 10 <span id="top10-count"></span>
-              </div>
-              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                <div class="grade-chip">점수 기준 · <strong>마인드쉐어 스코어</strong></div>
-                <select id="sort-key" class="sort-select">
-                  <option value="score">정렬: 스코어</option>
-                  <option value="impressions">정렬: 노출수</option>
-                  <option value="engagements">정렬: 참여수</option>
-                  <option value="bookmarks">정렬: 북마크</option>
-                  <option value="newFollows">정렬: 신규 팔로우</option>
-                </select>
-              </div>
-            </div>
-            <div class="table-wrap" id="top10-table-wrap"></div>
-          </section>
-
-          <section class="card">
-            <div class="section-header">
-              <div class="section-title" id="grade-section-title">🎚 등급별 상위 게시글 <span>(S~D)</span></div>
-              <div class="grade-legend">
-                <span><span class="grade-dot s"></span>S 상위 5%</span>
-                <span><span class="grade-dot a"></span>A 상위 20%</span>
-                <span><span class="grade-dot b"></span>B 상위 40%</span>
-                <span><span class="grade-dot c"></span>C 상위 60%</span>
-                <span><span class="grade-dot d"></span>D 그 외</span>
-              </div>
-            </div>
-
-            <div class="grade-tabs">
-              <button class="grade-tab active" data-grade="ALL"><span class="grade-tab-dot" style="background:linear-gradient(90deg,var(--grade-s),var(--grade-a),var(--grade-b))"></span>전체</button>
-              <button class="grade-tab" data-grade="S"><span class="grade-tab-dot" style="background:var(--grade-s)"></span>S 등급</button>
-              <button class="grade-tab" data-grade="A"><span class="grade-tab-dot" style="background:var(--grade-a)"></span>A 등급</button>
-              <button class="grade-tab" data-grade="B"><span class="grade-tab-dot" style="background:var(--grade-b)"></span>B 등급</button>
-              <button class="grade-tab" data-grade="C"><span class="grade-tab-dot" style="background:var(--grade-c)"></span>C 등급</button>
-              <button class="grade-tab" data-grade="D"><span class="grade-tab-dot" style="background:var(--grade-d)"></span>D 등급</button>
-            </div>
-
-            <div class="table-wrap" id="grade-table-wrap"></div>
-          </section>
-        </div>
-
-        <!-- 오른쪽: 코치 봇 -->
-        <div class="column-side">
-          <section class="card bot-card">
-            <div class="section-header">
-              <div class="section-title" id="coach-title">🤖 마인드쉐어 코치 봇 <span style="font-size:11px;color:var(--text-muted);">(Beta)</span></div>
-            </div>
-            <div class="bot-chip">
-              <span>📌</span><span id="coach-chip-text">현재 선택한 기간 기준 · YAP 신호는 최근 7일 정확도↑ 한 줄 요약 + 피드백</span>
-            </div>
-            <div id="coach-output" class="bot-output">
-              아직 CSV를 올리지 않았어.<br>
-              상단에서 애널리틱스 CSV를 업로드하고 기간 탭(전체/7/30일)을 바꾸면<br>
+</div>
+<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+<div class="grade-chip">점수 기준 · <strong>마인드쉐어 스코어</strong></div>
+<select class="sort-select" id="sort-key">
+<option value="score">정렬: 스코어</option>
+<option value="impressions">정렬: 노출수</option>
+<option value="engagements">정렬: 참여수</option>
+<option value="bookmarks">정렬: 북마크</option>
+<option value="newFollows">정렬: 신규 팔로우</option>
+</select>
+</div>
+</div>
+<div class="table-wrap" id="top10-table-wrap"></div>
+</section>
+<section class="card">
+<div class="section-header">
+<div class="section-title" id="grade-section-title">🎚 등급별 상위 게시글 <span>(S~D)</span></div>
+<div class="grade-legend">
+<span><span class="grade-dot s"></span>S 상위 5%</span>
+<span><span class="grade-dot a"></span>A 상위 20%</span>
+<span><span class="grade-dot b"></span>B 상위 40%</span>
+<span><span class="grade-dot c"></span>C 상위 60%</span>
+<span><span class="grade-dot d"></span>D 그 외</span>
+</div>
+</div>
+<div class="grade-tabs">
+<button class="grade-tab active" data-grade="ALL"><span class="grade-tab-dot" style="background:linear-gradient(90deg,var(--grade-s),var(--grade-a),var(--grade-b))"></span>전체</button>
+<button class="grade-tab" data-grade="S"><span class="grade-tab-dot" style="background:var(--grade-s)"></span>S 등급</button>
+<button class="grade-tab" data-grade="A"><span class="grade-tab-dot" style="background:var(--grade-a)"></span>A 등급</button>
+<button class="grade-tab" data-grade="B"><span class="grade-tab-dot" style="background:var(--grade-b)"></span>B 등급</button>
+<button class="grade-tab" data-grade="C"><span class="grade-tab-dot" style="background:var(--grade-c)"></span>C 등급</button>
+<button class="grade-tab" data-grade="D"><span class="grade-tab-dot" style="background:var(--grade-d)"></span>D 등급</button>
+</div>
+<div class="table-wrap" id="grade-table-wrap"></div>
+</section>
+</div>
+<!-- 오른쪽: 코치 봇 -->
+<div class="column-side">
+<section class="card bot-card">
+<div class="section-header">
+<div class="section-title" id="coach-title">🤖 마인드쉐어 코치 봇 <span style="font-size:11px;color:var(--text-muted);">(Beta)</span></div>
+</div>
+<div class="bot-chip">
+<span>📌</span><span id="coach-chip-text">현재 선택한 기간 기준 · YAP 신호는 최근 7일 정확도↑ 한 줄 요약 + 피드백</span>
+</div>
+<div class="bot-output" id="coach-output">
+              아직 CSV를 올리지 않았어.<br/>
+              상단에서 애널리틱스 CSV를 업로드하고 기간 탭(전체/7/30일)을 바꾸면<br/>
               이 구간의 마인드쉐어 상태를 코치 봇이 자동으로 요약해 줄 거야.
             </div>
-            <div class="bot-hint">
+<div class="bot-hint">
               * 서버/LLM 호출 없이, 내 애널리틱스를 기반으로 규칙적으로 요약해 주는 오프라인 코치야.
             </div>
-          </section>
-          <section class="card yap-card" id="yap-card">
-            <div class="section-header">
-              <div class="section-title">📡 YAP 신호 <span style="font-size:11px;color:var(--text-muted);">(Beta)</span></div>
-            </div>
-            <div class="yap-main">
-              <div>
-                <div class="yap-label" style="font-size:11px;color:var(--text-muted);">현재 선택한 기간 기준 · YAP 신호는 최근 7일 정확도↑</div>
-                <div class="yap-level" id="yap-level-text">-</div>
-                <div class="yap-sub" id="yap-level-sub">
+</section>
+<section class="card yap-card" id="yap-card">
+<div class="section-header">
+<div class="section-title">📡 YAP 신호 <span style="font-size:11px;color:var(--text-muted);">(Beta)</span></div>
+</div>
+<div class="yap-main">
+<div>
+<div class="yap-label" style="font-size:11px;color:var(--text-muted);">현재 선택한 기간 기준 · YAP 신호는 최근 7일 정확도↑</div>
+<div class="yap-level" id="yap-level-text">-</div>
+<div class="yap-sub" id="yap-level-sub">
                   CSV를 업로드하면 최근 패턴을 기반으로 YAP 상승 신호를 간단히 보여줄게.
                 </div>
-                <div class="yap-boost-toggles">
-                  <label class="yap-toggle">
-                    <input type="checkbox" id="yap-inner-toggle">
-                    <span>이너서클 계정 (+30% 가중치)</span>
-                  </label>
-                  <label class="yap-toggle">
-                    <input type="checkbox" id="yap-100-toggle">
-                    <span>최근 YAP 100점↑ 경험 있음 (+15% 가중치)</span>
-                  </label>
-                </div>
-              </div>
-              <div class="yap-metrics">
-                <div class="yap-metric">
-                  <div class="yap-metric-label">트림드 점수</div>
-                  <div class="yap-metric-value" id="yap-trimmed">-</div>
-                </div>
-                <div class="yap-metric">
-                  <div class="yap-metric-label">평균 점수</div>
-                  <div class="yap-metric-value" id="yap-avg">-</div>
-                </div>
-                <div class="yap-metric">
-                  <div class="yap-metric-label">원글 수</div>
-                  <div class="yap-metric-value" id="yap-posts">-</div>
-                </div>
-                <div class="yap-metric">
-                  <div class="yap-metric-label">YAP 상승 확률</div>
-                  <div class="yap-metric-value" id="yap-prob">-</div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- ▲▲ CSV 분석 화면 끝 ▲▲ -->
-    <!-- ▼▼ YAP 게이지 화면 ▼▼ -->
-    <div id="view-yap-gauge" style="display:none;">
-      <div class="top-nav">
-        <div>
-          <div class="top-title">YAP 버퍼 게이지</div>
-          <div class="top-sub">
-            최근 선택한 기간의 YAP 버퍼용 내부 지표와 원글 수를 기반으로<br>
+<div class="yap-boost-toggles">
+<label class="yap-toggle">
+<input id="yap-inner-toggle" type="checkbox"/>
+<span>이너서클 계정 (+30% 가중치)</span>
+</label>
+<label class="yap-toggle">
+<input id="yap-100-toggle" type="checkbox"/>
+<span>최근 YAP 100점↑ 경험 있음 (+15% 가중치)</span>
+</label>
+</div>
+</div>
+<div class="yap-metrics">
+<div class="yap-metric">
+<div class="yap-metric-label">트림드 점수</div>
+<div class="yap-metric-value" id="yap-trimmed">-</div>
+</div>
+<div class="yap-metric">
+<div class="yap-metric-label">평균 점수</div>
+<div class="yap-metric-value" id="yap-avg">-</div>
+</div>
+<div class="yap-metric">
+<div class="yap-metric-label">원글 수</div>
+<div class="yap-metric-value" id="yap-posts">-</div>
+</div>
+<div class="yap-metric">
+<div class="yap-metric-label">YAP 상승 확률</div>
+<div class="yap-metric-value" id="yap-prob">-</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+<!-- ▲▲ CSV 분석 화면 끝 ▲▲ -->
+<!-- ▼▼ YAP 게이지 화면 ▼▼ -->
+<div id="view-yap-gauge" style="display:none;">
+<div class="top-nav">
+<div>
+<div class="top-title">YAP 버퍼 게이지</div>
+<div class="top-sub">
+            최근 선택한 기간의 YAP 버퍼용 내부 지표와 원글 수를 기반으로<br/>
             카이토에 쌓인 YAP 에너지를 % 단위로 가늠해주는 화면이야.
           </div>
-        </div>
-      </div>
-
-      <section class="card yap-gauge-card" style="margin-top:8px;max-width:880px;">
-        <div class="section-header">
-          <div class="section-title">🔋 YAP 버퍼 게이지 <span style="font-size:11px;color:var(--text-muted);">(Beta)</span></div>
-          <div class="section-sub">
-            CSV를 업로드하고 기간을 선택하면, 같은 분석 결과를 기반으로<br>
+</div>
+</div>
+<section class="card yap-gauge-card" style="margin-top:8px;max-width:880px;">
+<div class="section-header">
+<div class="section-title">🔋 YAP 버퍼 게이지 <span style="font-size:11px;color:var(--text-muted);">(Beta)</span></div>
+<div class="section-sub">
+            CSV를 업로드하고 기간을 선택하면, 같은 분석 결과를 기반으로<br/>
             지금 계정에 얼마나 YAP 버퍼가 쌓여있는지 %로 보여줄게.
           </div>
-        </div>
-
-        <div class="yap-gauge-main">
-          <div class="yap-gauge-percent-row">
-            <div class="yap-gauge-percent" id="yap-gauge-percent">-</div>
-            <div class="yap-gauge-level" id="yap-gauge-level">데이터 없음</div>
-          </div>
-
-          <div class="yap-gauge-bar">
-            <div class="yap-gauge-fill" id="yap-gauge-fill"></div>
-          </div>
-
-          <div class="yap-gauge-sub" id="yap-gauge-desc">
+</div>
+<div class="yap-gauge-main">
+<div class="yap-gauge-percent-row">
+<div class="yap-gauge-percent" id="yap-gauge-percent">-</div>
+<div class="yap-gauge-level" id="yap-gauge-level">데이터 없음</div>
+</div>
+<div class="yap-gauge-bar">
+<div class="yap-gauge-fill" id="yap-gauge-fill"></div>
+</div>
+<div class="yap-gauge-sub" id="yap-gauge-desc">
             CSV를 업로드하고 기간을 선택하면 YAP 버퍼(잔여 점수)를 %로 보여줄게.
           </div>
-
-          <ul class="yap-gauge-legend">
-            <li><b>0 ~ 30%</b> : 🧊 Low — 최근 패턴 기준으로, 아직 크게 쌓인 YAP 버퍼는 많지 않은 구간.</li>
-            <li><b>30 ~ 60%</b> : 🌊 Mid — 작은 YAP(+1 ~ 2점) 정도가 나올 수 있는 중간 수준 버퍼.</li>
-            <li><b>60 ~ 100%</b> : 🔥 High — 한 번 크게 터질 수 있는 YAP 버퍼가 제법 쌓여 있는 상태.</li>
-          </ul>
-
-          <div class="yap-gauge-metrics">
-            <div class="metric-chip">
-              <div class="metric-label">선택 구간 원글 수</div>
-              <div class="metric-value" id="yap-gauge-posts">-</div>
-            </div>
-            <div class="metric-chip">
-              <div class="metric-label">버퍼 기준 점수</div>
-              <div class="metric-value" id="yap-gauge-trimmed">-</div>
-            </div>
-            <div class="metric-chip">
-              <div class="metric-label">버퍼 기준 계정지수</div>
-              <div class="metric-value" id="yap-gauge-avg">-</div>
-            </div>
-          </div>
-
-          <div class="yap-gauge-forecast">
-            <div class="forecast-title">예상 YAP 범위</div>
-            <div class="forecast-value" id="yap-gauge-forecast">-</div>
-            <div class="forecast-sub" id="yap-gauge-forecast-desc">
+<ul class="yap-gauge-legend">
+<li><b>0 ~ 30%</b> : 🧊 Low — 최근 패턴 기준으로, 아직 크게 쌓인 YAP 버퍼는 많지 않은 구간.</li>
+<li><b>30 ~ 60%</b> : 🌊 Mid — 작은 YAP(+1 ~ 2점) 정도가 나올 수 있는 중간 수준 버퍼.</li>
+<li><b>60 ~ 100%</b> : 🔥 High — 한 번 크게 터질 수 있는 YAP 버퍼가 제법 쌓여 있는 상태.</li>
+</ul>
+<div class="yap-gauge-metrics">
+<div class="metric-chip">
+<div class="metric-label">선택 구간 원글 수</div>
+<div class="metric-value" id="yap-gauge-posts">-</div>
+</div>
+<div class="metric-chip">
+<div class="metric-label">버퍼 기준 점수</div>
+<div class="metric-value" id="yap-gauge-trimmed">-</div>
+</div>
+<div class="metric-chip">
+<div class="metric-label">버퍼 기준 계정지수</div>
+<div class="metric-value" id="yap-gauge-avg">-</div>
+</div>
+</div>
+<div class="yap-gauge-forecast">
+<div class="forecast-title">예상 YAP 범위</div>
+<div class="forecast-value" id="yap-gauge-forecast">-</div>
+<div class="forecast-sub" id="yap-gauge-forecast-desc">
               선택한 구간의 패턴을 기반으로, 앞으로 받을 가능성이 있는 YAP 구간을 대략적으로 보여줄게.
             </div>
-          </div>
-
-          <div class="yap-gauge-highlight">
-            <div class="highlight-title">최근 최고 임팩트 게시글</div>
-            <div class="highlight-body">
-              <div class="highlight-row">
-                <span class="highlight-label">날짜</span>
-                <span class="highlight-value" id="yap-gauge-best-date">-</span>
-              </div>
-              <div class="highlight-row">
-                <span class="highlight-label">스코어</span>
-                <span class="highlight-value" id="yap-gauge-best-score">-</span>
-              </div>
-              <div class="highlight-row">
-                <span class="highlight-label">링크</span>
-                <span class="highlight-value">
-                  <a id="yap-gauge-best-link" href="javascript:void(0)" target="_blank">-</a>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="yap-gauge-note">
-            <div class="note-title">이 화면에서 쓰는 지표들</div>
-            <ul class="note-list">
-              <li><b>버퍼 기준 점수</b> : 최근 선택한 기간의 상위 트윗 위주로 다시 계산한 점수야. CSV 분석 탭의 트림드 점수와는 살짝 다르게 튜닝했어.</li>
-              <li><b>버퍼 기준 계정지수</b> : 계정 전체 평균 대신, YAP 예측에 맞게 조정한 내부 지수야.</li>
-              <li><b>YAP 버퍼 %</b> : 위 두 지표 + 원글 수를 0~100 스케일로 환산한 값이야. 높을수록 “언젠가 한 번 터질 가능성”이 커진다고 보면 돼.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-    </div>
-    <!-- ▲▲ YAP 게이지 화면 끝 ▲▲ -->
-
-
-
-
-
-    <!-- ▼▼ 리더보드 화면 ▼▼ -->
-    <div id="view-leaderboard" style="display:none;">
-      <div class="top-nav">
-        <div>
-          <div class="top-title">크리에이터 마인드쉐어 리더보드</div>
-          <div class="top-sub">내 순위 · 트림드 평균 · 대표 트윗을 한 눈에 보는 랭킹 보드</div>
-        </div>
-      </div>
-
-      <section id="leaderboard-section" class="card" style="margin-top:8px;">
-        <div class="section-header">
-          <div class="section-title">🏆 크리에이터 마인드쉐어 리더보드 (Beta)</div>
-        </div>
-
-        <div class="leader-input-row">
-          <input id="leader-handle" class="leader-input" placeholder="X 핸들 입력 (예: @bud_dha__)" />
-          <button id="leader-save-btn" class="leader-btn">현재 분석 결과 저장</button>
-        </div>
-        <div class="leader-note" id="leader-note">※ 최소 원글 수 20개 이상일 때 리더보드 점수가 더 정확합니다.</div>
-
-        <div id="my-rank-wrap" style="margin-top:10px"></div>
-        <div class="table-wrap" id="leaderboard-wrap" style="margin-top:10px"></div>
-      </section>
-    </div>
-    <!-- ▲▲ 리더보드 화면 끝 ▲▲ -->
-
-
-    <!-- ▼▼ 내 히스토리 화면 ▼▼ -->
-    <div id="view-history" style="display:none;">
-      <div class="top-nav">
-        <div>
-          <div class="top-title">내 분석 히스토리</div>
-          <div class="top-sub">CSV를 업로드할 때마다 이곳에 요약 기록이 자동으로 쌓입니다.</div>
-        </div>
-      </div>
-
-      <section class="card" style="margin-top:8px;">
-        <div class="section-header">
-          <div class="section-title">📆 업로드 기록</div>
-          <div class="section-sub">최근 업로드 기준으로 정렬됩니다. (브라우저에만 저장)</div>
-        </div>
-        <div class="table-wrap" id="history-wrap">
-          <div class="empty">아직 저장된 분석 히스토리가 없습니다. CSV를 업로드하면 여기 기록이 쌓입니다.</div>
-        </div>
-      </section>
-    </div>
-    <!-- ▲▲ 히스토리 화면 끝 ▲▲ -->
-
-    <!-- ▼▼ 프로젝트별 마인드쉐어 화면 ▼▼ -->
-    <div id="view-projects" style="display:none;">
-      <div class="top-nav">
-        <div>
-          <div class="top-title">프로젝트별 마인드쉐어</div>
-          <div class="top-sub">트윗 본문 키워드 기준으로 프로젝트별 임팩트와 게시글/등급을 분석합니다.</div>
-        </div>
-      </div>
-
-      <section class="card card-soft">
-        <div class="section-header">
-          <div class="section-title" id="project-summary-title">📚 프로젝트 요약 + 원형 그래프</div>
-          <div class="section-sub" id="project-summary-sub">코드 상단 <code>PROJECTS</code> 배열의 키워드를 네가 트는 프로젝트에 맞게 바꿔줘.</div>
-        </div>
-
-        <div class="project-charts-row">
-          <div class="project-chart-single">
-            <div class="project-chart-title" id="proj-chart-title-1">프로젝트별 게시글 비율</div>
-            <canvas id="project-pie"></canvas>
-          </div>
-          <div class="project-chart-single">
-            <div class="project-chart-title" id="proj-chart-title-2">선택 기간 전체 S~D 등급 분포</div>
-            <canvas id="grade-distribution-pie"></canvas>
-          </div>
-          <div class="project-chart-single">
-            <div class="project-chart-title" id="proj-chart-title-3">선택 프로젝트 S~D 등급 분포</div>
-            <canvas id="project-grade-pie"></canvas>
-          </div>
-        </div>
-
-        <div class="table-wrap" id="project-summary-wrap">
-          <div class="empty">먼저 Dashboard에서 CSV를 업로드하고 분석을 한 번 돌려줘.</div>
-        </div>
-
-        <div class="project-detail-controls">
-          <span>🔍 프로젝트별 게시글 보기</span>
-          <select id="project-select" class="project-select">
-            <option value="">CSV 업로드 후 자동 활성화됩니다.</option>
-          </select>
-        </div>
-        <div class="table-wrap" id="project-detail-wrap">
-          <div class="empty">프로젝트를 선택하면 해당 프로젝트의 게시글과 등급이 여기에 표시됩니다.</div>
-        </div>
-      </section>
-    </div>
-    
-    <!-- ▼▼ 야핑 플래너 화면 ▼▼ -->
-    <div id="view-yapping" style="display:none;">
-      <div class="top-nav">
-        <div>
-          <div class="top-title">야핑 & 보상 플래너</div>
-          <div class="top-sub">
+</div>
+<div class="yap-gauge-highlight">
+<div class="highlight-title">최근 최고 임팩트 게시글</div>
+<div class="highlight-body">
+<div class="highlight-row">
+<span class="highlight-label">날짜</span>
+<span class="highlight-value" id="yap-gauge-best-date">-</span>
+</div>
+<div class="highlight-row">
+<span class="highlight-label">스코어</span>
+<span class="highlight-value" id="yap-gauge-best-score">-</span>
+</div>
+<div class="highlight-row">
+<span class="highlight-label">링크</span>
+<span class="highlight-value">
+<a href="javascript:void(0)" id="yap-gauge-best-link" target="_blank">-</a>
+</span>
+</div>
+</div>
+</div>
+<div class="yap-gauge-note">
+<div class="note-title">이 화면에서 쓰는 지표들</div>
+<ul class="note-list">
+<li><b>버퍼 기준 점수</b> : 최근 선택한 기간의 상위 트윗 위주로 다시 계산한 점수야. CSV 분석 탭의 트림드 점수와는 살짝 다르게 튜닝했어.</li>
+<li><b>버퍼 기준 계정지수</b> : 계정 전체 평균 대신, YAP 예측에 맞게 조정한 내부 지수야.</li>
+<li><b>YAP 버퍼 %</b> : 위 두 지표 + 원글 수를 0~100 스케일로 환산한 값이야. 높을수록 “언젠가 한 번 터질 가능성”이 커진다고 보면 돼.</li>
+</ul>
+</div>
+</div>
+</section>
+</div>
+<!-- ▲▲ YAP 게이지 화면 끝 ▲▲ -->
+<!-- ▼▼ 리더보드 화면 ▼▼ -->
+<div id="view-leaderboard" style="display:none;">
+<div class="top-nav">
+<div>
+<div class="top-title">크리에이터 마인드쉐어 리더보드</div>
+<div class="top-sub">CSV 기반 MUDDHA 종합 점수로 만든 전용 리더보드입니다. (YAP 지수와는 별개)</div>
+</div>
+</div><div class="section-note">CSV 분석 결과로 계산한 MUDDHA 전용 종합 점수 기반 리더보드입니다. (YAP과는 별도 점수)</div>
+<section class="card" id="leaderboard-section" style="margin-top:8px;">
+<div class="section-header">
+<div class="section-title">🏆 크리에이터 마인드쉐어 리더보드 (Beta)</div>
+</div>
+<div class="leader-input-row">
+<input class="leader-input" id="leader-handle" placeholder="X 핸들 입력 (예: @bud_dha__)">
+<button class="leader-btn" id="leader-save-btn">현재 분석 결과 저장</button>
+</input></div>
+<div class="leader-note" id="leader-note">※ 최소 원글 수 20개 이상일 때 리더보드 점수가 더 정확합니다.</div>
+<div id="my-rank-wrap" style="margin-top:10px"></div>
+<div class="table-wrap" id="leaderboard-wrap" style="margin-top:10px"></div>
+</section>
+</div>
+<!-- ▲▲ 리더보드 화면 끝 ▲▲ -->
+<!-- ▼▼ 내 히스토리 화면 ▼▼ -->
+<div id="view-history" style="display:none;">
+<div class="top-nav">
+<div>
+<div class="top-title">내 분석 히스토리</div>
+<div class="top-sub">CSV를 업로드할 때마다 이곳에 요약 기록이 자동으로 쌓입니다.</div>
+</div>
+</div>
+<section class="card" style="margin-top:8px;">
+<div class="section-header">
+<div class="section-title">📆 업로드 기록</div>
+<div class="section-sub">최근 업로드 기준으로 정렬됩니다. (브라우저에만 저장)</div>
+</div>
+<div class="table-wrap" id="history-wrap">
+<div class="empty">아직 저장된 분석 히스토리가 없습니다. CSV를 업로드하면 여기 기록이 쌓입니다.</div>
+</div>
+</section>
+</div>
+<!-- ▲▲ 히스토리 화면 끝 ▲▲ -->
+<!-- ▼▼ 프로젝트별 마인드쉐어 화면 ▼▼ -->
+<div id="view-projects" style="display:none;">
+<div class="top-nav">
+<div>
+<div class="top-title">프로젝트별 마인드쉐어</div>
+<div class="top-sub">트윗 본문 키워드 기준으로 프로젝트별 임팩트와 게시글/등급을 분석합니다.</div>
+</div>
+</div><div class="section-note">관심 프로젝트들의 마인드쉐어와 관련 데이터를 모아서 보는 탭입니다.</div>
+<section class="card card-soft">
+<div class="section-header">
+<div class="section-title" id="project-summary-title">📚 프로젝트 요약 + 원형 그래프</div>
+<div class="section-sub" id="project-summary-sub">코드 상단 <code>PROJECTS</code> 배열의 키워드를 네가 트는 프로젝트에 맞게 바꿔줘.</div>
+</div>
+<div class="project-charts-row">
+<div class="project-chart-single">
+<div class="project-chart-title" id="proj-chart-title-1">프로젝트별 게시글 비율</div>
+<canvas id="project-pie"></canvas>
+</div>
+<div class="project-chart-single">
+<div class="project-chart-title" id="proj-chart-title-2">선택 기간 전체 S~D 등급 분포</div>
+<canvas id="grade-distribution-pie"></canvas>
+</div>
+<div class="project-chart-single">
+<div class="project-chart-title" id="proj-chart-title-3">선택 프로젝트 S~D 등급 분포</div>
+<canvas id="project-grade-pie"></canvas>
+</div>
+</div>
+<div class="table-wrap" id="project-summary-wrap">
+<div class="empty">먼저 Dashboard에서 CSV를 업로드하고 분석을 한 번 돌려줘.</div>
+</div>
+<div class="project-detail-controls">
+<span>🔍 프로젝트별 게시글 보기</span>
+<select class="project-select" id="project-select">
+<option value="">CSV 업로드 후 자동 활성화됩니다.</option>
+</select>
+</div>
+<div class="table-wrap" id="project-detail-wrap">
+<div class="empty">프로젝트를 선택하면 해당 프로젝트의 게시글과 등급이 여기에 표시됩니다.</div>
+</div>
+</section>
+</div>
+<!-- ▼▼ 야핑 플래너 화면 ▼▼ -->
+<div id="view-yapping" style="display:none;">
+<div class="top-nav">
+<div>
+<div class="top-title">야핑 &amp; 보상 플래너</div>
+<div class="top-sub">
             스프레드시트에서 관리하던 <b>필수/보조 야핑 · 주기 · 기간 · 보상</b>을 이 화면에서 직접 관리할 수 있습니다.
             (브라우저 <code>localStorage</code>에 저장)
           </div>
-        </div>
-      </div>
-
-      <div class="yap-layout">
-        <section class="card card-soft">
-          <div class="section-header">
-            <div class="section-title">새 야핑 계획 추가</div>
-            <div class="section-sub">엑셀 한 줄 = 아래 폼 한 줄이라고 생각하면 편해.</div>
-          </div>
-
-          <form id="yap-form">
-            <div class="yap-form-grid">
-              <div>
-                <div class="yap-label">한국명</div>
-                <input id="yap-kor" class="yap-input" placeholder="카이토, 리버, 뱅커 ..." />
-              </div>
-              <div>
-                <div class="yap-label">프로젝트</div>
-                <input id="yap-project" class="yap-input" placeholder="Kaito, River, Bankr ..." />
-              </div>
-              <div>
-                <div class="yap-label">계열</div>
-                <input id="yap-segment" class="yap-input" placeholder="장기 / 단기 등" />
-              </div>
-              <div>
-                <div class="yap-label">야핑 타입</div>
-                <select id="yap-type" class="yap-select">
-                  <option value="필수">필수</option>
-                  <option value="보조">보조</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="yap-form-grid">
-              <div>
-                <div class="yap-label">야핑 주기</div>
-                <input id="yap-frequency" class="yap-input" placeholder="일2회 / 일1회 / 주1회 ..." />
-              </div>
-              <div>
-                <div class="yap-label">보상</div>
-                <input id="yap-reward" class="yap-input" placeholder="$200, 포인트, WL 등" />
-              </div>
-              <div>
-                <div class="yap-label">시작일</div>
-                <input id="yap-start" type="date" class="yap-input" />
-              </div>
-              <div>
-                <div class="yap-label">종료일</div>
-                <input id="yap-end" type="date" class="yap-input" />
-              </div>
-            </div>
-
-            <div class="yap-form-grid-1">
-              <div>
-                <div class="yap-label">메모</div>
-                <input id="yap-memo" class="yap-input" placeholder="예: 일2회 스레드 + 디스코드 후기, 최소 2개월 유지" />
-              </div>
-            </div>
-
-            <button class="yap-add-btn" type="submit">+ 야핑 계획 추가</button>
-          </form>
-        </section>
-
-        <section class="card card-soft">
-          <div class="section-header">
-            <div class="section-title">나의 야핑 리스트</div>
-            <div class="section-sub">왼쪽 체크박스는 전체 완료 여부 체크 용도, 메모까지 한 눈에 정리.</div>
-          </div>
-          <div id="yap-list">
-            <div class="yap-list-empty">등록된 야핑 계획이 없습니다. 왼쪽에서 새 계획을 추가해줘.</div>
-          </div>
-        </section>
-      </div>
-    </div>
-    <!-- ▲▲ 야핑 플래너 화면 끝 ▲▲ -->
-
-    <!-- ▼▼ InfoFi 리더보드 화면 ▼▼ -->
-    
-    
-    <!-- ▼▼ 커뮤니티 화면 ▼▼ -->
-    <div id="view-community" style="display:none;">
-      <div class="top-nav">
-        <div>
-          <div class="top-title">커뮤니티 (로컬 전용 베타)</div>
-          <div class="top-sub">
+</div>
+</div><div class="section-note">야핑/에드작 계획과 주기를 관리하면서 보상 대비 효율을 체크하는 탭입니다.</div>
+<div class="yap-layout">
+<section class="card card-soft">
+<div class="section-header">
+<div class="section-title">새 야핑 계획 추가</div>
+<div class="section-sub">엑셀 한 줄 = 아래 폼 한 줄이라고 생각하면 편해.</div>
+</div>
+<form id="yap-form">
+<div class="yap-form-grid">
+<div>
+<div class="yap-label">한국명</div>
+<input class="yap-input" id="yap-kor" placeholder="카이토, 리버, 뱅커 ...">
+</input></div>
+<div>
+<div class="yap-label">프로젝트</div>
+<input class="yap-input" id="yap-project" placeholder="Kaito, River, Bankr ...">
+</input></div>
+<div>
+<div class="yap-label">계열</div>
+<input class="yap-input" id="yap-segment" placeholder="장기 / 단기 등">
+</input></div>
+<div>
+<div class="yap-label">야핑 타입</div>
+<select class="yap-select" id="yap-type">
+<option value="필수">필수</option>
+<option value="보조">보조</option>
+</select>
+</div>
+</div>
+<div class="yap-form-grid">
+<div>
+<div class="yap-label">야핑 주기</div>
+<input class="yap-input" id="yap-frequency" placeholder="일2회 / 일1회 / 주1회 ..."/>
+</div>
+<div>
+<div class="yap-label">보상</div>
+<input class="yap-input" id="yap-reward" placeholder="$200, 포인트, WL 등"/>
+</div>
+<div>
+<div class="yap-label">시작일</div>
+<input class="yap-input" id="yap-start" type="date"/>
+</div>
+<div>
+<div class="yap-label">종료일</div>
+<input class="yap-input" id="yap-end" type="date"/>
+</div>
+</div>
+<div class="yap-form-grid-1">
+<div>
+<div class="yap-label">메모</div>
+<input class="yap-input" id="yap-memo" placeholder="예: 일2회 스레드 + 디스코드 후기, 최소 2개월 유지"/>
+</div>
+</div>
+<button class="yap-add-btn" type="submit">+ 야핑 계획 추가</button>
+</form>
+</section>
+<section class="card card-soft">
+<div class="section-header">
+<div class="section-title">나의 야핑 리스트</div>
+<div class="section-sub">왼쪽 체크박스는 전체 완료 여부 체크 용도, 메모까지 한 눈에 정리.</div>
+</div>
+<div id="yap-list">
+<div class="yap-list-empty">등록된 야핑 계획이 없습니다. 왼쪽에서 새 계획을 추가해줘.</div>
+</div>
+</section>
+</div>
+</div>
+<!-- ▲▲ 야핑 플래너 화면 끝 ▲▲ -->
+<!-- ▼▼ InfoFi 리더보드 화면 ▼▼ -->
+<!-- ▼▼ 커뮤니티 화면 ▼▼ -->
+<div id="view-community" style="display:none;">
+<div class="top-nav">
+<div>
+<div class="top-title">커뮤니티 (로컬 전용 베타)</div>
+<div class="top-sub">
             브라우저에만 저장되는 작은 커뮤니티야. 닉네임 + 글 + 트위터 링크를 남기고, 서로 댓글과 좋아요를 남겨볼 수 있어.
           </div>
-        </div>
-      </div>
-
-      <div class="community-layout">
-        <section class="card card-soft">
-          <div class="section-header">
-            <div class="section-title">💬 최근 글 & 글 쓰기</div>
-            <div class="section-sub">
+</div>
+</div><div class="section-note">MUDDHA 사용자들이 서로 글과 트윗 링크를 공유하고 피드백을 주고받는 커뮤니티 탭입니다.</div>
+<div class="community-layout">
+<section class="card card-soft">
+<div class="section-header">
+<div class="section-title">💬 최근 글 &amp; 글 쓰기</div>
+<div class="section-sub">
               가운데에서 바로 글을 읽고, 필요할 때만 글 쓰기 영역을 펼칠 수 있어.
             </div>
-          </div>
-
-          <div class="community-toggle">
-            <button type="button" id="community-toggle-btn" class="community-toggle-btn">
+</div>
+<div class="community-toggle">
+<button class="community-toggle-btn" id="community-toggle-btn" type="button">
               ✏️ 새 글 쓰기 열기
             </button>
-            <div class="community-hint">
-              · 사이드바 닉네임 버튼으로 이름을 먼저 정해도 좋아.<br>
+<div class="community-hint">
+              · 사이드바 닉네임 버튼으로 이름을 먼저 정해도 좋아.<br/>
               · 이 커뮤니티의 모든 데이터는 이 브라우저의 localStorage에만 저장돼.
             </div>
-          </div>
-
-          <form id="community-form" class="community-form" style="display:none;">
-            <div>
-              <div class="community-form-label">내용</div>
-              <textarea id="community-content" class="community-textarea" placeholder="오늘의 마쉐 / 인사이트 / 잡담 등을 자유롭게 남겨줘."></textarea>
-            </div>
-            <div>
-              <div class="community-form-label">트위터 링크 (선택)</div>
-              <input id="community-twitter" class="community-input" placeholder="https://x.com/.... 형태의 링크를 붙여넣어줘." />
-            </div>
-            <button type="submit" class="community-submit">글 올리기</button>
-          </form>
-
-          <div id="community-list" class="community-list">
-            <div class="community-empty">아직 등록된 글이 없어. 첫 글을 남겨볼래?</div>
-          </div>
-        </section>
-      </div>
-    </div>
-    <!-- ▲▲ 커뮤니티 화면 끝 ▲▲ -->
-
-
+</div>
+<form class="community-form" id="community-form" style="display:none;">
+<div>
+<div class="community-form-label">내용</div>
+<textarea class="community-textarea" id="community-content" placeholder="오늘의 마쉐 / 인사이트 / 잡담 등을 자유롭게 남겨줘."></textarea>
+</div>
+<div>
+<div class="community-form-label">트위터 링크 (선택)</div>
+<input class="community-input" id="community-twitter" placeholder="https://x.com/.... 형태의 링크를 붙여넣어줘."/>
+</div>
+<button class="community-submit" type="submit">글 올리기</button>
+</form>
+<div class="community-list" id="community-list">
+<div class="community-empty">아직 등록된 글이 없어. 첫 글을 남겨볼래?</div>
+</div>
+</section>
+</div>
+</div>
+<!-- ▲▲ 커뮤니티 화면 끝 ▲▲ -->
 <!-- ▼▼ Cookie 리더보드 화면 ▼▼ -->
 <div id="view-cookie" style="display:none;">
-  <div class="top-nav">
-    <div>
-      <div class="top-title">🍪 Cookie 프로젝트 리더보드</div>
-      <div class="top-sub">
-        Cookie에서 공개하는 JSON을 실시간으로 불러와서
-        <b>프로젝트별 / 핸들별 InfoFi 랭킹</b>을 보는 탭이야.
-      </div>
-    </div>
-  </div>
-
-  <section class="card card-soft infofi-hero">
-    <div class="infofi-hero-title">🔍 핸들로 내 Cookie 순위 찾기</div>
-    <div class="infofi-hero-sub">
+<div class="top-nav">
+<div>
+<div class="top-title">🍪 Cookie 프로젝트 리더보드</div>
+<div class="top-sub">Cookie InfoFi 리더보드를 안전하게 프록시를 거쳐 조회하는 화면입니다.</div>
+</div>
+</div><div class="section-note">Cookie InfoFi 리더보드를 프로젝트·핸들 단위로 조회하는 탭입니다.</div>
+<section class="card card-soft infofi-hero">
+<div class="infofi-hero-title">🔍 핸들로 내 Cookie 순위 찾기</div>
+<div class="infofi-hero-sub">
       예: <code>@bud_dha__</code> 처럼 입력하면됨
     </div>
-
-    <div class="infofi-search-row">
-      <input id="cookie-handle-input" class="infofi-search-input" placeholder="@핸들 입력 (예: @bud_dha__)" />
-      <button type="button" class="infofi-search-btn" onclick="handleCookieSearch()">검색</button>
-    </div>
-
-    <div class="infofi-handle-label" id="cookie-handle-label"></div>
-    <div class="infofi-hint">
+<div class="infofi-search-row">
+<input class="infofi-search-input" id="cookie-handle-input" placeholder="@핸들 입력 (예: @bud_dha__)"/>
+<button class="infofi-search-btn" onclick="handleCookieSearch()" type="button">검색</button>
+</div>
+<div class="infofi-handle-label" id="cookie-handle-label"></div>
+<div class="infofi-hint">
       ※ Cookie에서 공개하는 JSON 엔드포인트를 <code>COOKIE_API_URL</code>에 설정해두면 실시간으로 불러올 수 있어.
     </div>
-    <div class="infofi-source-note">
+<div class="infofi-source-note">
       데이터 출처: <code>COOKIE_API_URL</code> (Cookie 공개 JSON)
     </div>
-  </section>
-
-  <section class="infofi-results card">
-    <div class="section-header">
-      <div class="section-title">🍪 Cookie 프로젝트 리더보드</div>
-      <div class="section-sub">
+</section>
+<section class="infofi-results card">
+<div class="section-header">
+<div class="section-title">🍪 Cookie 프로젝트 리더보드</div>
+<div class="section-sub">
         전체 프로젝트 기준 순위 또는 특정 핸들이 참여한 프로젝트만 필터링해서 보여줄 수 있어.
       </div>
-    </div>
+</div>
 
-    <div class="table-wrap">
-      <table class="infofi-table">
-        <thead>
-          <tr>
-            <th style="width:56px;">Rank</th>
-            <th>Project</th>
-            <th>Handle</th>
-            <th>Segment</th>
-            <th>Window</th>
-            <th style="width:100px;">MS%</th>
-          </tr>
-        </thead>
-        <tbody id="cookie-leaderboard-body">
-          <tr>
-            <td colspan="6" class="infofi-empty">
+<div class="cookie-project-cards" id="cookie-project-cards">
+  <div class="infofi-empty">먼저 위에서 조회할 @핸들을 입력해줘.</div>
+</div>
+
+<div class="table-wrap">
+<table class="infofi-table">
+<thead>
+<tr>
+<th style="width:56px;">Rank</th>
+<th>Project</th>
+<th>Handle</th>
+<th>Segment</th>
+<th>Window</th>
+<th style="width:100px;">MS%</th>
+</tr>
+</thead>
+<tbody id="cookie-leaderboard-body">
+<tr>
+<td class="infofi-empty" colspan="6">
               아직 Cookie JSON을 불러오지 않았어. 위에서 핸들을 검색하거나, 탭을 다시 열어봐.
             </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+</tr>
+</tbody>
+</table>
 </div>
-
-
+</section>
+</div>
 <div id="view-infofi" style="display:none;">
-      <div class="top-nav">
-        <div>
-          <div class="top-title">InfoFi 리더보드(현재 나만 가능함...)</div>
-          <div class="top-sub">
-            Kaito / Cookie / 등 InfoFi 프로젝트의 <b>프로젝트별 리더보드 순위</b>
-            <b></b>
-          </div>
-        </div>
-      </div>
-
-      <section class="card card-soft infofi-hero">
-        <div class="infofi-hero-title">🔍 핸들로 내 InfoFi 순위 찾기</div>
-        <div class="infofi-hero-sub">
+<div class="top-nav">
+<div>
+<div class="top-title">InfoFi 리더보드(현재 나만 가능함...)</div>
+<div class="top-sub">여러 InfoFi 프로젝트를 한 눈에 정리해서 비교·분석하는 화면입니다.</div>
+</div>
+</div><div class="section-note">여러 InfoFi 프로젝트들의 리더보드·점수를 한 눈에 정리해서 보는 탭입니다.</div>
+<section class="card card-soft infofi-hero">
+<div class="infofi-hero-title">🔍 핸들로 내 InfoFi 순위 찾기</div>
+<div class="infofi-hero-sub">
           예: <code>@bud_dha__</code> 처럼 입력하면됨
         </div>
-
-        <div class="infofi-search-row">
-          <input id="infofi-handle-input" class="infofi-search-input" placeholder="@핸들 입력 (예: @bud_dha__)" />
-          <button type="button" class="infofi-search-btn" onclick="handleInfofiSearch()">검색</button>
-        </div>
-
-        <div class="infofi-handle-label" id="infofi-handle-label"></div>
-        <div class="infofi-hint">
+<div class="infofi-search-row">
+<input class="infofi-search-input" id="infofi-handle-input" placeholder="@핸들 입력 (예: @bud_dha__)"/>
+<button class="infofi-search-btn" onclick="handleInfofiSearch()" type="button">검색</button>
+</div>
+<div class="infofi-handle-label" id="infofi-handle-label"></div>
+<div class="infofi-hint">
           ※  <code></code> 딜레이 있음
         </div>
-        <div class="infofi-source-note">
-          데이터 출처: <a href="https://gomtu.xyz/kaito-leaderboard" target="_blank" rel="noopener">Gomtu Kaito Leaderboard</a>
-        </div>
-      </section>
-
-      <section class="infofi-results card">
-        <div id="infofi-result-wrap" class="infofi-projects-grid">
-          <div class="empty">먼저 위에서 @핸들을 입력하고 검색을 눌러줘.</div>
-      </div>
-
-      <!-- ✅ Kaito Leaderboard 결과 영역 (InfoFi 검색과 통합) -->
-      
-      <!-- ✅ Kaito Leaderboard 결과 (텍스트만 표시) -->
-      <div
-        id="kaito-result"
-        style="margin-top:8px;font-size:13px;line-height:1.6;color:#e5e7eb;"
-      ></div>
-
-
-        </div>
-      </section>
-    </div>
-
-
-    <!-- ▲▲ InfoFi 리더보드 화면 끝 ▲▲ -->
-
-<!-- ▲▲ 프로젝트 화면 끝 ▲▲ -->
-
-  </main>
+<div class="infofi-source-note">
+          데이터 출처: <a href="https://gomtu.xyz/kaito-leaderboard" rel="noopener" target="_blank">Gomtu Kaito Leaderboard</a>
 </div>
+</section>
+<section class="infofi-results card">
+<div class="infofi-projects-grid" id="infofi-result-wrap">
+<div class="empty">먼저 위에서 @핸들을 입력하고 검색을 눌러줘.</div>
+</div>
+<!-- ✅ Kaito Leaderboard 결과 영역 (InfoFi 검색과 통합) -->
+<!-- ✅ Kaito Leaderboard 결과 (텍스트만 표시) -->
+<div id="kaito-result" style="margin-top:8px;font-size:13px;line-height:1.6;color:#e5e7eb;"></div>
+</section></div>
 
-
+</main></div>
+<!-- ▲▲ InfoFi 리더보드 화면 끝 ▲▲ -->
+<!-- ▲▲ 프로젝트 화면 끝 ▲▲ -->
 
 
 <script>
@@ -5998,7 +6360,7 @@ function cookiePickPercent(u, type, period){
 
 function cookieAddUserToIndex(u, meta, type){
   const handleNorm = cookieNormalizeHandle(
-    u.handle || u.twitter || u.x || u.user || u.name
+    u.username || u.handle || u.screenName || u.twitter || u.x || u.user || u.name
   );
   if (!handleNorm) return 0;
 
@@ -6016,7 +6378,7 @@ function cookieAddUserToIndex(u, meta, type){
     type,
     handle: "@" + handleNorm,
     rank: cookieSafeNumber(rank),
-    percent: percentNum // raw 값 그대로 (예: 0.7116, 1.6640459)
+    percent: percentNum
   });
   COOKIE_ENTRY_COUNT += 1;
   return 1;
@@ -6034,10 +6396,8 @@ function cookieIndexFromJson(json, meta){
   const snaps = Array.isArray(data?.snaps) ? data.snaps : [];
   const cSnaps = Array.isArray(data?.cSnaps) ? data.cSnaps : [];
 
-  let added = 0;
-  snaps.forEach(u => { added += cookieAddUserToIndex(u, meta, "Mindshare"); });
-  cSnaps.forEach(u => { added += cookieAddUserToIndex(u, meta, "Capital"); });
-  return added;
+  snaps.forEach(u => { cookieAddUserToIndex(u, meta, "Mindshare"); });
+  cSnaps.forEach(u => { cookieAddUserToIndex(u, meta, "Capital"); });
 }
 
 async function cookieLoadBundle(){
@@ -6045,33 +6405,144 @@ async function cookieLoadBundle(){
   COOKIE_BUNDLE_LOADING = true;
 
   const tbody = document.getElementById("cookie-leaderboard-body");
+  const cardsWrap = document.getElementById("cookie-project-cards");
   if (tbody){
     tbody.innerHTML = '<tr><td colspan="6" class="infofi-empty">cookie_all_bundle.json 불러오는 중...</td></tr>';
+  }
+  if (cardsWrap){
+    cardsWrap.innerHTML = '<div class="infofi-empty">cookie_all_bundle.json 불러오는 중...</div>';
   }
 
   try{
     const res = await fetch("cookie_all_bundle.json", { cache: "no-store" });
     if (!res.ok) throw new Error("HTTP " + res.status);
-    const bundle = await res.json(); // [{ filename, data }, ...]
+    const bundle = await res.json();
 
-    let total = 0;
     for (const file of bundle){
       const meta = cookieParseFilenameMeta(file.filename || file.name || "");
       const json = file.data || file.json || file;
-      total += cookieIndexFromJson(json, meta);
+      cookieIndexFromJson(json, meta);
     }
     COOKIE_BUNDLE_LOADED = true;
-    COOKIE_ENTRY_COUNT = total;
-    if (tbody && !tbody.innerHTML.includes("Cookie JSON 불러오는 중...")){
-      // 나중에 renderCookieLeaderboard가 다시 채울 거라서 여기서는 별도 처리 X
-    }
   } catch (err){
     console.error("cookie_all_bundle.json load error:", err);
     if (tbody){
       tbody.innerHTML = '<tr><td colspan="6" class="infofi-empty">cookie_all_bundle.json 을 불러오지 못했어. 같은 폴더에 두었는지 확인해줘.</td></tr>';
     }
+    const cardsWrap2 = document.getElementById("cookie-project-cards");
+    if (cardsWrap2){
+      cardsWrap2.innerHTML = '<div class="infofi-empty">cookie_all_bundle.json 을 불러오지 못했어. 같은 폴더에 두었는지 확인해줘.</div>';
+    }
   } finally {
     COOKIE_BUNDLE_LOADING = false;
+  }
+}
+
+function cookieGroupByProject(entries){
+  const map = {};
+  entries.forEach(e => {
+    if (!e || !e.project) return;
+    if (!map[e.project]) map[e.project] = [];
+    map[e.project].push(e);
+  });
+  return map;
+}
+
+function cookieSummarizeProjectEntries(list){
+  const result = {
+    project: list[0]?.project || "?",
+    handle: list[0]?.handle || "-",
+    lang: list[0]?.lang || "",
+    segments: {
+      "Mindshare": { "7D": null, "14D": null, "30D": null, "Total": null },
+      "Capital": { "7D": null, "14D": null, "30D": null, "Total": null }
+    }
+  };
+  for (const e of list){
+    const seg = e.type === "Capital" ? "Capital" : "Mindshare";
+    const period = ["7D","14D","30D","Total"].includes(e.period) ? e.period : "Total";
+    const current = result.segments[seg][period];
+    if (!current){
+      result.segments[seg][period] = { rank: e.rank, percent: e.percent };
+    } else {
+      if (e.rank != null && (current.rank == null || e.rank < current.rank)) {
+        result.segments[seg][period] = { rank: e.rank, percent: e.percent };
+      }
+    }
+  }
+  return result;
+}
+
+function cookieRenderProjectCards(entries, handleNorm){
+  const wrap = document.getElementById("cookie-project-cards");
+  const labelEl = document.getElementById("cookie-handle-label");
+  if (!wrap) return;
+
+  if (!entries.length){
+    wrap.innerHTML = '<div class="infofi-empty">해당 핸들로 찾은 Cookie 프로젝트 카드가 없어 (#200 이내, 0% 제외).</div>';
+    if (labelEl) labelEl.textContent = "";
+    return;
+  }
+
+  const byProject = cookieGroupByProject(entries);
+  const summaries = Object.values(byProject).map(list => cookieSummarizeProjectEntries(list));
+  summaries.sort((a,b) => {
+    const nameA = (a.project || "").toLowerCase();
+    const nameB = (b.project || "").toLowerCase();
+    if (nameA < nameB) return -1;
+    if (nameA > nameB) return 1;
+    return 0;
+  });
+
+  const periodOrder = ["7D","14D","30D","Total"];
+
+  const cardsHtml = summaries.map(s => {
+    const initials = (s.project || "?").slice(0,2).toUpperCase();
+    const msRows = periodOrder.map(p => {
+      const v = s.segments.Mindshare[p];
+      if (!v) return `<tr><td>${p}</td><td>-</td><td>-</td></tr>`;
+      return `<tr><td>${p}</td><td>${v.rank ?? "-"}</td><td>${v.percent}%</td></tr>`;
+    }).join("");
+    const capRows = periodOrder.map(p => {
+      const v = s.segments.Capital[p];
+      if (!v) return `<tr><td>${p}</td><td>-</td><td>-</td></tr>`;
+      return `<tr><td>${p}</td><td>${v.rank ?? "-"}</td><td>${v.percent}%</td></tr>`;
+    }).join("");
+
+    return `
+      <div class="cookie-project-card">
+        <div class="cookie-project-card-header">
+          <div class="cookie-project-logo">${initials}</div>
+          <div class="cookie-project-head-main">
+            <div class="cookie-project-name">${s.project}</div>
+            <div class="cookie-project-meta">
+              ${s.handle} · ${s.lang || "global"} · Cookie 랭킹 요약
+            </div>
+          </div>
+        </div>
+        <div class="cookie-project-card-body">
+          <div class="cookie-project-segment">
+            <div class="cookie-seg-title">Mindshare</div>
+            <table class="cookie-seg-table">
+              <thead><tr><th>기간</th><th>Rank</th><th>MS%</th></tr></thead>
+              <tbody>${msRows}</tbody>
+            </table>
+          </div>
+          <div class="cookie-project-segment">
+            <div class="cookie-seg-title">Capital</div>
+            <table class="cookie-seg-table">
+              <thead><tr><th>기간</th><th>Rank</th><th>MS%</th></tr></thead>
+              <tbody>${capRows}</tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  wrap.innerHTML = cardsHtml;
+  if (labelEl){
+    labelEl.textContent = "@" + handleNorm + " 기준 Cookie 프로젝트 요약 카드";
   }
 }
 
@@ -6087,13 +6558,16 @@ async function renderCookieLeaderboard(handle){
 
   if (!handleNorm){
     tbody.innerHTML = '<tr><td colspan="6" class="infofi-empty">먼저 위에서 조회할 @핸들을 입력해줘.</td></tr>';
+    const cardsWrap = document.getElementById("cookie-project-cards");
+    if (cardsWrap){
+      cardsWrap.innerHTML = '<div class="infofi-empty">먼저 위에서 조회할 @핸들을 입력해줘.</div>';
+    }
     if (labelEl) labelEl.textContent = "";
     return;
   }
 
   await cookieLoadBundle();
   if (!COOKIE_BUNDLE_LOADED){
-    // 로딩 중 오류가 있었다면 cookieLoadBundle()에서 메시지를 넣어둠
     return;
   }
 
@@ -6107,11 +6581,15 @@ async function renderCookieLeaderboard(handle){
     e.percent > 0
   );
 
-  const labelText = "@" + handleNorm + " 기준 Cookie 랭킹 (#200 이내 · 0% 제외, raw %)";
-
   if (!list.length){
     tbody.innerHTML = '<tr><td colspan="6" class="infofi-empty">해당 핸들로 찾은 Cookie 데이터가 없어 (#200 이내, 0% 제외).</td></tr>';
-    if (labelEl) labelEl.textContent = labelText;
+    const cardsWrap = document.getElementById("cookie-project-cards");
+    if (cardsWrap){
+      cardsWrap.innerHTML = '<div class="infofi-empty">해당 핸들로 찾은 Cookie 프로젝트 카드가 없어 (#200 이내, 0% 제외).</div>';
+    }
+    if (labelEl){
+      labelEl.textContent = "@" + handleNorm + " 기준 Cookie 랭킹 (데이터 없음)";
+    }
     return;
   }
 
@@ -6123,14 +6601,12 @@ async function renderCookieLeaderboard(handle){
       if (av !== bv) return av - bv;
     }
     if (a.type !== b.type){
-      // Mindshare 먼저
       if (a.type === "Mindshare" && b.type !== "Mindshare") return -1;
       if (b.type === "Mindshare" && a.type !== "Mindshare") return 1;
     }
     if (a.rank != null && b.rank != null && a.rank !== b.rank){
       return a.rank - b.rank;
     }
-    // rank 같으면 퍼센트 큰 순
     return (b.percent || 0) - (a.percent || 0);
   });
 
@@ -6152,14 +6628,13 @@ async function renderCookieLeaderboard(handle){
   }).join("");
 
   tbody.innerHTML = rowsHtml;
-  if (labelEl){
-    labelEl.textContent = labelText;
-  }
+  cookieRenderProjectCards(list, handleNorm);
 }
 
 function handleCookieSearch(){
   const input = document.getElementById("cookie-handle-input");
   if (!input){
+    renderCookieLeaderboard();
     return;
   }
   let handle = (input.value || "").trim();
@@ -6168,6 +6643,10 @@ function handleCookieSearch(){
     if (tbody){
       tbody.innerHTML = '<tr><td colspan="6" class="infofi-empty">먼저 위에서 조회할 @핸들을 입력해줘.</td></tr>';
     }
+    const cardsWrap = document.getElementById("cookie-project-cards");
+    if (cardsWrap){
+      cardsWrap.innerHTML = '<div class="infofi-empty">먼저 위에서 조회할 @핸들을 입력해줘.</div>';
+    }
     const labelEl = document.getElementById("cookie-handle-label");
     if (labelEl) labelEl.textContent = "";
     return;
@@ -6175,7 +6654,6 @@ function handleCookieSearch(){
   if (handle[0] !== "@") handle = "@" + handle;
   renderCookieLeaderboard(handle);
 }
-
 /* ===== 야핑 플래너 로컬 저장 / 렌더링 ===== */
 const YAP_STORAGE_KEY = "mindshare_yapping_planner_v1";
 let YAPS = [];
@@ -6300,7 +6778,6 @@ sidebarToggle.addEventListener("click", () => {
   layout.classList.toggle("collapsed");
 });
 </script>
-
 <script>
 
 // 프로젝트별 로고 URL 매핑 (원하면 여기 URL 채워 넣기)
@@ -6546,10 +7023,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   }
 });
 </script>
-
-  
-
-  <script>
+<script>
     const KAITOPROXY_URL = "https://ejqrnapdwblbqvnperid.supabase.co/functions/v1/kaito-proxy";
 
     const KAITO_TOPIC_TWITTER_HANDLES = {
@@ -6878,7 +7352,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
-
 <script>
 (function(){
   const PROFILE_KEY = "mindshare_profile_v1";
@@ -6999,7 +7472,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 })();
 </script>
-
 <script>
 document.addEventListener("DOMContentLoaded", function(){
   const csvInput = document.getElementById("csvInput");
@@ -7069,8 +7541,6 @@ document.addEventListener("DOMContentLoaded", function(){
   });
 });
 </script>
-
-
 <script>
 
 // Supabase Auth UI helpers
