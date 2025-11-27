@@ -2681,6 +2681,8 @@ html.dark-theme .auth-input{
 }
 </style>
 
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 </head>
 <body>
 <div class="layout app-shell">
@@ -6606,9 +6608,16 @@ async function cookieLoadBundle(){
 
 
   try{
-    const res = await fetch("cookie_all_bundle.json", { cache: "no-store" });
+    // ZIP 파일(cookie_all_bundle.zip)에서 JSON을 읽어오는 방식
+    const res = await fetch("cookie_all_bundle.zip", { cache: "no-store" });
     if (!res.ok) throw new Error("HTTP " + res.status);
-    const bundle = await res.json();
+    const buf = await res.arrayBuffer();
+    const zip = await JSZip.loadAsync(buf);
+    // ZIP 안에 들어있는 JSON 파일 이름 (필요하면 수정)
+    const file = zip.file("cookie_all_bundle.json");
+    if (!file) throw new Error("ZIP 안에 cookie_all_bundle.json 이 없어.");
+    const text = await file.async("string");
+    const bundle = JSON.parse(text);
 
     // 공통 인덱싱 로직
     cookieIndexBundle(bundle);
