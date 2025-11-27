@@ -2509,6 +2509,48 @@ html.dark-theme .auth-input{
     opacity:0.7;
     margin-bottom:4px;
   }
+
+  /* MUDDHA pastel stat tables */
+  .muddha-seg-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    table-layout: fixed;
+  }
+  .muddha-seg-table thead {
+    display: table-header-group;
+  }
+  .muddha-seg-table thead th {
+    padding: 2px 4px 4px;
+    font-weight: 600;
+    color: #6b7280;
+    text-align: center;
+    border-bottom: 1px solid rgba(229,231,235,0.9);
+    position: static !important;
+    background: transparent !important;
+    z-index: auto !important;
+  }
+  .muddha-seg-table tbody td {
+    padding: 3px 4px;
+    border-bottom: 1px solid rgba(243,244,246,1);
+  }
+  .muddha-seg-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .muddha-seg-table td:nth-child(1) {
+    width: 32px;
+    text-align: left;
+    color: #4b5563;
+  }
+  .muddha-seg-table td:nth-child(2) {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .muddha-seg-table td:nth-child(3) {
+    text-align: right;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
   .cookie-seg-table {
     width:100%;
     border-collapse:collapse;
@@ -2516,6 +2558,16 @@ html.dark-theme .auth-input{
   }
   .cookie-seg-table thead {
     display: none;
+  }
+
+  /* 강제: Cookie 카드 내부 MS% 컬럼 글자 진하게, 항상 보이도록 */
+  .cookie-seg-table td:nth-child(3),
+  .cookie-seg-table th:nth-child(3) {
+    display: table-cell !important;
+    text-align: right;
+    color: #2563eb !important;  /* 진한 파랑 */
+    font-weight: 600;
+    opacity: 1 !important;
   }
 
   .cookie-seg-table th,
@@ -2527,7 +2579,14 @@ html.dark-theme .auth-input{
     opacity:0.7;
   }
 
-  /* Cookie: hide raw list table under cards */
+  
+  /* Ensure 3rd column (MS%) in Cookie tables is always visible */
+  .cookie-seg-table td:nth-child(3),
+  .cookie-seg-table th:nth-child(3) {
+    display: table-cell !important;
+    text-align: right;
+  }
+/* Cookie: hide raw list table under cards */
   #view-cookie .infofi-results .table-wrap {
     display: none;
   }
@@ -2538,7 +2597,91 @@ html.dark-theme .auth-input{
     height: 40px;
     font-size: 16px;
   }
-</style></head>
+
+  .cookie-project-logo.has-img {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: transparent;
+  }
+
+  /* 강제: Cookie 카드 내부 MS% 컬럼 글자 진하게, 항상 검정으로 보이도록 */
+  .cookie-seg-table td:nth-child(3),
+  .cookie-seg-table th:nth-child(3) {
+    display: table-cell !important;
+    text-align: right !important;
+    color: #000000 !important;      /* 완전 검정 */
+    font-weight: 700 !important;    /* 굵게 */
+    opacity: 1 !important;          /* 투명도 제거 */
+    mix-blend-mode: normal !important;
+    filter: none !important;
+  }
+
+/* FULL OPACITY FIX */
+.cookie-seg-table, 
+.cookie-seg-table td, 
+.cookie-seg-table th {
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  color: #000 !important;
+  font-weight: 600 !important;
+}
+</style>
+<style>
+/* Layout A: desktop-focused fixed width */
+.layout.app-shell{
+  max-width:1280px;
+  margin:0 auto;
+  width:100%;
+  overflow-x:auto;
+}
+.main{
+  max-width:1280px;
+  min-width:980px;
+}
+
+/* Cookie 카드 그리드 */
+.cookie-project-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+/* Cookie 카드 테이블 정렬/폭 통일 */
+.cookie-project-card .muddha-seg-table{
+  width:100%;
+  table-layout:fixed;
+  min-width:0 !important;
+}
+.cookie-project-card .muddha-seg-table th,
+.cookie-project-card .muddha-seg-table td{
+  padding:3px 4px !important;
+  border-bottom:1px solid rgba(243,244,246,1);
+}
+.cookie-project-card .muddha-seg-table th:nth-child(1){
+  text-align:left;
+}
+.cookie-project-card .muddha-seg-table th:nth-child(2),
+.cookie-project-card .muddha-seg-table th:nth-child(3){
+  text-align:right;
+}
+.cookie-project-card .muddha-seg-table td:nth-child(1){
+  text-align:left;
+  width:28%;
+}
+.cookie-project-card .muddha-seg-table td:nth-child(2){
+  text-align:right;
+  width:36%;
+  font-variant-numeric:tabular-nums;
+}
+.cookie-project-card .muddha-seg-table td:nth-child(3){
+  text-align:right;
+  width:36%;
+  font-variant-numeric:tabular-nums;
+}
+</style>
+
+</head>
 <body>
 <div class="layout app-shell">
 <!-- AUTH BAR -->
@@ -6278,7 +6421,30 @@ const viewNavItems = document.querySelectorAll(".side-nav-item[data-view]");
 
 
 
-const COOKIE_INDEX = {};
+let COOKIE_INDEX = {};
+// 프로젝트별 로고 (X 프로필 / 프로젝트 로고 URL을 직접 넣어줘야 해)
+// 예시:
+// const COOKIE_PROJECT_LOGOS = {
+//   vooi: "https://pbs.twimg.com/profile_images/....jpg",
+//   ten: "https://pbs.twimg.com/profile_images/....jpg"
+// };
+const COOKIE_PROJECT_LOGOS = {
+  veera: "https://pbs.twimg.com/profile_images/1990352139168923648/PfeXQsSl_400x400.jpg",
+  spaace: "https://pbs.twimg.com/profile_images/1651202265405898753/6PanR3uY_400x400.jpg",
+  superform: "https://pbs.twimg.com/profile_images/1937588443166416896/4S5X6QSi_400x400.png",
+  glint: "https://pbs.twimg.com/profile_images/1825445059375816705/th4KzmWL_400x400.jpg",
+  "glint-analytics": "https://pbs.twimg.com/profile_images/1825445059375816705/th4KzmWL_400x400.jpg",
+  solv: "https://pbs.twimg.com/profile_images/1971489442235092992/njLUqgMN_400x400.jpg",
+  "solv-protocol": "https://pbs.twimg.com/profile_images/1971489442235092992/njLUqgMN_400x400.jpg",
+  pacifica: "https://pbs.twimg.com/profile_images/1911022804159389696/THxMFj50_400x400.jpg",
+  layerbank: "https://pbs.twimg.com/profile_images/1874059175967547396/p25s8fYo_400x400.jpg",
+  tria: "https://pbs.twimg.com/profile_images/1947271337057079296/_smOX_4e_400x400.jpg",
+  rayls: "https://pbs.twimg.com/profile_images/1787938574702116864/W_-vmST3_400x400.png",
+  almanak: "https://pbs.twimg.com/profile_images/1933390399005208578/tBlaw9Jj_400x400.png",
+  ten: "https://pbs.twimg.com/profile_images/1948670923596234752/CjzIhnby_400x400.jpg",
+  vooi: "https://pbs.twimg.com/profile_images/1938271243876155393/fXAC9P_h_400x400.jpg"
+};
+
 let COOKIE_ENTRY_COUNT = 0;
 let COOKIE_BUNDLE_LOADED = false;
 let COOKIE_BUNDLE_LOADING = false;
@@ -6404,6 +6570,27 @@ function cookieIndexFromJson(json, meta){
   cSnaps.forEach(u => { cookieAddUserToIndex(u, meta, "Capital"); });
 }
 
+
+function cookieIndexBundle(bundle){
+  try{
+    if (!bundle) return;
+    // 배열인 경우: 파일 단위 리스트라고 가정
+    if (Array.isArray(bundle)){
+      for (const file of bundle){
+        const meta = cookieParseFilenameMeta(file.filename || file.name || "");
+        const json = file.data || file.json || file;
+        cookieIndexFromJson(json, meta);
+      }
+      return;
+    }
+    // 그 외에는 단일 JSON으로 간주
+    cookieIndexFromJson(bundle, {});
+  }catch(e){
+    console.error("cookieIndexBundle error:", e);
+    throw e;
+  }
+}
+
 async function cookieLoadBundle(){
   if (COOKIE_BUNDLE_LOADED || COOKIE_BUNDLE_LOADING) return;
   COOKIE_BUNDLE_LOADING = true;
@@ -6417,27 +6604,67 @@ async function cookieLoadBundle(){
     cardsWrap.innerHTML = '<div class="infofi-empty">cookie_all_bundle.json 불러오는 중...</div>';
   }
 
+
   try{
     const res = await fetch("cookie_all_bundle.json", { cache: "no-store" });
     if (!res.ok) throw new Error("HTTP " + res.status);
     const bundle = await res.json();
 
-    for (const file of bundle){
-      const meta = cookieParseFilenameMeta(file.filename || file.name || "");
-      const json = file.data || file.json || file;
-      cookieIndexFromJson(json, meta);
-    }
+    // 공통 인덱싱 로직
+    cookieIndexBundle(bundle);
     COOKIE_BUNDLE_LOADED = true;
   } catch (err){
     console.error("cookie_all_bundle.json load error:", err);
+    const errMsg = (err && err.message) ? err.message : String(err);
+
     if (tbody){
-      tbody.innerHTML = '<tr><td colspan="6" class="infofi-empty">cookie_all_bundle.json 을 불러오지 못했어. 같은 폴더에 두었는지 확인해줘.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" class="infofi-empty">cookie_all_bundle.json 로드 에러: ' 
+        + errMsg.replace(/'/g,"&#39;") + '<br>아래에서 직접 cookie_all_bundle.json 파일을 선택해서 불러올 수도 있어.</td></tr>';
     }
     const cardsWrap2 = document.getElementById("cookie-project-cards");
     if (cardsWrap2){
-      cardsWrap2.innerHTML = '<div class="infofi-empty">cookie_all_bundle.json 을 불러오지 못했어. 같은 폴더에 두었는지 확인해줘.</div>';
+      cardsWrap2.innerHTML = ''
+        + '<div class="infofi-empty">cookie_all_bundle.json 로드 에러: ' + errMsg.replace(/'/g,"&#39;") + '</div>'
+        + '<div class="infofi-empty" style="margin-top:8px;">아래 버튼으로 cookie_all_bundle.json 을 직접 선택해서 불러올 수 있어.</div>'
+        + '<div style="margin-top:12px;"><input type="file" id="cookie-json-file" accept=".json"></div>';
     }
-  } finally {
+
+    // 파일 업로드 fallback 핸들러
+    setTimeout(() => {
+      const inp = document.getElementById("cookie-json-file");
+      if (!inp) return;
+      inp.addEventListener("change", (e) => {
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          try{
+            const text = ev.target.result;
+            const parsed = JSON.parse(text);
+            // 기존 인덱스 초기화 후 다시 생성
+            COOKIE_INDEX = {};
+            COOKIE_ENTRY_COUNT = 0;
+            cookieIndexBundle(parsed);
+            COOKIE_BUNDLE_LOADED = true;
+            // 성공 시 안내 문구 갱신
+            if (cardsWrap2){
+              cardsWrap2.innerHTML = '<div class="infofi-empty">cookie_all_bundle.json 을 파일 업로드로 성공적으로 불러왔어. 이제 핸들을 검색해봐.</div>';
+            }
+            if (tbody){
+              tbody.innerHTML = '<tr><td colspan="6" class="infofi-empty">cookie_all_bundle.json 을 파일 업로드로 성공적으로 불러왔어. 이제 핸들을 검색해봐.</td></tr>';
+            }
+          }catch(e2){
+            console.error("파일 업로드 JSON 파싱 에러:", e2);
+            if (cardsWrap2){
+              cardsWrap2.innerHTML = '<div class="infofi-empty">파일 업로드 JSON 파싱 에러: ' + (e2.message || String(e2)) + '</div>';
+            }
+          }
+        };
+        reader.readAsText(f, "utf-8");
+      });
+    }, 0);
+  } finally 
+{
     COOKIE_BUNDLE_LOADING = false;
   }
 }
@@ -6477,6 +6704,7 @@ function cookieSummarizeProjectEntries(list){
   return result;
 }
 
+
 function cookieRenderProjectCards(entries, handleNorm){
   const wrap = document.getElementById("cookie-project-cards");
   const labelEl = document.getElementById("cookie-handle-label");
@@ -6502,21 +6730,31 @@ function cookieRenderProjectCards(entries, handleNorm){
 
   const cardsHtml = summaries.map(s => {
     const initials = (s.project || "?").slice(0,2).toUpperCase();
+    const projectKey = (s.project || "").toLowerCase();
+    const logoUrl = COOKIE_PROJECT_LOGOS[projectKey] || "";
+
     const msRows = periodOrder.map(p => {
       const v = s.segments.Mindshare[p];
       if (!v) return `<tr><td>${p}</td><td>-</td><td>-</td></tr>`;
-      return `<tr><td>${p}</td><td>${v.rank ?? "-"}</td><td>${v.percent}%</td></tr>`;
+      const pct = (v.percent == null ? "-" : (Number(v.percent).toFixed(6) + "%"));
+      return `<tr><td>${p}</td><td>${pct}</td><td>${v.rank ?? "-"}</td></tr>`;
     }).join("");
+
     const capRows = periodOrder.map(p => {
       const v = s.segments.Capital[p];
       if (!v) return `<tr><td>${p}</td><td>-</td><td>-</td></tr>`;
-      return `<tr><td>${p}</td><td>${v.rank ?? "-"}</td><td>${v.percent}%</td></tr>`;
+      const pct = (v.percent == null ? "-" : (Number(v.percent).toFixed(6) + "%"));
+      return `<tr><td>${p}</td><td>${pct}</td><td>${v.rank ?? "-"}</td></tr>`;
     }).join("");
+
+    const logoHtml = logoUrl
+      ? `<div class="cookie-project-logo has-img" style="background-image:url('${logoUrl}')"></div>`
+      : `<div class="cookie-project-logo">${initials}</div>`;
 
     return `
       <div class="cookie-project-card">
         <div class="cookie-project-card-header">
-          <div class="cookie-project-logo">${initials}</div>
+          ${logoHtml}
           <div class="cookie-project-head-main">
             <div class="cookie-project-name">${s.project}</div>
             <div class="cookie-project-meta">
@@ -6527,15 +6765,15 @@ function cookieRenderProjectCards(entries, handleNorm){
         <div class="cookie-project-card-body">
           <div class="cookie-project-segment">
             <div class="cookie-seg-title">Mindshare</div>
-            <table class="cookie-seg-table">
-              <thead><tr><th>기간</th><th>Rank</th><th>MS%</th></tr></thead>
+            <table class="muddha-seg-table">
+              <thead><tr><th>기간</th><th>MS%</th><th>RANK</th></tr></thead>
               <tbody>${msRows}</tbody>
             </table>
           </div>
           <div class="cookie-project-segment">
             <div class="cookie-seg-title">Capital</div>
-            <table class="cookie-seg-table">
-              <thead><tr><th>기간</th><th>Rank</th><th>MS%</th></tr></thead>
+            <table class="muddha-seg-table">
+              <thead><tr><th>기간</th><th>MS%</th><th>RANK</th></tr></thead>
               <tbody>${capRows}</tbody>
             </table>
           </div>
@@ -6549,7 +6787,6 @@ function cookieRenderProjectCards(entries, handleNorm){
     labelEl.textContent = "@" + handleNorm + " 기준 Cookie 프로젝트 요약 카드";
   }
 }
-
 async function renderCookieLeaderboard(handle){
   const tbody = document.getElementById("cookie-leaderboard-body");
   const labelEl = document.getElementById("cookie-handle-label");
@@ -6577,13 +6814,19 @@ async function renderCookieLeaderboard(handle){
 
   const key = handleNorm;
   const listAll = COOKIE_INDEX[key] || [];
-  const list = listAll.filter(e =>
+  // 1차 필터: #200 이내 + 0% 초과만
+  let list = listAll.filter(e =>
     e &&
     e.rank != null &&
     e.rank <= 200 &&
     cookieSafeNumber(e.percent) !== null &&
     e.percent > 0
   );
+  // 만약 이렇게 해도 아무것도 안 나오는데 raw 데이터는 있다면,
+  // 필터를 풀고 raw 전체를 보여준다 (예외 케이스용)
+  if (!list.length && listAll.length){
+    list = listAll.slice();
+  }
 
   if (!list.length){
     tbody.innerHTML = '<tr><td colspan="6" class="infofi-empty">해당 핸들로 찾은 Cookie 데이터가 없어 (#200 이내, 0% 제외).</td></tr>';
