@@ -1722,26 +1722,43 @@ html.dark-theme .section-sub{
 .auth-overlay{
   position:fixed;
   inset:0;
-  background:rgba(15,23,42,0.55);
+  /* 로그인 첫 화면용 풀스크린 파스텔 배경 + 잔잔한 물결 애니메이션 */
+  background:
+    radial-gradient(circle at 0% 0%, rgba(96, 165, 250, 0.55) 0, transparent 45%),
+    radial-gradient(circle at 100% 100%, rgba(244, 114, 182, 0.60) 0, transparent 45%),
+    linear-gradient(145deg,#f9fafb,#eef2ff);
+  background-size: 140% 140%;
   display:none;
-  align-items:stretch;
-  justify-content:flex-end;
+  align-items:center;
+  justify-content:center;
   z-index:50;
+  animation: muddhabg 20s ease-in-out infinite alternate;
+}
+@keyframes muddhabg{
+  0%{
+    background-position: 0% 0%, 100% 100%, 0% 0%;
+  }
+  50%{
+    background-position: 30% 10%, 80% 90%, 30% 10%;
+  }
+  100%{
+    background-position: 70% 20%, 40% 80%, 50% 20%;
+  }
 }
 .auth-overlay.visible{
   display:flex;
 }
 .auth-panel{
-  width:360px;
-  max-width:100%;
-  background:linear-gradient(180deg,#ffffff,#f9fbff);
+  width:420px;
+  max-width:calc(100% - 40px);
+  background:linear-gradient(180deg,#ffffff,#f3f4ff);
   color:#111827;
-  box-shadow:-24px 0 50px rgba(15,23,42,0.9);
-  padding:20px 22px 22px;
+  box-shadow:0 26px 60px rgba(15,23,42,0.35);
+  padding:24px 26px 22px;
   display:flex;
   flex-direction:column;
   gap:12px;
-  border-radius:20px 0 0 20px;
+  border-radius:24px;
 }
 html.dark-theme .auth-panel{
   background:linear-gradient(180deg,#020617,#020617);
@@ -1868,9 +1885,9 @@ html.dark-theme .auth-input{
   font-size:13px;
   font-weight:600;
   cursor:pointer;
-  background:linear-gradient(135deg,#4f46e5,#06b6d4);
+  background:linear-gradient(90deg,#18a4ff,#b546ff);
   color:#f9fafb;
-  box-shadow:0 10px 22px rgba(79,70,229,0.45);
+  box-shadow:0 10px 22px rgba(37,99,235,0.45);
 }
 .auth-submit-btn:hover{
   filter:brightness(1.03);
@@ -2090,15 +2107,15 @@ html.dark-theme .auth-input{
       color: #0f172a;
       display: flex;
       align-items: stretch;
-      justify-content: stretch;
+      justify-content: flex-start;
       padding: 16px;
       gap: 16px;
     }
     .app-shell {
       display: flex;
       flex: 1;
-      max-width: 1280px;
-      margin: 0 auto;
+      max-width: 1440px;
+      margin: 0;
       gap: 16px;
     }
     .sidebar {
@@ -7863,6 +7880,16 @@ async function initSupabaseAuth(){
       console.warn("초기 사용자 조회 오류:", error.message);
     }
     updateAuthUI(user || null);
+    if (!user) {
+      const ov = document.getElementById("auth-overlay");
+      if (ov) {
+        ov.classList.add("visible");
+        const emailInput = document.getElementById("auth-email");
+        if (emailInput) {
+          setTimeout(() => emailInput.focus(), 50);
+        }
+      }
+    }
   } catch (err){
     console.error("initSupabaseAuth 오류:", err);
   }
@@ -7901,14 +7928,6 @@ async function initSupabaseAuth(){
     closeBtn.addEventListener("click", (e) => {
       e.preventDefault();
       hideAuthPanel();
-    });
-  }
-
-  if (overlay){
-    overlay.addEventListener("click", (e) => {
-      if (e.target === overlay){
-        hideAuthPanel();
-      }
     });
   }
 
