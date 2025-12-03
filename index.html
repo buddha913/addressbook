@@ -2797,6 +2797,8 @@
       }
     }
   </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 </head>
 <body>
   <div class="muddha-login-overlay" id="muddhaLoginOverlay">
@@ -6408,7 +6410,8 @@ function tryAutoLoadKaitoForCurrentUser() {
   
   <script>
     (function () {
-      var COOKIE_JSON_URL = "cookie_all_bundle.json";
+      var COOKIE_ZIP_URL = "cookie_all_bundle.zip";
+      var COOKIE_JSON_INSIDE_ZIP = "cookie_all_bundle.json";
       var cookieCache = null;
 
       function normalizeHandle(raw) {
@@ -6419,16 +6422,36 @@ function tryAutoLoadKaitoForCurrentUser() {
         return h.toLowerCase();
       }
 
+      // ZIP 안에 있는 cookie_all_bundle.json을 읽어서 파싱하는 헬퍼
+      function loadCookieBundleFromZip() {
+        return fetch(COOKIE_ZIP_URL)
+          .then(function (res) {
+            if (!res.ok) {
+              throw new Error("ZIP load failed: " + res.status);
+            }
+            return res.arrayBuffer();
+          })
+          .then(function (buffer) {
+            return JSZip.loadAsync(buffer);
+          })
+          .then(function (zip) {
+            var jsonFile = zip.file(COOKIE_JSON_INSIDE_ZIP);
+            if (!jsonFile) {
+              throw new Error("JSON file not found inside ZIP: " + COOKIE_JSON_INSIDE_ZIP);
+            }
+            return jsonFile.async("string");
+          })
+          .then(function (text) {
+            return JSON.parse(text);
+          });
+      }
+
       function ensureLoadedCookieData(callback) {
         if (cookieCache) {
           callback(cookieCache);
           return;
         }
-        fetch(COOKIE_JSON_URL)
-          .then(function (res) {
-            if (!res.ok) throw new Error("JSON load failed");
-            return res.json();
-          })
+        loadCookieBundleFromZip()
           .then(function (data) {
             cookieCache = data;
             callback(cookieCache);
