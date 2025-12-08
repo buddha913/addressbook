@@ -1,0 +1,1220 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <link rel="stylesheet" href="styles/global.css" />
+  <meta charset="UTF-8" />
+  <title>MUDDHA CSV Analyzer v30 · 패턴/티어/코치봇 활성화</title>
+  <meta name="viewport" content="width=1180, initial-scale=1.0" />
+  
+
+  <!-- Supabase + 로그인 오버레이 스타일 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // TODO: 아래 두 상수를 네 프로젝트 정보로 교체해 주세요.
+  const SUPABASE_URL = "https://ajzgeshowxalnnmemmow.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqemdlc2hvd3hhbG5ubWVtb3d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzNDM1NjEsImV4cCI6MjA3OTkxOTU2MX0.6VrDH1RPT_TTwkN2hwOsEsP8xnv2fZIsFXvWkvy_qm4";
+
+  if (typeof supabase !== "undefined") {
+    window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } else {
+    console.warn("Supabase JS SDK가 로드되지 않았습니다.");
+  }
+</script>
+  
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  
+
+  
+
+  
+
+  
+  
+
+
+
+  <!-- 프로젝트별 마인드쉐어 스타일 -->
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+</head>
+<body>
+  <div class="muddha-login-overlay" id="muddhaLoginOverlay">
+    <div class="muddha-login-card">
+      <div class="muddha-login-logo">
+        <div class="muddha-login-logo-mark"></div>
+        <div>
+          <div class="muddha-login-logo-main">MUDDHA Mindshare</div>
+          <div class="muddha-login-logo-sub"></div>
+        </div>
+      </div>
+      <div class="muddha-login-tabs">
+        <button class="muddha-login-tab active" id="muddhaTabLogin">로그인</button>
+        <button class="muddha-login-tab" id="muddhaTabSignup">회원가입</button>
+      </div>
+      <div class="muddha-login-title" id="muddhaLoginTitle">MUDDHA 로그인</div>
+      <div class="muddha-login-sub" id="muddhaLoginDesc"></div>
+      <div class="muddha-login-form">
+        <div id="muddhaLoginFields">
+          <div>
+            <div class="muddha-login-label">아이디</div>
+            <input class="muddha-login-input" id="loginId" placeholder="예: buddha" autocomplete="username"/>
+          </div>
+          <div>
+            <div class="muddha-login-label">비밀번호</div>
+            <input class="muddha-login-input" id="loginPassword" type="password" placeholder="비밀번호" autocomplete="current-password"/>
+          </div>
+        </div>
+        <div id="muddhaSignupFields" style="display:none;">
+          <div>
+            <div class="muddha-login-label">아이디</div>
+            <input class="muddha-login-input" id="signupId" placeholder="예: buddha" autocomplete="username"/>
+          </div>
+          <div>
+            <div class="muddha-login-label">비밀번호</div>
+            <input class="muddha-login-input" id="signupPassword" type="password" placeholder="8자 이상" autocomplete="new-password"/>
+          </div>
+          <div>
+            <div class="muddha-login-label">비밀번호 확인</div>
+            <input class="muddha-login-input" id="signupPasswordConfirm" type="password" placeholder="다시 한 번 입력" autocomplete="new-password"/>
+          </div>
+          <div>
+            <div class="muddha-login-label">닉네임</div>
+            <input class="muddha-login-input" id="signupNickname" placeholder="예: Buddha, 부처님 등"/>
+          </div>
+          <div>
+            <div class="muddha-login-label">트위터 핸들 (@ 없이, 필수)</div>
+            <input class="muddha-login-input" id="signupHandle" placeholder="예: bud_dha__"/>
+          </div>
+        </div>
+        <div class="muddha-login-error" id="muddhaLoginError"></div>
+        <div class="muddha-login-actions">
+          <button class="muddha-login-button" id="muddhaLoginButton">로그인</button>
+          <button class="muddha-login-button" id="muddhaSignupButton" style="display:none;">회원가입 완료하기</button>
+        </div>
+      </div>
+      <div class="muddha-login-footer">
+        <span></span>
+        <a href="https://x.com/bud_dha__" target="_blank">문의 / 피드백</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo-block">
+        <div class="logo-title">MUDDHA</div>
+        <div class="logo-sub">Mindshare Analyzer</div>
+        <div class="live-pill">
+          <span class="live-dot"></span>
+          <span>LIVE</span>
+        </div>
+      </div>
+
+      <!-- OVERVIEW -->
+      <div>
+        <div class="sidebar-section-title">Overview</div>
+        <div class="nav-list">
+          <button class="nav-item active" data-target="tab-dashboard">
+            <span class="icon">📊</span>
+            <span>대시보드</span>
+          </button>
+          <button class="nav-item" data-target="tab-guide">
+            <span class="icon">📘</span>
+            <span>사용방법</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ANALYZER -->
+      <div>
+        <div class="sidebar-section-title">Analyzer</div>
+        <div class="nav-list">
+          <button class="nav-item" data-target="tab-csv">
+            <span class="icon">📂</span>
+            <span>CSV 분석</span>
+          </button>
+          <button class="nav-item" data-target="tab-project">
+            <span class="icon">📌</span>
+            <span>프로젝트별 마인드쉐어</span>
+          </button>
+          <button class="nav-item" data-target="tab-planner">
+            <span class="icon">🗓</span>
+            <span>야핑 플래너</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- KAITO -->
+      <div>
+        <div class="sidebar-section-title">KAITO</div>
+        <div class="nav-list">
+          <button class="nav-item" data-target="tab-kaito">
+            <span class="icon">🧠</span>
+            <span>KAITO 리더보드</span>
+          </button>
+          <button class="nav-item" data-target="tab-yap">
+            <span class="icon">📈</span>
+            <span>YAPS +</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- COOKIE -->
+      <div>
+        <div class="sidebar-section-title">COOKIE</div>
+        <div class="nav-list">
+          <button class="nav-item" data-target="tab-cookie">
+            <span class="icon">🍪</span>
+            <span>Cookie 리더보드</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- COMMUNITY & PROFILE -->
+      <div>
+        <div class="sidebar-section-title">Me & Community</div>
+        <div class="nav-list">
+          <!-- 커뮤니티 탭은 현재 비활성화됨
+          <button class="nav-item" data-target="tab-community">
+            <span class="icon">💬</span>
+            <span>커뮤니티</span>
+          </button>
+          -->
+          <button class="nav-item" data-target="tab-profile">
+            <span class="icon">👤</span>
+            <span>내 프로필</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        현재 로그인: <b>buddha</b><br />
+        이 아이디 기준으로 KAIT0 / COOKIE / CSV 데이터를<br />
+        하나의 마인드쉐어로 묶어볼 수 있어요.
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <header class="top-bar">
+        <div class="top-left">
+          <div class="top-title">대시보드</div>
+          <div class="top-subtitle">로그인 후 한 눈에 보는 내 Mindshare 요약</div>
+        </div>
+        <div class="top-right">
+          <button class="pill-btn">최근 30일 기준</button>
+          <button class="pill-btn secondary">로그아웃</button>
+        </div>
+      </header>
+
+      <section class="content-scroll" id="scrollContainer">
+        <!-- Dashboard -->
+        <section class="tab-panel active" id="tab-dashboard">
+          <!-- 메인 Mindshare 카드 -->
+          <article class="card-main">
+            <div class="card-header-line">
+              <div>
+                <div class="card-title-main">나의 크리에이터 마인드쉐어</div>
+                <div class="card-title-sub">트림드 점수 · YAP 추정치 · 활동 분포를 종합한 핵심 스냅샷</div>
+                <div class="card-user-inline">
+                  <div class="profile-avatar-wrap card-avatar-compact">
+                    <img id="dashboardUserAvatar" class="profile-avatar-img" src="https://unavatar.io/twitter/bud_dha__" alt="프로필 아바타" />
+                  </div>
+                  <div class="profile-handle-line">
+                    <span class="profile-name" id="dashboardUserName">붓다</span>
+                    <span class="profile-handle" id="dashboardUserHandle">@bud_dha__</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card-chip" id="dashboardChipText">CSV 업로드 전</div>
+            </div>
+            <div class="card-body-grid">
+              <div>
+                <div class="score-main" id="dashboardTrimmedScore">-</div>
+                <div class="score-range" id="dashboardScoreRange">CSV를 업로드하면 최근 활동 기반 점수를 계산해요.</div>
+                <div class="score-caption">
+                  최근 30일 동안의 야핑 중 가치 있는 신호만 추려낸
+                  <b>Trimmed Score</b> 흐름을 기반으로 InfoFi 스타일의
+                  평판 궤적을 추정한 점수예요.
+                </div>
+              </div>
+              <div class="metric-list">
+                <div class="metric-row">
+                  <span class="metric-label">트림드 점수 (최근 7일)</span>
+                  <span class="metric-value-pill" id="dashboardTrimmedScoreMini">-</span>
+                </div>
+                <div class="metric-row">
+                  <span class="metric-label">계정 평균 점수</span>
+                  <span class="metric-value-pill" id="dashboardAccountAvg">-</span>
+                </div>
+                <div class="metric-row">
+                  <span class="metric-label">실제 Kaito YAP</span>
+                  <span class="metric-value-pill" id="dashboardYapReal">-</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 2x2 대시보드 카드 프리뷰 -->
+          <div class="dash-grid">
+            <!-- 카이토/쿠키 프로젝트 리더보드 요약 -->
+            <article class="dash-card dash-card-kaito-pos">
+              <div class="dash-card-header">
+                <div class="dash-card-title">내 프로젝트 리더보드 포지션</div>
+                <div class="dash-card-tag">KAITO · Tier1 Creator</div>
+              </div>
+              <div class="dash-card-body">
+                <div id="kaito-dashboard-slider" class="kaito-slider-wrap">
+                  <div class="kaito-slider-empty">
+                    로그인 후 KAITO 리더보드 데이터가 연결되면,
+                    이 영역에 네가 속한 Tier1(크리에이터) 프로젝트들이
+                    가로 슬라이더 카드로 자동으로 나타날 거야.
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Cookie 리더보드 종합 카드 -->
+            <article class="dash-card dash-card-cookie-pos">
+              <div class="dash-card-header">
+                <div class="dash-card-title">Cookie 리더보드 포지션</div>
+                <div class="dash-card-tag">Mindshare · Capital · 7D / 14D / 30D / TOTAL</div>
+              </div>
+              <div class="dash-card-body">
+                <div id="dashboard-cookie-slider" class="cookie-dashboard-root">
+                  <div class="cookie-empty">
+                    Cookie 데이터와 X 핸들이 연결되면, 여기에서 프로젝트별 카드를
+                    <b>좌우 슬라이더</b>로 넘겨볼 수 있어.
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            
+            <!-- 야핑 타임라인 위젯 (주간/월간) -->
+            <section class="dash-yap-section">
+              <header class="dash-yap-header">
+                <div>
+                  <div class="dash-yap-title">야핑 타임라인</div>
+                </div>
+                <div class="dash-yap-controls">
+                  <div class="dash-yap-tabs">
+                    <button class="dash-yap-tab active" data-view="week">주간 보드</button>
+                    <button class="dash-yap-tab" data-view="month">월간 캘린더</button>
+                  </div>
+                  <div class="dash-yap-nav-wrap">
+                    <button class="dash-yap-nav" data-dir="prev">◀</button>
+                    <span id="dashYapLabel" class="dash-yap-range"></span>
+                    <button class="dash-yap-nav" data-dir="next">▶</button>
+                  </div>
+                </div>
+              </header>
+
+              <div class="dash-yap-body">
+                <div id="dashYapWeekView">
+                  <div id="dashYapEmptyWeek" class="dash-yap-empty">
+                    아직 이번 주에 남아있는 야핑 계획이 없어요.<br/>
+                    왼쪽 사이드탭의 야핑 플래너에서 새 계획을 추가하면 이곳에 자동으로 나타납니다.
+                  </div>
+                  <div id="dashYapWeekGrid" class="dash-yap-week-grid"></div>
+                </div>
+
+                <div id="dashYapMonthView" style="display:none;">
+                  <div id="dashYapEmptyMonth" class="dash-yap-empty">
+                    이번 달 기준으로 남아있는 야핑 계획이 아직 없어요.
+                  </div>
+                  <div id="dashYapMonthGrid" class="dash-yap-month-grid"></div>
+                </div>
+              </div>
+            </section>
+
+          </div>
+        </section>
+
+        <!-- 다른 탭들은 예전과 같은 placeholder -->
+        
+        <section class="tab-panel" id="tab-guide">
+          <div class="guide-card">
+            <div class="guide-tabs">
+              <button class="guide-tab-btn active" data-guide="g1">전체 흐름</button>
+              <button class="guide-tab-btn" data-guide="g2">CSV 분석기</button>
+              <button class="guide-tab-btn" data-guide="g3">야핑 플래너</button>
+              <button class="guide-tab-btn" data-guide="g4">리더보드</button>
+              <button class="guide-tab-btn" data-guide="g5">FAQ</button>
+            </div>
+
+            <div class="guide-panel active" id="g1">
+              <div class="guide-section-title">전체 흐름 안내</div>
+              <div class="guide-section-sub">MUDDHA는 활동 데이터와 외부 평가 지표를 기반으로 사용자 활동의 흐름을 파악할 수 있는 분석 도구입니다.</div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">1) 대시보드 확인</div>
+                <div class="guide-step-body">로그인 후 표시되는 대시보드에서 최근 활동 지표와 전체적인 변화 흐름을 확인할 수 있습니다.</div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">2) CSV 파일 분석</div>
+                <div class="guide-step-body">CSV 파일을 업로드하면 게시글이 자동 분석되며 활동패턴, 점수 그래프, 티어 분류 등이 생성됩니다.</div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">3) 야핑 플래너 활용</div>
+                <div class="guide-step-body">프로젝트별로 향후 활동 계획을 정리하고 관리할 수 있습니다.</div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">4) 리더보드 비교</div>
+                <div class="guide-step-body">외부 서비스의 평가 지표와 내부 분석 결과를 함께 참고할 수 있습니다.</div>
+              </div>
+            </div>
+
+            <div class="guide-panel" id="g2">
+              <div class="guide-section-title">CSV 분석기 사용 방법</div>
+              <div class="guide-section-sub">업로드된 게시글 데이터를 분석하여 점수, 패턴, 티어 정보를 제공합니다.</div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">1) CSV 업로드</div>
+                <div class="guide-step-body">트윗 데이터를 포함한 CSV 파일을 업로드하면 필드가 자동 매핑됩니다.</div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">2) 분석하기 실행</div>
+                <div class="guide-step-body">‘분석하기’를 선택하면 점수 계산과 패턴 분석이 진행됩니다.</div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">3) 분석 결과 확인</div>
+                <div class="guide-step-body">활동패턴, 티어 분류, 대표 게시글 Top10 등 다양한 분석 결과를 확인할 수 있습니다.</div>
+              </div>
+            </div>
+
+            <div class="guide-panel" id="g3">
+              <div class="guide-section-title">야핑 플래너 사용 방법</div>
+              <div class="guide-section-sub">프로젝트별 향후 활동 계획을 정리하는 기능입니다.</div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">1) 프로젝트 등록</div>
+                <div class="guide-step-body">프로젝트 정보를 입력하여 리스트에 추가합니다.</div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">2) 목표 설정</div>
+                <div class="guide-step-body">프로젝트별 활동 목표를 설정하여 계획을 구성할 수 있습니다.</div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">3) 일정 확인</div>
+                <div class="guide-step-body">월간 그리드를 통해 남은 계획을 확인할 수 있습니다.</div>
+              </div>
+            </div>
+
+            <div class="guide-panel" id="g4">
+              <div class="guide-section-title">리더보드 안내</div>
+              <div class="guide-section-sub">외부 InfoFi 서비스 데이터를 조회하여 개인 평가를 확인할 수 있습니다.</div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">1) 핸들 조회</div>
+                <div class="guide-step-body">X 계정 아이디를 입력하면 KAITO, COOKIE, 곰투 등의 데이터를 조회할 수 있습니다.</div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">2) 지표 확인</div>
+                <div class="guide-step-body">점수, 티어, 순위 등 다양한 지표를 확인할 수 있습니다.</div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">3) 데이터 비교</div>
+                <div class="guide-step-body">CSV 분석 결과와 외부 평가를 함께 참고하여 전략을 조정할 수 있습니다.</div>
+              </div>
+            </div>
+
+            <div class="guide-panel" id="g5">
+              <div class="guide-section-title">FAQ</div>
+              <div class="guide-section-sub">자주 묻는 질문을 정리했습니다.</div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">CSV 업로드 후 변화가 없습니다.</div>
+                <div class="guide-step-body">분석하기 버튼을 다시 실행합니다. 필요 시 브라우저 저장소 초기화를 권장합니다.</div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">데이터는 저장되나요?</div>
+                <div class="guide-step-body">CSV 분석은 브라우저에서 처리되며 서버에 자동 저장되지 않습니다.</div>
+              </div>
+
+              <div class="guide-step">
+                <div class="guide-step-title">점수 기준은 무엇인가요?</div>
+                <div class="guide-step-body">좋아요, 인용, 답글 등의 데이터를 기반으로 가중치를 적용하여 계산됩니다.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        
+                <section class="tab-panel" id="tab-csv">
+          <div class="wrap">
+              <h1>CSV 분석 · 최소 안정 버전</h1>
+              <div class="subtitle">X/Twitter CSV를 업로드해서 SCORE/패턴/티어/코치봇을 확인하는 테스트 빌드.</div>
+
+              <div class="csv-main-tabs">
+                <button class="csv-main-btn active" data-csv-main="upload">CSV 업로드</button>
+                <button class="csv-main-btn" data-csv-main="score">SCORE 그래프</button>
+                <button class="csv-main-btn" data-csv-main="tier">티어별 분류</button>
+                <button class="csv-main-btn" data-csv-main="coach">코치봇</button>
+              </div>
+
+              <!-- 업로드 -->
+              <div class="csv-main-panel active" id="csv-main-upload">
+                <div class="card">
+                  <h2>STEP 1 · CSV 업로드</h2>
+                  <small>콘텐츠 탭에서 받은 CSV 파일을 선택하고 분석을 실행합니다.</small>
+                  <div class="row">
+                    <span>CSV 파일 선택</span>
+                    <span class="pill"><input id="csvFileInput" type="file" accept=".csv"></span>
+                  </div>
+                  <div class="row">
+                    <span>분석 모드</span>
+                    <span class="pill">
+                      <select id="csvModeSelect" class="csv-mode-select">
+                        <option value="MY">내 계정 분석 (저장)</option>
+                        <option value="TEMP">임시 분석 (저장 안함)</option>
+                      </select>
+                    </span>
+                  </div>
+                  <div class="row">
+                    <span>분석 시작</span>
+                    <span class="pill analyze-btn" id="csvAnalyzeButton">분석하기</span>
+                  </div>
+                  <div class="row">
+                    <span>저장 히스토리</span>
+                    <span class="pill" id="csvLastSaveSummary">저장된 분석 없음</span>
+                  </div>
+                  <div class="row">
+                    <span>저장 히스토리</span>
+                    <span id="csvHistoryList" class="csv-history-list-text">저장된 분석 히스토리가 없습니다.</span>
+                  </div>
+                  <div class="row">
+                    <span>모든 저장 기록</span>
+                    <button type="button" id="csvDeleteAllButton" class="csv-delete-btn" >
+                      전체 삭제
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid-2">
+                  <div class="card">
+                    <h2>기본 통계 요약</h2>
+                    <small>CSV에서 감지한 기본 정보</small>
+                    <div id="csvSummaryBox" style="margin-top:8px; font-size:13px;">
+                      아직 CSV를 업로드하지 않았어요.<br>
+                      파일을 선택하고 <b>분석하기</b>를 누르면<br>
+                      · 총 행 수<br>
+                      · 헤더 컬럼 수<br>
+                      · 날짜 컬럼 이름<br>
+                      같은 기본 정보부터 보여줄게요.
+                    </div>
+                  </div>
+                  <div class="card">
+                    <h2>SCORE 개요</h2>
+                    <small>날짜별 Trimmed Score 흐름의 요약</small>
+                    <div id="csvScoreInfo" style="margin-top:8px; font-size:13px;">
+                      아직 분석 결과가 없습니다.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SCORE -->
+              <div class="csv-main-panel" id="csv-main-score">
+                <div class="card">
+                  <h2>STEP 2 · SCORE 그래프</h2>
+                  <small>날짜별 평균 Trimmed Score와 대표 트윗</small>
+                  <div class="range-bar" style="margin-top:10px;">
+                    <button class="csv-range-btn" data-range="7">7D</button>
+                    <button class="csv-range-btn" data-range="30">30D</button>
+                    <button class="csv-range-btn" data-range="60">60D</button>
+                    <button class="csv-range-btn" data-range="90">90D</button>
+                    <button class="csv-range-btn active" data-range="all">TOTAL</button>
+                  </div>
+                  <div class="month-filter" style="margin-top:6px; display:flex; align-items:center; gap:6px; font-size:11px;">
+                    <span style="opacity:0.7;">월별 필터</span>
+                    <select id="csvMonthFilter" style="font-size:11px; padding:2px 6px; border-radius:4px; background:#020617; color:#e5e7eb; border:1px solid #1f2937;">
+                      <option value="ALL">전체</option>
+                    </select>
+                  </div>
+                  <canvas id="csvScoreChart" height="320"></canvas>
+                  <div class="card" style="margin-top:14px; padding:10px 12px;">
+                    <div style="font-size:13px; font-weight:600; margin-bottom:4px;">선택된 트윗</div>
+                    <div id="csvScoreDetailBody" style="font-size:13px;">
+                      그래프 위의 점을 클릭하면, 해당 날짜에서 가장 대표적인 트윗이 여기에 표시됩니다.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 티어 -->
+              <div class="csv-main-panel" id="csv-main-tier">
+                <div class="card">
+                  <h2>STEP 4 · 티어 분석</h2>
+                  <small>마인드쉐어 폭발 Top 10과 등급별 상위 게시글을 한 번에 보는 뷰</small>
+
+                  <!-- 마인드쉐어 폭발 Top 10 -->
+                  <div style="margin-top:16px;">
+                    <h3 style="font-size:14px; margin-bottom:4px;">
+                      ⭐ 마인드쉐어 폭발 Top 10
+                      <span id="tierExplosionCountLabel" style="font-weight:400; font-size:12px; opacity:0.9;">(0 / 0)</span>
+                    </h3>
+                    <small>각 트윗의 SCORE 기준 상위 10개 대표 트윗 리스트입니다.</small>
+                    <table class="tier-table" style="margin-top:8px;">
+                      <thead>
+                        <tr>
+                          <th style="width:40px;">#</th>
+                          <th style="width:50px;">등급</th>
+                          <th>본문</th>
+                          <th style="width:70px;">점수</th>
+                          <th style="width:130px;">반응</th>
+                          <th style="width:90px;">날짜</th>
+                          <th style="width:90px;">링크</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tierExplosionBody">
+                        <tr><td colspan="7">CSV 분석 후 상위 10일이 자동으로 계산됩니다.</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- 등급별 상위 게시글 -->
+                  <div style="margin-top:24px;">
+                    <h3 style="font-size:14px; margin-bottom:4px;">📊 등급별 상위 게시글 (S~D)</h3>
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                      <div style="margin:6px 0;">
+                        <button class="csv-main-btn tier-filter-btn active" data-tier-filter="ALL">전체</button>
+                        <button class="csv-main-btn tier-filter-btn" data-tier-filter="S">S 등급</button>
+                        <button class="csv-main-btn tier-filter-btn" data-tier-filter="A">A 등급</button>
+                        <button class="csv-main-btn tier-filter-btn" data-tier-filter="B">B 등급</button>
+                        <button class="csv-main-btn tier-filter-btn" data-tier-filter="C">C 등급</button>
+                        <button class="csv-main-btn tier-filter-btn" data-tier-filter="D">D 등급</button>
+                      </div>
+                      <small style="opacity:0.8;">S 상위 5% · A 상위 20% · B 상위 40% · C 상위 60% · D 그 외</small>
+                    </div>
+                    <table class="tier-table" style="margin-top:8px;">
+                      <thead>
+                        <tr>
+                          <th style="width:40px;">#</th>
+                          <th style="width:50px;">등급</th>
+                          <th>본문</th>
+                          <th style="width:70px;">점수</th>
+                          <th style="width:130px;">반응</th>
+                          <th style="width:90px;">날짜</th>
+                          <th style="width:90px;">링크</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tierGradeBody">
+                        <tr><td colspan="6">CSV 분석 후 티어별 상위 게시글이 여기에 표시됩니다.</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 코치봇 -->
+              <div class="csv-main-panel" id="csv-main-coach">
+                <div class="card">
+                  <h2>STEP 5 · 코치봇</h2>
+                  <small>CSV 분석 결과를 요약해서 말해주는 피드백 영역</small>
+                  <div id="csvCoachText" class="coach-text" style="margin-top:10px;">
+                    CSV를 업로드하고 분석을 실행하면, 이곳에 활동 요약과 강점/약점, 다음 액션이 자동으로 채워집니다.
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            
+
+            
+        </section>
+
+
+                <section class="tab-panel" id="tab-project">
+          <section class="card card-soft">
+                <div class="section-header">
+                  <div class="section-title" id="project-summary-title">📚 프로젝트 요약 + 원형 그래프</div>
+                  <div class="section-sub" id="project-summary-sub">
+                    나중에 전체뼈대.html로 이식 시 CSV 분석 결과를 기반으로 자동으로 채워질 영역입니다.
+                  </div>
+                </div>
+
+                <div class="project-charts-row">
+                  <div class="project-chart-single">
+                    <div class="project-chart-title" id="proj-chart-title-1">프로젝트별 게시글 비율</div>
+                    <canvas id="project-pie"></canvas>
+                  </div>
+                  <div class="project-chart-single">
+                    <div class="project-chart-title" id="proj-chart-title-2">프로젝트별 평균 점수 (Trimmed 기준)</div>
+                    <canvas id="project-score-pie"></canvas>
+                  </div>
+                  <div class="project-chart-single">
+                    <div class="project-chart-title" id="proj-chart-title-3">선택 프로젝트 S~D 등급 분포</div>
+                    <canvas id="project-grade-pie"></canvas>
+                  </div>
+                </div>
+
+                
+                <div class="project-detail-controls">
+                  <span>🔍 프로젝트별 게시글 보기</span>
+                  <div class="project-detail-right">
+                    <div class="project-sort-toggle">
+                      <button type="button" class="project-sort-btn active" data-sort="tier">등급순</button>
+                      <button type="button" class="project-sort-btn" data-sort="date">날짜순</button>
+                    </div>
+                    <select class="project-select" id="project-select">
+                      <option value="">MOCK 데이터 기준 · 프로젝트 선택</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="table-wrap" id="project-detail-wrap">
+                  <div class="empty">프로젝트를 선택하면 해당 프로젝트의 게시글과 등급이 여기에 표시됩니다.</div>
+                </div>
+
+                <div class="table-wrap" id="project-summary-wrap">
+                  <div class="empty">MOCK 데이터를 불러오는 중입니다...</div>
+                </div>
+
+              </section>
+        </section>
+
+        
+        <section class="tab-panel" id="tab-planner">
+          <div class="planner-page">
+            <div class="planner-layout">
+              <!-- Left : form + saved list -->
+              <div class="planner-left">
+                <article class="planner-card">
+                  <header class="planner-card-header">
+                    <div>
+                      <div class="planner-card-title">새 야핑 계획 추가</div>
+                      <div class="planner-card-sub">
+                        날짜·주제·타입·회수를 정하고, 간단한 메모까지 같이 남겨둘 수 있습니다
+                      </div>
+                    </div>
+                    <div class="planner-auto-save">
+                      브라우저 localStorage에 자동 저장돼요.
+                    </div>
+                  </header>
+
+                  <div class="planner-form-grid">
+                    <div class="planner-field">
+                      <label for="planDate">날짜</label>
+                      <input type="date" id="planDate" />
+                    </div>
+                    <div class="planner-field">
+                      <label for="planCount">회수</label>
+                      <input type="number" id="planCount" min="1" value="1" />
+                    </div>
+                    <div class="planner-field wide">
+                      <label for="planTitle">한글명</label>
+                      <input type="text" id="planTitle" placeholder="예: KAITO,MEMEMAX" />
+                    </div>
+                    <div class="planner-field">
+                      <label for="planType">야핑 타입</label>
+                      <select id="planType">
+                        <option value="스레드 / 롱폼">스레드 / 롱폼</option>
+                        <option value="실시간 야핑">실시간 야핑</option>
+                        <option value="리서치 정리">리서치 정리</option>
+                        <option value="커뮤니티 / 밈">커뮤니티 / 밈</option>
+                        <option value="기타">기타</option>
+                      </select>
+                    </div>
+                    <div class="planner-field">
+                      <label for="planProject">프로젝트 / 태그</label>
+                      <input type="text" id="planProject" placeholder="예: RIVER, MEMEMAX, TEN" />
+                    </div>
+                    <div class="planner-field">
+                      <label>필수 / 보조</label>
+                      <div class="planner-chip-row" id="planImportanceGroup">
+                        <button type="button" class="planner-chip active" data-value="필수">필수</button>
+                        <button type="button" class="planner-chip" data-value="보조">보조</button>
+                      </div>
+                    </div>
+                    <div class="planner-field">
+                      <label>단기 / 장기</label>
+                      <div class="planner-chip-row" id="planHorizonGroup">
+                        <button type="button" class="planner-chip active" data-value="단기">단기</button>
+                        <button type="button" class="planner-chip" data-value="장기">장기</button>
+                      </div>
+                    </div>
+                    <div class="planner-field full">
+                      <label for="planMemo">짧은 메모</label>
+                      <textarea id="planMemo" rows="3" placeholder="예: 쿠키 리더보드 상위 10% 노리는 날, RWA 내러티브 강조."></textarea>
+                    </div>
+                  </div>
+
+                  <div class="planner-actions-row">
+                    <button id="plannerAddButton" class="planner-primary-btn">+ 야핑 계획 추가</button>
+                    <button id="plannerClearButton" class="planner-secondary-btn">전체 삭제</button>
+                  </div>
+                </article>
+
+                <article class="planner-card">
+                  <header class="planner-card-header">
+                    <div>
+                      <div class="planner-card-title">저장된 야핑 리스트</div>
+                      <div class="planner-card-sub">
+                        완료 표시/삭제는 여기서 관리하면 돼. (날짜 기준 자동 정렬)
+                      </div>
+                    </div>
+                    <div class="planner-filter-row">
+                      <button class="planner-filter-btn active" data-filter="upcoming">다가올 일정</button>
+                      <button class="planner-filter-btn" data-filter="all">전체</button>
+                      <button class="planner-filter-btn" data-filter="done">완료만</button>
+                    </div>
+                  </header>
+
+                  <div class="planner-saved-summary" id="plannerSavedSummary">총 0개 · 앞으로 남은 일정 0개</div>
+                  <div class="planner-saved-list" id="plannerSavedList">
+                    <!-- JS로 채움 -->
+                  </div>
+                </article>
+              </div>
+
+              <!-- Right : week/month board -->
+              <div class="planner-right">
+                <article class="planner-card">
+                  <header class="planner-card-header">
+                    <div>
+                      <div class="planner-card-title">야핑 타임라인</div>
+                      <div class="planner-card-sub">
+                        주간 보드와 월간 캘린더를 오가면서 한 눈에 일정을 정리할 수 있어.
+                      </div>
+                    </div>
+                    <div class="planner-calendar-controls">
+                      <div class="planner-calendar-tabs">
+                        <button class="planner-calendar-tab active" data-view="week">주간 보드</button>
+                        <button class="planner-calendar-tab" data-view="month">월간 캘린더</button>
+                      </div>
+                      <div class="planner-calendar-nav">
+                        <button class="planner-nav-btn" data-dir="prev">◀</button>
+                        <span id="plannerRangeLabel" class="planner-range-label"></span>
+                        <button class="planner-nav-btn" data-dir="next">▶</button>
+                      </div>
+                    </div>
+                  </header>
+
+                  <div class="planner-calendar-body">
+                    <div id="plannerWeekView">
+                      <div id="plannerEmptyWeek" class="planner-empty">
+                        아직 이번 주에 등록된 야핑 계획이 없어요.<br/>
+                        위에서 새 계획을 추가하면 이곳에 자동으로 보입니다.
+                      </div>
+                      <div id="plannerWeekGrid" class="planner-week-grid"></div>
+                    </div>
+
+                    <div id="plannerMonthView" style="display:none;">
+                      <div id="plannerEmptyMonth" class="planner-empty">
+                        이번 달에는 아직 등록된 야핑 계획이 없어요.
+                      </div>
+                      <div id="plannerMonthGrid" class="planner-month-grid"></div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        
+        <section class="tab-panel" id="tab-kaito">
+          <article class="card-main">
+            <div class="card-main-header">
+              <div>
+                <div class="section-title"></div>
+                <div class="section-sub">
+                                  </div>
+              </div>
+            </div>
+
+            <div class="kaito-hero">
+              <div class="kaito-title">내 핸들로 Kaito 프로젝트 순위 보기</div>
+              <div class="kaito-sub">
+                예: <code>@bud_dha__</code> 처럼 입력하면, 해당 계정이 속한 InfoFi 프로젝트들의 순위를 한 번에 볼 수 있습니다
+              </div>
+              <div class="kaito-search-row">
+                <input id="kaito-handle-input"
+                       class="kaito-input"
+                       placeholder="@핸들 입력 (예: @bud_dha__)" />
+                <button type="button"
+                        class="kaito-btn"
+                        onclick="fetchKaitoLeaderboard()">
+                  검색
+                </button>
+              </div>
+              <div class="kaito-note">
+                
+              </div>
+              <div class="kaito-source">
+                데이터 출처:
+                <a href="https://gomtu.xyz/kaito-leaderboard" target="_blank" rel="noopener">
+                  Gomtu · Kaito Leaderboard
+                </a>
+                
+              </div>
+            </div>
+
+            <div id="kaito-result" class="kaito-result-wrap">
+              <div class="kaito-empty">
+                먼저 위에서 @핸들을 입력하고 <b>검색</b>을 눌러주세요
+              </div>
+            </div>
+          </article>
+        </section>
+
+
+                <section class="tab-panel" id="tab-yap">
+          <article class="card-main">
+            <div class="card-header-line">
+              <div>
+                <div class="card-title-main">YAPS+</div>
+                <div class="card-title-sub">Kaito API에서 직접 불러온 실제 YAP 점수를 빠르게 확인하는 탭입니다.</div>
+              </div>
+            </div>
+
+            <div class="card-body-grid">
+              <!-- 입력 영역 -->
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <input id="yapsplus-handle" 
+                         placeholder="@핸들 입력 (예: bud_dha__)" 
+                         style="flex:1; padding:10px 16px; border-radius:999px; border:1px solid rgba(255,255,255,0.14); background:rgba(8,10,25,0.8); color:#fff; font-size:13px; backdrop-filter:blur(10px);" />
+                  <button id="yapsplus-btn" class="pill-btn">조회</button>
+                </div>
+                <div class="small-hint"></div>
+              </div>
+
+              <!-- 결과 카드 영역 -->
+              <div style="display:flex; gap:14px; align-items:flex-start; margin-top:4px;">
+                <!-- 메인 점수 카드 -->
+                <div style="
+                  flex:0 0 220px;
+                  background:rgba(255,255,255,0.05);
+                  border:1px solid rgba(255,255,255,0.08);
+                  border-radius:16px;
+                  padding:18px 20px;
+                  backdrop-filter:blur(14px);
+                ">
+                  <div style="font-size:12px; opacity:0.8; margin-bottom:6px;">실시간 YAP 점수</div>
+                  <div id="yapsplus-value" style="font-size:30px; font-weight:700; letter-spacing:-0.5px; line-height:1;">
+                    -
+                  </div>
+                </div>
+
+                <!-- 원본 값 / 설명 카드 -->
+                <div style="
+                  flex:1;
+                  background:rgba(255,255,255,0.03);
+                  border:1px solid rgba(255,255,255,0.06);
+                  border-radius:16px;
+                  padding:14px 18px;
+                  font-size:13px;
+                  line-height:1.6;
+                  backdrop-filter:blur(14px);
+                ">
+                  <div id="yapsplus-meta" style="opacity:0.9;">
+                    트위터(X) 핸들을 입력한 뒤 조회 버튼을 누르면 해당 계정의 YAP 원본 값을 확인할 수 있습니다.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+
+        
+        <section class="tab-panel" id="tab-cookie">
+          <article class="card-main">
+            <div class="card-main-header">
+              <div>
+                <div class="section-title">🍪 Cookie 프로젝트 리더보드</div>
+                <div class="section-sub">
+                  Cookie가 수집한 Mindshare / Capital 랭킹을 한 카드에서, 7D·14D·30D·Total 기준으로 정리해서 보여주는 탭입니다.
+                </div>
+              </div>
+            </div>
+
+            <div class="cookie-hero">
+              <div class="cookie-title">내 핸들 기준 프로젝트 요약 보기</div>
+              <div class="cookie-sub">
+                예: <code>@bud_dha__</code> 처럼 입력하면, 해당 계정이 Cookie 랭킹에 잡힌 프로젝트들의 <b>Mindshare / Capital</b> 랭킹을 한 번에 볼 수 있습니다
+              </div>
+              <div class="cookie-search-row">
+                <input id="cookie-handle-input"
+                       class="cookie-input"
+                       placeholder="@핸들 입력 (예: @bud_dha__)" />
+                <button type="button"
+                        class="cookie-btn"
+                        onclick="renderCookieLeaderboard()">
+                  검색
+                </button>
+              </div>
+              <div class="cookie-note">
+               <code></code>
+              </div>
+            </div>
+
+            <div class="cookie-layout">
+              <section class="cookie-section">
+                <div class="cookie-section-header">
+                  <div class="cookie-section-title">프로젝트별 Mindshare / Capital </div>
+                  <div class="cookie-section-tag">Projects × Period</div>
+                </div>
+                <div class="cookie-section-hint">
+                  한 프로젝트 안에서 <b>Mindshare / Capital × 7D·14D·30D·Total</b> 기준으로 가장 좋은 랭킹을 골라서 카드 하나에 정리해줘요.
+                </div>
+                <div id="cookie-project-cards" class="cards-wrap">
+                  <div class="cookie-empty">먼저 위에서 @핸들을 입력하고 <b>검색</b>을 눌러줘.</div>
+                </div>
+              </section>
+
+              <section class="cookie-section">
+                <div class="cookie-section-header">
+                  <div class="cookie-section-title">세부 랭킹 테이블</div>
+                  <div class="cookie-section-tag">Raw Entries</div>
+                </div>
+                <div class="cookie-section-hint">
+                  Cookie에서 내려온 원본 랭킹(프로젝트 / 타입 / 기간 / 랭크 / 퍼센트)을 그대로 테이블로 정리한 영역이에요.
+                </div>
+                <div class="table-wrap">
+                  <table class="cookie-table">
+                    <thead>
+                      <tr>
+                        <th>Project</th>
+                        <th>Type</th>
+                        <th>Period</th>
+                        <th>Rank</th>
+                        <th>%</th>
+                        <th>Lang</th>
+                      </tr>
+                    </thead>
+                    <tbody id="cookie-raw-tbody">
+                      <tr>
+                        <td colspan="6" class="cookie-empty">
+                          위에서 @핸들을 입력하면, 이 영역에 Cookie에서 가져온 세부 랭킹이 뜹니다.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+          </article>
+        </section>
+
+
+        <section class="tab-panel" id="tab-community">
+          <div class="community-shell">
+            <header class="community-header">
+              <div class="community-header-left">
+                <div class="community-title">MUDDHA 커뮤니티</div>
+              </div>
+              <div class="community-user" id="communityUserBadge">로그인 상태를 불러오는 중...</div>
+            </header>
+
+            <div class="community-tabs-row">
+              <div class="community-tabs">
+                <button class="community-tab-btn active" data-board="free">자유게시판</button>
+                <button class="community-tab-btn" data-board="request">상호요청</button>
+              </div>
+              <div class="community-write-toggle-row">
+                <button class="community-write-toggle-btn" id="communityWriteToggleTop">
+                  <span class="icon">✏️</span>
+                  <span>글쓰기</span>
+                </button>
+                <span class="community-write-hint-mini">글쓰기 버튼을 누르면 아래 입력창이 펼쳐져요.</span>
+              </div>
+            </div>
+
+            <section class="community-main">
+              <div class="community-topbar">
+                <div class="community-top-left">
+                  <span class="community-badge-board" id="communityBoardLabel">자유게시판</span>
+                  <span class="community-board-count-text" id="communityBoardCountText">총 0개 글</span>
+                </div>
+                <div class="community-top-right">
+                  <div class="community-sort-toggle">
+                    <button class="community-sort-btn active" data-sort="latest">최신</button>
+                    <button class="community-sort-btn" data-sort="popular">인기</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="community-board-list-wrap">
+                <table class="community-table">
+                  <thead>
+                    <tr>
+                      <th class="community-col-no">번호</th>
+                      <th class="community-col-title">제목</th>
+                      <th class="community-col-writer">글쓴이</th>
+                      <th class="community-col-date">작성일</th>
+                      <th class="community-col-views">조회</th>
+                      <th class="community-col-likes">추천</th>
+                    </tr>
+                  </thead>
+                  <tbody id="communityBoardBody">
+                    <tr>
+                      <td colspan="6" class="community-empty-row">아직 글이 없습니다. 하단 글쓰기 버튼으로 첫 글을 남겨보세요.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="community-write-panel" id="communityWritePanel">
+                <div class="community-write-panel-inner">
+                  <div class="community-write-row">
+                    <div class="community-write-label">제목</div>
+                    <input id="communityPostTitle" class="community-write-input" type="text" maxlength="80" placeholder="제목을 입력해 주세요" />
+                  </div>
+                  <div class="community-write-row">
+                    <div class="community-write-label">내용</div>
+                    <textarea id="communityPostContent" class="community-write-textarea" placeholder="마인드쉐어, 얍핑, 크립토 이야기 아무거나 적어도 됩니다 🙂"></textarea>
+                  </div>
+                  <div class="community-write-bottom-row">
+                    <div class="community-write-hint">
+                      Supabase <code>community_posts</code> 테이블에 저장됩니다.<br/>
+                      (board / title / body / user_id / nickname / handle / created_at ...)
+                    </div>
+                    <button class="community-write-submit-btn" id="communityPostSubmitBtn">작성하기</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="community-footerbar">
+                <div class="community-paging-dots">
+                  <div class="community-paging-dot active">1</div>
+                  <div class="community-paging-dot">2</div>
+                  <div class="community-paging-dot">3</div>
+                  <div class="community-paging-dot">▶</div>
+                </div>
+                <button class="community-footer-write-btn" id="communityWriteToggleBottom">
+                  <span>✏️</span>
+                  <span>글쓰기</span>
+                </button>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="tab-panel" id="tab-profile">
+          <div class="profile-page-layout">
+            <div class="profile-main-card">
+              <div class="profile-header-row">
+                <div class="profile-avatar-wrap">
+                  <img id="profileAvatar" class="profile-avatar-img" src="https://unavatar.io/twitter/bud_dha__" alt="프로필 아바타" />
+                </div>
+                <div class="profile-header-text">
+                  <div class="profile-handle-line">
+                    <span class="profile-name" id="profileNamePreview">붓다</span>
+                    <span class="profile-handle" id="profileHandlePreview">@bud_dha__</span>
+                  </div>
+                  <p class="profile-caption">분석기 화면 상단과 여러 카드에 표시될 기본 프로필 정보예요.</p>
+                </div>
+                <div class="profile-pill">
+                  내 프로필
+                </div>
+              </div>
+
+              <div class="profile-form-grid">
+                <div class="profile-field">
+                  <label for="profileDisplayName">표시 닉네임</label>
+                  <p class="field-hint">분석기 화면 상단과 여러 카드에서 표시될 이름이에요.</p>
+                  <input id="profileDisplayName" type="text" placeholder="예: 붓다" />
+                </div>
+
+                <div class="profile-field">
+                  <label for="profileMuddhaId">MUDDHA 아이디</label>
+                  <p class="field-hint">
+                    로그인에 쓰는 이메일의 앞부분이에요. <b>
+                  </p>
+                  <input id="profileMuddhaId" type="text" placeholder="예: buddha" />
+                </div>
+
+                <div class="profile-field">
+                  <label for="profileTwitterHandle">트위터(X) 핸들</label>
+                  <p class="field-hint">
+                    </code> 
+                  </p>
+                  <input id="profileTwitterHandle" type="text" placeholder="예: bud_dha__" />
+                </div>
+              </div>
+
+              <div class="profile-actions-row">
+                <button id="profileSaveButton" class="primary-btn">프로필 저장</button>
+              </div>
+            </div>
+
+            <div class="profile-history-card">
+              <div class="profile-history-header">
+                <h3>내 히스토리</h3>
+                <span class="history-badge">내 프로필</span>
+              </div>
+              <p class="history-description">
+                프로필을 수정할 때마다 간단한 기록을 남겨둡니다.<br />
+                
+              </p>
+              <div id="profileHistoryList" class="profile-history-list">
+                <!-- 자바스크립트로 최근 히스토리가 들어갑니다 -->
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  
+
+  
+
+<!-- Supabase Login Integration -->
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+  
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+
+
+
+  <!-- 프로젝트별 마인드쉐어 JS (PROJECTS 키워드 기반) -->
+  
+
+
+
+
+  <script type="module" src="app.js"></script>
+</body>
+
+</html>
+</script>
